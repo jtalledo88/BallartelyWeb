@@ -1,4 +1,4 @@
-package pe.com.foxsoft.reportsweb.jpa.util;
+package pe.com.foxsoft.ballartelyweb.jpa.util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,9 +13,9 @@ import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import pe.com.foxsoft.reportsweb.jpa.domain.ParametroJPA;
-import pe.com.foxsoft.reportsweb.spring.exception.BallartelyException;
-import pe.com.foxsoft.reportsweb.spring.util.Constantes;
+import pe.com.foxsoft.ballartelyweb.jpa.domain.ParametroJPA;
+import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
+import pe.com.foxsoft.ballartelyweb.spring.util.Constantes;
 
 public class JPAUtil {
 	
@@ -29,9 +29,9 @@ public class JPAUtil {
 				ParameterExpression<?> pExp = cb.parameter(Class.forName(param.getParameterType()), param.getParameterName());
 				Predicate predicate = null;
 				if(ParametroJPA.COMPARE_TYPE_EQUALS.equals(param.getParameterCompareType())) {
-					cb.equal(root.get(param.getParameterName()), pExp);
+					predicate = cb.equal(root.get(param.getParameterName()), pExp);
 				}else if(ParametroJPA.COMPARE_TYPE_LIKE.equals(param.getParameterCompareType())) {
-					cb.like(root.<String>get(param.getParameterName()), (Expression<String>) pExp);
+					predicate = cb.like(root.<String>get(param.getParameterName()), (Expression<String>) pExp);
 				}
 				
 				predicates.add(predicate);
@@ -63,9 +63,9 @@ public class JPAUtil {
 				ParameterExpression<?> pExp = cb.parameter(Class.forName(param.getParameterType()), param.getParameterName());
 				Predicate predicate = null;
 				if(ParametroJPA.COMPARE_TYPE_EQUALS.equals(param.getParameterCompareType())) {
-					cb.equal(root.get(param.getParameterName()), pExp);
+					predicate = cb.equal(root.get(param.getParameterName()), pExp);
 				}else if(ParametroJPA.COMPARE_TYPE_LIKE.equals(param.getParameterCompareType())) {
-					cb.like(root.<String>get(param.getParameterName()), (Expression<String>) pExp);
+					predicate = cb.like(root.<String>get(param.getParameterName()), (Expression<String>) pExp);
 				}
 				
 				predicates.add(predicate);

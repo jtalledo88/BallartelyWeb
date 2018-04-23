@@ -1,4 +1,4 @@
-package pe.com.foxsoft.reportsweb.spring.util;
+package pe.com.foxsoft.ballartelyweb.spring.util;
 
 public class Constantes {
 

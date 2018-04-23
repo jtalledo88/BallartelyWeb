@@ -1,4 +1,4 @@
-package pe.com.foxsoft.reportsweb.prime.faces.managedbeans;
+package pe.com.foxsoft.ballartelyweb.prime.faces.managedbeans;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +12,13 @@ import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 
-import pe.com.foxsoft.reportsweb.jpa.data.EtiquetaProducto;
-import pe.com.foxsoft.reportsweb.jpa.data.ParametroGeneral;
-import pe.com.foxsoft.reportsweb.spring.exception.BallartelyException;
-import pe.com.foxsoft.reportsweb.spring.service.EtiquetaProductoService;
-import pe.com.foxsoft.reportsweb.spring.service.ParametroService;
-import pe.com.foxsoft.reportsweb.spring.util.Constantes;
-import pe.com.foxsoft.reportsweb.spring.util.Utilitarios;
+import pe.com.foxsoft.ballartelyweb.jpa.data.EtiquetaProducto;
+import pe.com.foxsoft.ballartelyweb.jpa.data.ParametroGeneral;
+import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
+import pe.com.foxsoft.ballartelyweb.spring.service.EtiquetaProductoService;
+import pe.com.foxsoft.ballartelyweb.spring.service.ParametroService;
+import pe.com.foxsoft.ballartelyweb.spring.util.Constantes;
+import pe.com.foxsoft.ballartelyweb.spring.util.Utilitarios;
 
 @ManagedBean
 @SessionScoped
@@ -293,4 +293,21 @@ public class EtiquetaProductoMB {
 	public void setValidaListaBuscar(boolean validaListaBuscar) {
 		this.validaListaBuscar = validaListaBuscar;
 	}
+
+	public EtiquetaProductoService getEtiquetaProductoService() {
+		return etiquetaProductoService;
+	}
+
+	public void setEtiquetaProductoService(EtiquetaProductoService etiquetaProductoService) {
+		this.etiquetaProductoService = etiquetaProductoService;
+	}
+
+	public ParametroService getParametroService() {
+		return parametroService;
+	}
+
+	public void setParametroService(ParametroService parametroService) {
+		this.parametroService = parametroService;
+	}
+	
 }

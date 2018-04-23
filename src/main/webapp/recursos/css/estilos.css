@@ -88,7 +88,7 @@ h2 {
 	width: 260px;
 	height: 80px;
 	display: block;
-	background: url("../images/banner.png") no-repeat;
+	background: url("../imagenes/banner.png") no-repeat;
 	margin: 0 8px 0 0;
 }
 
@@ -99,7 +99,7 @@ h2 {
 }
 
 #container {
-	background: url("../images/madre_bg_n.gif") repeat-y
+	background: url("../imagenes/madre_bg_n.gif") repeat-y
 		scroll left top white;
 	border: 0 none;
 	color: #333;

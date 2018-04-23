@@ -1,4 +1,4 @@
-package pe.com.foxsoft.reportsweb.jpa.domain;
+package pe.com.foxsoft.ballartelyweb.jpa.domain;
 
 public class ParametroJPA {
 	

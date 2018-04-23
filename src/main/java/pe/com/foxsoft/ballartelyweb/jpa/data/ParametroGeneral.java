@@ -1,4 +1,4 @@
-package pe.com.foxsoft.reportsweb.jpa.data;
+package pe.com.foxsoft.ballartelyweb.jpa.data;
 
 import java.util.Date;
 
@@ -13,7 +13,7 @@ public class ParametroGeneral {
 	public static final String PARAM_ID = "item";
 	public static final String PARAM_TYPE = "tipoParametro";
 	public static final String PARAM_CODE = "codParametro";
-	public static final String PARAM_DESC = "descParametro";
+	public static final String PARAM_DESCRIPTION = "descParametro";
 	public static final String PARAM_VALUE = "valorParametro";
 	public static final String PARAM_CREATION_DATE = "fecCreacion";
 	public static final String PARAM_MODIFICATION_DATE = "fecModificacion";
@@ -26,7 +26,7 @@ public class ParametroGeneral {
 	private String tipoParametro;
 	@Column(name="PARAM_CODE")
 	private String codParametro;
-	@Column(name="PARAM_DESC")
+	@Column(name="PARAM_DESCRIPTION")
 	private String descParametro;
 	@Column(name="PARAM_VALUE")
 	private String valorParametro;

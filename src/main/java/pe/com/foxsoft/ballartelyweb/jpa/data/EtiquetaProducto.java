@@ -1,4 +1,4 @@
-package pe.com.foxsoft.reportsweb.jpa.data;
+package pe.com.foxsoft.ballartelyweb.jpa.data;
 
 import java.util.Date;
 

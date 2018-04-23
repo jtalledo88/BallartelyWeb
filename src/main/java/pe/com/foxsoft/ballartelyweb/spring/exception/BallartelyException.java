@@ -1,4 +1,4 @@
-package pe.com.foxsoft.reportsweb.spring.exception;
+package pe.com.foxsoft.ballartelyweb.spring.exception;
 
 import java.util.Date;
 

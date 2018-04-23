@@ -1,4 +1,4 @@
-package pe.com.foxsoft.reportsweb.spring.service;
+package pe.com.foxsoft.ballartelyweb.spring.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,12 +10,10 @@ import javax.persistence.criteria.CriteriaBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import pe.com.foxsoft.reportsweb.jpa.data.EtiquetaProducto;
-import pe.com.foxsoft.reportsweb.jpa.data.ParametroGeneral;
-import pe.com.foxsoft.reportsweb.jpa.data.Usuario;
-import pe.com.foxsoft.reportsweb.jpa.domain.ParametroJPA;
-import pe.com.foxsoft.reportsweb.jpa.util.JPAUtil;
-import pe.com.foxsoft.reportsweb.spring.exception.BallartelyException;
+import pe.com.foxsoft.ballartelyweb.jpa.data.ParametroGeneral;
+import pe.com.foxsoft.ballartelyweb.jpa.domain.ParametroJPA;
+import pe.com.foxsoft.ballartelyweb.jpa.util.JPAUtil;
+import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
 
 @Component
 public class ParametroService {

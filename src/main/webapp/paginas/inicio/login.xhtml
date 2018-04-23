@@ -5,12 +5,12 @@
 		xmlns:p="http://primefaces.org/ui">
 	<h:head>
 		<script name="jquery/jquery.js" library="primefaces"></script>
-		<link rel="stylesheet" href="../../resources/css/styles.css"></link>
+		<link rel="stylesheet" href="../../recursos/css/estilos.css"></link>
 		<title>Inicio de Sesión</title>
 	</h:head>
 	<h:body>
 		<h:form>
-		<p:growl id="messages"></p:growl>
+		<p:growl life="3000" showDetail="true" id="messages" autoUpdate="true"/>
 		<div style="width: 100%;">
 			<div id="loginContent">
 			<div id="titleLogin">
@@ -18,9 +18,9 @@
 			</div>
 			<p:panelGrid columns="2" styleClass="paneLogin">
 				<p:outputLabel value="Usuario:"></p:outputLabel>
-				<p:inputText value="#{loginMB.user.userName}" styleClass="upperText"></p:inputText>
+				<p:inputText value="#{loginMB.usuario.usuario}" styleClass="upperText"></p:inputText>
 				<p:outputLabel value="Contraseña:"></p:outputLabel>
-				<p:password value="#{loginMB.user.userPassword}"></p:password>					
+				<p:password value="#{loginMB.usuario.contrasenia}"></p:password>					
 			</p:panelGrid>
 			<p:commandButton value="Ingresar" action="#{loginMB.logIn}" update="messages"></p:commandButton>
 		</div>
