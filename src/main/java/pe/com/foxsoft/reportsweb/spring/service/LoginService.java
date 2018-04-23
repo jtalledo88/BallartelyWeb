@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pe.com.foxsoft.reportsweb.jpa.data.Usuario;
 import pe.com.foxsoft.reportsweb.jpa.util.JPAUtil;
 import pe.com.foxsoft.reportsweb.spring.domain.Parameter;
-import pe.com.foxsoft.reportsweb.spring.exception.ReportsException;
+import pe.com.foxsoft.reportsweb.spring.exception.BallartelyException;
 
 @Component
 public class LoginService {
@@ -34,7 +34,7 @@ public class LoginService {
 	}
 
 	@Transactional(readOnly=true)
-	public Usuario getUser(Usuario user) throws ReportsException {
+	public Usuario getUser(Usuario user) throws BallartelyException {
 		List<ParametroJPA> parametersUser = new ArrayList<ParametroJPA>();
 		ParametroJPA pUser = new ParametroJPA(Usuario.USER_NAME, ParametroJPA.CLASS_STRING, user.getUserName());
 		parametersUser.add(pUser);

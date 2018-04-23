@@ -2,7 +2,7 @@ package pe.com.foxsoft.reportsweb.spring.exception;
 
 import java.util.Date;
 
-public class ReportsException extends Exception {
+public class BallartelyException extends Exception {
 	
 	private static final long serialVersionUID = 8851798243100862923L;
 
@@ -14,7 +14,7 @@ public class ReportsException extends Exception {
 	private Date date;
     private String message;
      
-    public ReportsException(int type, String message) {
+    public BallartelyException(int type, String message) {
         super();
         this.type = type;
         this.date = new Date();

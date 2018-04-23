@@ -10,10 +10,12 @@ import javax.persistence.criteria.CriteriaBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import pe.com.foxsoft.reportsweb.jpa.data.EtiquetaProducto;
+import pe.com.foxsoft.reportsweb.jpa.data.ParametroGeneral;
 import pe.com.foxsoft.reportsweb.jpa.data.Usuario;
+import pe.com.foxsoft.reportsweb.jpa.domain.ParametroJPA;
 import pe.com.foxsoft.reportsweb.jpa.util.JPAUtil;
-import pe.com.foxsoft.reportsweb.spring.domain.Parameter;
-import pe.com.foxsoft.reportsweb.spring.exception.ReportsException;
+import pe.com.foxsoft.reportsweb.spring.exception.BallartelyException;
 
 @Component
 public class ParametroService {
@@ -33,15 +35,14 @@ public class ParametroService {
 		this.cb = this.em.getCriteriaBuilder();
 	}
 
-	@Transactional(readOnly=true)
-	public Usuario getUser(Usuario user) throws ReportsException {
-		List<ParametroJPA> parametersUser = new ArrayList<ParametroJPA>();
-		ParametroJPA pUser = new ParametroJPA(Usuario.USER_NAME, ParametroJPA.CLASS_STRING, user.getUserName());
-		parametersUser.add(pUser);
-		pUser = new ParametroJPA(Usuario.USER_PASSWORD, ParametroJPA.CLASS_STRING, user.getUserPassword());
-		parametersUser.add(pUser);
+	@Transactional(readOnly=true, noRollbackFor=BallartelyException.class)
+	public List<ParametroGeneral> obtenerListaParametros(String tblCode) throws BallartelyException {
+		List<ParametroJPA> parametros = new ArrayList<ParametroJPA>();
+		ParametroJPA pParam = new ParametroJPA(ParametroGeneral.PARAM_CODE, ParametroJPA.CLASS_STRING, 
+				tblCode, ParametroJPA.COMPARE_TYPE_EQUALS);
+		parametros.add(pParam);
 		
-		return JPAUtil.executeQuerySingle(em, cb, Usuario.class, parametersUser);
+		return JPAUtil.executeQueryList(em, cb, ParametroGeneral.class, parametros);
 	}
 
 }

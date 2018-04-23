@@ -7,7 +7,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import pe.com.foxsoft.reportsweb.jpa.data.Usuario;
-import pe.com.foxsoft.reportsweb.spring.exception.ReportsException;
+import pe.com.foxsoft.reportsweb.spring.exception.BallartelyException;
 import pe.com.foxsoft.reportsweb.spring.service.LoginService;
 
 @ManagedBean
@@ -40,8 +40,8 @@ public class LoginMB {
 			user = loginService.getUser(user);
 			FacesContext.getCurrentInstance().addMessage(null, 
 					new FacesMessage("The User "+this.user.getUserCompleteNames()+" Exists"));
-		} catch (ReportsException e) {
-			if(e.getType() == ReportsException.NO_RESULT_ERROR) {
+		} catch (BallartelyException e) {
+			if(e.getType() == BallartelyException.NO_RESULT_ERROR) {
 				FacesContext.getCurrentInstance().addMessage(null, 
 						new FacesMessage("The User Doesn't Exists"));
 			}
