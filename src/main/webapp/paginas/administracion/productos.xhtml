@@ -1,0 +1,427 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="../../templates/default.xhtml">
+	<ui:define name="titulo">Administrar productos</ui:define>
+	<ui:define name="contenido">
+	
+		<script type="text/javascript">
+			<!--
+
+			
+			-->
+		</script>
+	
+	
+		<h1>Administrar productos</h1>
+		<h:form id="wLisProd">
+			<!-- <p:panel header="Criterios de b&#250;squeda" toggleable="true"> -->
+			
+			<p:growl life="3000" showDetail="true" id="msjLisProd" autoUpdate="true"/>
+			
+			<p:accordionPanel>
+				<p:tab title="Criterios de b&#250;squeda">
+					<div class="filas">
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtNomProducto"
+										value="Nombre del producto:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<!-- <p:inputText id="txtNomProducto" value="#{productoMB.descProductoBUS}"/> -->
+										<p:autoComplete id="txtNomProducto" maxResults="10"
+										                    value="#{productoMB.descProductoBUS}"
+										                    completeMethod="#{productoMB.completeNom}" autocomplete="false" ajax="false"/>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgNomProducto"
+											url="../../../presentacion/images/help.png"></h:graphicImage>
+										<p:tooltip for="imgNomProducto" value="Nombre producto BBVA" />
+									</div>
+								</div>
+								<p:message for="txtNomProducto" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cboEstado" value="Estado:" />
+								</div>
+								<div class="dostercios">
+									<div class="combo">
+										<p:selectOneMenu id="cboEstado" value="#{productoMB.iIdEstadoMae}">
+												<f:selectItem itemLabel="Todos" itemValue="-1" />
+												<f:selectItems value="#{productoMB.lstEstadosGenerales}"
+												var="estadoGeneral" itemLabel="#{estadoGeneral.nombre}"
+												itemValue="#{estadoGeneral.idParamDet}"/>
+										</p:selectOneMenu>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgEstado"
+											url="../../../presentacion/images/help.png"></h:graphicImage>
+										<p:tooltip for="imgEstado" value="Estado del producto" />
+									</div>
+								</div>
+								<p:message for="cboEstado" />
+							</div>
+						</div>
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio" style="width: 20%">
+									<h:outputLabel for="txtCodigo" value="C&#243;digo:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<!-- <p:inputText id="txtCodigo" value="#{productoMB.codproductoBUS}"/> --> 
+										<p:autoComplete id="txtCodigo" maxResults="10"
+										                    value="#{productoMB.codproductoBUS}"
+										                    completeMethod="#{productoMB.completeCod}" autocomplete="false" ajax="false"/>
+										
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgCodigo"
+											url="../../../presentacion/images/help.png"></h:graphicImage>
+										<p:tooltip for="imgCodigo" value="C&#243;digo de producto BBVA" />
+									</div>
+								</div>
+								<p:message for="txtCodigo" />
+							</div>
+						</div>
+					</div>
+					<div class="boton">
+						<p:commandButton value="Buscar" icon="ui-icon-search" actionListener="#{productoMB.buscarProductos}" 
+						update="wLisProd:tblProductos"/>
+					</div>
+					<div style="clear: both;"></div>
+					<!-- </p:panel> -->
+				</p:tab>
+			</p:accordionPanel>
+			<h2>Resultados</h2>
+			<p:separator />
+
+			<div class="opcionesTabla" style="text-align: left;">
+				<p:commandButton value="Agregar producto" icon="ui-icon-plus" actionListener="#{productoMB.openAgregarProducto}"
+					 oncomplete="dlgAgregarProducto.show()" update="iddlgAgregarProducto"/>
+					<div style="clear: both;"></div>
+			</div>
+
+			<div class="scrollTabla">
+				<p:dataTable paginator="true" paginatorPosition="bottom" rows="10"
+					style="width: 100%" var="producto" value="#{productoMB.lstProductosMain}" id="tblProductos" emptyMessage="No se encontraron registros">
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Item" />
+						</f:facet>
+						<h:outputText value="#{producto.item}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Editar" title="Editar" />
+						</f:facet>
+						<p:commandLink value="Editar" onclick="dlgEditarProducto.show()" action="#{productoMB.openEditarProducto}" 
+								update="wEditProd:pEditProd">
+							<f:param name="codProd" value="#{producto.idProducto}" id="codProd" />
+						</p:commandLink>
+					</p:column>
+					
+					<p:column styleClass="eliminar">
+							<f:facet name="header">
+								<h:outputText value="Eliminar" />
+							</f:facet>
+						<p:commandLink value="Eliminar"
+							action="#{productoMB.visibleConfirmElimProducto}"
+							update="@form confirmEliminarProducto">
+							<f:setPropertyActionListener value="#{producto}"
+								target="#{productoMB.objProductoMain}" />
+							<h:outputText value="#{producto.idProducto}" />
+						</p:commandLink>
+					</p:column>
+					
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="C&#243;digo" />
+						</f:facet>
+						<h:outputText value="#{producto.codproductoBbva}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Producto" />
+						</f:facet>
+						<h:outputText value="#{producto.descProducto}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Estado" />
+						</f:facet>
+						<h:outputText value="#{producto.nombreEstado}" />
+					</p:column>
+					<p:column styleClass="fecha">
+						<f:facet name="header">
+							<h:outputText value="Fecha Registro" />
+						</f:facet>
+						<h:outputText value="#{producto.fecReg}" >
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+						</h:outputText>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Usuario" />
+						</f:facet>
+						<h:outputText value="#{producto.usuReg}" />
+					</p:column>
+					<p:column styleClass="fecha">
+						<f:facet name="header">
+							<h:outputText value="Fecha de Act." />
+						</f:facet>
+						<h:outputText value="#{producto.fecAct}" >
+						 	<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+						</h:outputText>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Usuario de Act." />
+						</f:facet>
+						<h:outputText value="#{producto.usuAct}" />
+					</p:column>
+					<f:facet name="footer">  
+          			Total registros: <h:outputText value="#{productoMB.iCanRegTablaPrincipal}"/>    
+        		</f:facet>
+				</p:dataTable>
+			</div>
+			<div class="opcionesTabla" style="text-align: left;">
+				<p:commandButton value="Exportar"
+					action="exportar/productos.jsp" icon="ui-icon-disk"
+					target="_blank" ajax="false" />
+			<div style="clear: both;"></div>
+			</div>
+		</h:form>
+
+		<!-- ******************************************* PRODUCTOS ************************************************ -->
+
+		<p:dialog header="Agregar producto" widgetVar="dlgAgregarProducto"
+			modal="true" width="930" position="top" id="iddlgAgregarProducto">
+			
+			<p:growl life="3000" showDetail="true" id="msjAgregarProducto" autoUpdate="true"/>
+			
+			<h1>Agregar producto</h1>
+			<h:form enctype="multipart/form-data" id="wAgregarProd">
+				<p:panel header="Datos del producto" toggleable="false" id="pAgregarProd">
+					<div class="filas">
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtProductoNuevo" value="Producto:" /><h:outputLabel value="*" style="Color:red"/>
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtProductoNuevo" value="#{productoMB.objProductoMain.descProducto}"/>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgProducto"
+											url="../../../presentacion/images/help.png"></h:graphicImage>
+										<p:tooltip for="imgProducto" value="Descripción del producto" />
+									</div>
+								</div>
+								<p:message for="txtProductoNuevo" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtCodBBVANuevo" value="C&#243;digo BBVA" /><h:outputLabel value="*" style="Color:red"/>
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtCodBBVANuevo" value="#{productoMB.objProductoMain.codproductoBbva}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgCodBBVA"
+											url="../../../presentacion/images/help.png"></h:graphicImage>
+										<p:tooltip for="imgCodBBVA" value="C&#243;digo de producto BBVA" />
+									</div>
+								</div>
+								<p:message for="txtCodBBVANuevo" />
+							</div>
+						</div>
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio" style="width: 15%">
+									<h:outputLabel for="fupImagen" value="Imagen:" />
+								</div>
+								<div class="dostercios" style="width: 85%">
+									<div class="file">
+										<p:fileUpload id="fupImagen" auto="true" mode="advanced" label="Examinar"
+													  fileUploadListener="#{productoMB.getFile}"/>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgImagen"
+											url="../../../presentacion/images/help.png"></h:graphicImage>
+										<p:tooltip for="imgImagen" value="Imagen del producto" />
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="boton">
+						<p:commandButton value="Agregar" icon="ui-icon-disk" onclick="confirmationAgregarProducto.show()"/>
+					</div>
+					<div style="clear: both;"></div>
+				</p:panel>
+
+				<div style="clear: both;"></div>
+			</h:form>
+		</p:dialog>
+	
+		<!-- ******************************************** EDITAR PRODUCTO ****************************************** -->
+
+		<p:dialog header="Editar producto" widgetVar="dlgEditarProducto"
+			modal="true" width="930" position="top">
+			
+			<p:growl life="3000" showDetail="true" id="msjEditarProducto" autoUpdate="true"/>
+			
+			<h1>Editar producto</h1>
+			<h:form id="wEditProd">
+				<p:accordionPanel id="pEditProd">
+					<p:tab title="Datos del producto">
+						<div class="filas">
+							<div class="mitad" style="width: 35%">
+								<div class="completo">
+									<div class="tercio">
+										<h:outputLabel for="txtProductoEditar" value="Producto:" /><h:outputLabel value="*" style="Color:red"/>
+									</div>
+									<div class="dostercios">
+										<div class="input">
+											<p:inputText id="txtProductoEditar" value="#{productoMB.objProductoMain.descProducto}"/>
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgProductoEditar"
+												url="../../../presentacion/images/help.png"></h:graphicImage>
+											<p:tooltip for="imgProductoEditar" value="Descripción del producto" />
+										</div>
+									</div>
+									<p:message for="txtProductoEditar" />
+								</div>
+								
+								<h:inputHidden id="idUsuarioEdit" value="#{proveedorMB.objProveedorMain.idProveedor}"/>
+								
+								<div class="completo">
+									<div class="tercio">
+										<h:outputLabel for="txtCodBBVAEditar"
+											value="C&#243;digo BBVA:" /><h:outputLabel value="*" style="Color:red"/>
+									</div>
+									<div class="dostercios">
+										<div class="input">
+											<p:inputText id="txtCodBBVAEditar" value="#{productoMB.objProductoMain.codproductoBbva}"/>
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgCodBBVAEditar"
+												url="../../../presentacion/images/help.png"></h:graphicImage>
+											<p:tooltip for="imgCodBBVAEditar" value="C&#243;digo BBVA" />
+										</div>
+									</div>
+									<p:message for="txtCodBBVAEditar" />
+								</div>
+							</div>
+							<div class="mitad" style="width: 65%">
+								<div class="completo">
+									<div class="tercio" style="width: 15%">
+										<h:outputLabel for="fupImagenEditar" value="Imagen:" />
+									</div>
+									<div class="dostercios" style="width: 85%;">
+										<div class="file">
+											<p:fileUpload id="fupImagenEditar" auto="true" mode="advanced" label="Examinar"
+													  fileUploadListener="#{productoMB.getFile}"/>
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgImagenEditar"
+												url="../../../presentacion/images/help.png"></h:graphicImage>
+											<p:tooltip for="imgImagenEditar" value="Imagen del producto" />
+										</div>
+									</div>
+									<p:message for="fupImagenEditar" />
+								</div>
+								<div class="completo">
+									<div class="tercio" style="width: 15%">
+										<h:outputLabel for="cboEstado" value="Estado:" /><h:outputLabel value="*" style="Color:red"/>
+									</div>
+									<div class="dostercios" style="width: 85%; text-align: left;">
+										<div class="combo">
+											<p:selectOneMenu id="cboEstado" value="#{productoMB.iIdEstadoMae}">
+												<f:selectItem itemLabel="-- Seleccione --" itemValue="-1" />
+												<f:selectItems value="#{productoMB.lstEstadosGenerales}"
+												var="estadoGeneral" itemLabel="#{estadoGeneral.nombre}"
+												itemValue="#{estadoGeneral.idParamDet}"/>
+											</p:selectOneMenu>
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgEstado"
+												url="../../../presentacion/images/help.png"></h:graphicImage>
+											<p:tooltip for="imgEstado" value="Estado del producto" />
+										</div>
+									</div>
+									<p:message for="cboEstado" />
+								</div>
+							</div>
+						</div>
+						<div class="boton">
+							<p:commandButton value="Guardar" icon="ui-icon-disk" onclick="confirmationEditarProducto.show()" />
+						</div>
+					</p:tab>
+				</p:accordionPanel>
+
+			</h:form>
+		</p:dialog>
+		
+		
+		<p:confirmDialog 
+		   message="¿Está seguro de agregar el registro?"
+		   width="300" showEffect="explode" hideEffect="explode"
+		   header="Mensaje de Confirmación" severity="alert"
+		   widgetVar="confirmationAgregarProducto" modal="true"> 
+		   <h:form enctype="multipart/form-data">
+		    <p:commandButton value="Si"
+		     actionListener="#{productoMB.insertaProducto}" update="msjAgregarProducto,wLisProd:tblProductos"
+		     oncomplete="confirmationAgregarProducto.hide()" />
+		    <p:commandButton value="No"
+		     onclick="confirmationAgregarProducto.hide()" type="button" />
+		   </h:form>
+		 </p:confirmDialog>
+		 
+		 
+		 <p:confirmDialog 
+		   message="¿Está seguro de editar los datos?"
+		   width="300" showEffect="explode" hideEffect="explode"
+		   header="Mensaje de Confirmación" severity="alert"
+		   widgetVar="confirmationEditarProducto" modal="true"> 
+		   <h:form>
+		    <p:commandButton value="Si" ajax="true"
+		     actionListener="#{productoMB.editarProducto}" update="msjEditarProducto,wLisProd:tblProductos"
+		     oncomplete="confirmationEditarProducto.hide()" />
+		    <p:commandButton value="No"
+		     onclick="confirmationEditarProducto.hide()" type="button" />
+		   </h:form>
+		 </p:confirmDialog>
+		 
+		 
+		 <p:confirmDialog  
+		   message="¿Está usted seguro que desea eliminar el registro?"
+		   width="300" showEffect="explode" hideEffect="explode"
+		   header="Mensaje de Confirmación" severity="alert"
+		   widgetVar="confirmationEliminarProducto" modal="true" id="confirmEliminarProducto" visible="#{productoMB.bflagConfirmEliProd}"> 
+		   <h:form>
+		    <p:commandButton value="Si" ajax="false"
+		     actionListener="#{productoMB.eliminarProducto}" update="msjlisProd,wLisProd:tblProductos"
+		     oncomplete="confirmationEliminarProducto.hide()" />
+		    <p:commandButton value="No"
+		     onclick="confirmationEliminarProducto.hide()" type="button" />
+		   </h:form>
+		 </p:confirmDialog>
+		 
+		
+		
+	</ui:define>
+
+</ui:composition>
