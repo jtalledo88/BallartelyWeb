@@ -6,4 +6,7 @@
 <application>
 	<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
 </application>
+<lifecycle>
+    <phase-listener>pe.com.foxsoft.ballartelyweb.spring.util.SessionTimeoutListener</phase-listener>
+</lifecycle>
 </faces-config>

@@ -55,7 +55,7 @@
 										<p:selectOneMenu id="cboEstado" value="#{etiquetaProductoMB.objEtiquetaProductoMain.estadoEtiqueta}">
 												<f:selectItem itemLabel="Todos" itemValue="" />
 												<f:selectItems value="#{etiquetaProductoMB.lstEstadosGenerales}"
-												var="estadoGeneral" itemLabel="#{estadoGeneral.descParametro}"
+												var="estadoGeneral" itemLabel="#{estadoGeneral.valorParametro}"
 												itemValue="#{estadoGeneral.codParametro}"/>
 										</p:selectOneMenu>
 									</div>
@@ -121,8 +121,8 @@
 						<f:facet name="header">
 							<h:outputText value="Editar" title="Editar" />
 						</f:facet>
-						<p:commandLink value="Editar" onclick="dlgEditarEtiquetaProducto.show()" action="#{etiquetaProductoMB.openEditarEtiquetaProducto}" 
-								update="wEditEtiqProd:pEditEtiqProd">
+						<p:commandLink value="Editar" onclick="PF('dlgEditarEtiquetaProducto').show()" action="#{etiquetaProductoMB.openEditarEtiquetaProducto}" 
+								update=":wEditEtiqProd:pEditEtiqProd">
 							<f:param name="itemEtiquetaProducto" value="#{etiquetaProducto.item}" id="itemEtiquetaProducto" />
 						</p:commandLink>
 					</p:column>
@@ -133,7 +133,7 @@
 							</f:facet>
 						<p:commandLink value="Eliminar"
 							action="#{etiquetaProductoMB.visibleConfirmElimEtiquetaProducto}"
-							update="@form confirmEliminarEtiquetaProducto">
+							update="@form :confirmEliminarEtiquetaProducto">
 							<f:setPropertyActionListener value="#{etiquetaProducto}"
 								target="#{etiquetaProductoMB.objEtiquetaProductoMain}" />
 							<h:outputText value="#{etiquetaProducto.item}" />
@@ -201,7 +201,7 @@
 						<div class="mitad">
 							<div class="completo">
 								<div class="tercio">
-									<h:outputLabel for="txtEtiquetaProductoNuevo" value="Producto:" /><h:outputLabel value="*" style="Color:red"/>
+									<h:outputLabel for="txtEtiquetaProductoNuevo" value="Descripción:" /><h:outputLabel value="*" style="Color:red"/>
 								</div>
 								<div class="dostercios">
 									<div class="input">
@@ -216,8 +216,31 @@
 								<p:message for="txtEtiquetaProductoNuevo" />
 							</div>
 							<div class="completo">
+							<div class="tercio">
+								<h:outputLabel for="cboEstado" value="Estado:" /><h:outputLabel value="*" style="Color:red"/>
+							</div>
+							<div class="dostercios">
+								<div class="combo">
+									<p:selectOneMenu id="cboEstado" value="#{etiquetaProductoMB.objEtiquetaProductoMain.estadoEtiqueta}">
+										<f:selectItem itemLabel="-- Seleccione --" itemValue="" />
+										<f:selectItems value="#{etiquetaProductoMB.lstEstadosGenerales}"
+										var="estadoGeneral" itemLabel="#{estadoGeneral.valorParametro}"
+										itemValue="#{estadoGeneral.codParametro}"/>
+									</p:selectOneMenu>
+								</div>
+								<div class="tooltip">
+									<h:graphicImage id="imgEstado"
+										url="../../recursos/imagenes/help.png"></h:graphicImage>
+									<p:tooltip for="imgEstado" value="Estado de la etiqueta" />
+								</div>
+							</div>
+							<p:message for="cboEstado" />
+						</div>
+						</div>
+						<div class="mitad">
+							<div class="completo">
 								<div class="tercio">
-									<h:outputLabel for="txtCodEtiquetaNuevo" value="C&#243;digo BBVA" /><h:outputLabel value="*" style="Color:red"/>
+									<h:outputLabel for="txtCodEtiquetaNuevo" value="C&#243;digo" /><h:outputLabel value="*" style="Color:red"/>
 								</div>
 								<div class="dostercios">
 									<div class="input">
@@ -232,45 +255,10 @@
 								<p:message for="txtCodEtiquetaNuevo" />
 							</div>
 						</div>
-						<div class="mitad">
-							<div class="completo">
-								<div class="tercio" style="width: 15%">
-									
-								</div>
-								<div class="dostercios" style="width: 85%">
-									<div class="file">
-										
-									</div>
-									<div class="tooltip">
-										
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="completo">
-							<div class="tercio" style="width: 15%">
-								<h:outputLabel for="cboEstado" value="Estado:" /><h:outputLabel value="*" style="Color:red"/>
-							</div>
-							<div class="dostercios" style="width: 85%; text-align: left;">
-								<div class="combo">
-									<p:selectOneMenu id="cboEstado" value="#{etiquetaProductoMB.objEtiquetaProductoMain.estadoEtiqueta}">
-										<f:selectItem itemLabel="-- Seleccione --" itemValue="" />
-										<f:selectItems value="#{etiquetaProductoMB.lstEstadosGenerales}"
-										var="estadoGeneral" itemLabel="#{estadoGeneral.descParametro}"
-										itemValue="#{estadoGeneral.codParametro}"/>
-									</p:selectOneMenu>
-								</div>
-								<div class="tooltip">
-									<h:graphicImage id="imgEstado"
-										url="../../recursos/imagenes/help.png"></h:graphicImage>
-									<p:tooltip for="imgEstado" value="Estado de la etiqueta" />
-								</div>
-							</div>
-							<p:message for="cboEstado" />
-						</div>
+						
 					</div>
 					<div class="boton">
-						<p:commandButton value="Agregar" icon="ui-icon-disk" onclick="confirmationAgregarEtiquetaProducto.show()"/>
+						<p:commandButton value="Agregar" icon="ui-icon-disk" onclick="PF('confirmationAgregarEtiquetaProducto').show()"/>
 					</div>
 					<div style="clear: both;"></div>
 				</p:panel>
@@ -350,7 +338,7 @@
 											<p:selectOneMenu id="cboEstadoEditar" value="#{etiquetaProductoMB.objEtiquetaProductoMain.estadoEtiqueta}">
 												<f:selectItem itemLabel="-- Seleccione --" itemValue="" />
 												<f:selectItems value="#{etiquetaProductoMB.lstEstadosGenerales}"
-												var="estadoGeneral" itemLabel="#{estadoGeneral.descParametro}"
+												var="estadoGeneral" itemLabel="#{estadoGeneral.valorParametro}"
 												itemValue="#{estadoGeneral.codParametro}"/>
 											</p:selectOneMenu>
 										</div>
@@ -365,7 +353,7 @@
 							</div>
 						</div>
 						<div class="boton">
-							<p:commandButton value="Guardar" icon="ui-icon-disk" onclick="confirmationEditarEtiquetaProducto.show()" />
+							<p:commandButton value="Guardar" icon="ui-icon-disk" onclick="PF('confirmationEditarEtiquetaProducto').show()" />
 						</div>
 					</p:tab>
 				</p:accordionPanel>
@@ -382,9 +370,9 @@
 		   <h:form>
 		    <p:commandButton value="Si"
 		     actionListener="#{etiquetaProductoMB.agregarEtiquetaProducto}" update=":msjAgregarEtiquetaProducto,:wLisEtiqProd:tblEtiquetaProductos"
-		     oncomplete="confirmationAgregarEtiquetaProducto.hide()" />
+		     oncomplete="PF('confirmationAgregarEtiquetaProducto').hide()" />
 		    <p:commandButton value="No"
-		     onclick="confirmationAgregarEtiquetaProducto.hide()" type="button" />
+		     onclick="PF('confirmationAgregarEtiquetaProducto').hide()" type="button" />
 		   </h:form>
 		 </p:confirmDialog>
 		 
@@ -397,9 +385,9 @@
 		   <h:form>
 		    <p:commandButton value="Si" ajax="true"
 		     actionListener="#{etiquetaProductoMB.editarEtiquetaProducto}" update=":msjEditarEtiquetaProducto,:wLisEtiqProd:tblEtiquetaProductos"
-		     oncomplete="confirmationEditarEtiquetaProducto.hide()" />
+		     oncomplete="PF('confirmationEditarEtiquetaProducto').hide()" />
 		    <p:commandButton value="No"
-		     onclick="confirmationEditarEtiquetaProducto.hide()" type="button" />
+		     onclick="PF('confirmationEditarEtiquetaProducto').hide()" type="button" />
 		   </h:form>
 		 </p:confirmDialog>
 		 
@@ -412,9 +400,9 @@
 		   <h:form>
 		    <p:commandButton value="Si" ajax="false"
 		     actionListener="#{etiquetaProductoMB.eliminarEtiquetaProducto}" update="msjLisEtiqProd,:wLisEtiqProd:tblEtiquetaProductos"
-		     oncomplete="confirmationEliminarEtiquetaProducto.hide()" />
+		     oncomplete="PF('confirmationEliminarEtiquetaProducto').hide()" />
 		    <p:commandButton value="No"
-		     onclick="confirmationEliminarEtiquetaProducto.hide()" type="button" />
+		     onclick="PF('confirmationEliminarEtiquetaProducto').hide()" type="button" />
 		   </h:form>
 		 </p:confirmDialog>
 		 

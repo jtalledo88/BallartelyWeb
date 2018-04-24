@@ -27,4 +27,15 @@
   <listener>
     <listener-class>com.sun.faces.config.ConfigureListener</listener-class>
   </listener>
+  <login-config>
+        <auth-method>FORM</auth-method>
+        <form-login-config>
+            <form-login-page>/paginas/inicio/login.xhtml</form-login-page>
+            <form-error-page>/paginas/inicio/login.xhtml</form-error-page>
+        </form-login-config>
+    </login-config>
+ 
+    <session-config>
+        <session-timeout>1</session-timeout>
+    </session-config>
 </web-app>

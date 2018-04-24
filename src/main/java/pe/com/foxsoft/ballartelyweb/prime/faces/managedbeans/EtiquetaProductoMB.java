@@ -1,6 +1,7 @@
 package pe.com.foxsoft.ballartelyweb.prime.faces.managedbeans;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -16,8 +17,8 @@ import pe.com.foxsoft.ballartelyweb.jpa.data.EtiquetaProducto;
 import pe.com.foxsoft.ballartelyweb.jpa.data.ParametroGeneral;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
 import pe.com.foxsoft.ballartelyweb.spring.service.EtiquetaProductoService;
-import pe.com.foxsoft.ballartelyweb.spring.service.ParametroService;
-import pe.com.foxsoft.ballartelyweb.spring.util.Constantes;
+import pe.com.foxsoft.ballartelyweb.spring.service.ParametroGeneralService;
+import pe.com.foxsoft.ballartelyweb.spring.util.Propiedades;
 import pe.com.foxsoft.ballartelyweb.spring.util.Utilitarios;
 
 @ManagedBean
@@ -29,11 +30,13 @@ public class EtiquetaProductoMB {
 	@ManagedProperty("#{etiquetaProductoService}")
 	private EtiquetaProductoService etiquetaProductoService;
 
-	@ManagedProperty("#{parametroService}")
-	private ParametroService parametroService;
+	@ManagedProperty("#{parametroGeneralService}")
+	private ParametroGeneralService parametroGeneralService;
+	
+	@ManagedProperty("#{propiedades}")
+	private Propiedades propiedades;
 
 	private EtiquetaProducto objEtiquetaProductoMain;
-	private EtiquetaProducto objEtiquetaProducto;
 
 	private List<EtiquetaProducto> lstEtiquetaProductosMain;
 	private List<ParametroGeneral> lstEstadosGenerales;
@@ -49,7 +52,6 @@ public class EtiquetaProductoMB {
 		this.lstEstadosGenerales = new ArrayList<ParametroGeneral>();
 		this.lstCodEtiquetaProductoBUS = new ArrayList<String>();
 		this.lstDescEtiquetaProductoBUS = new ArrayList<String>();
-		this.objEtiquetaProducto = new EtiquetaProducto();
 	}
 
 	public void buscarEtiquetaProductos() {
@@ -84,6 +86,8 @@ public class EtiquetaProductoMB {
 			
 			objEtiquetaProducto.setCodEtiqueta(this.objEtiquetaProductoMain.getCodEtiqueta().toUpperCase());
 			objEtiquetaProducto.setDescEtiqueta(this.objEtiquetaProductoMain.getDescEtiqueta());
+			objEtiquetaProducto.setEstadoEtiqueta(this.objEtiquetaProductoMain.getEstadoEtiqueta());
+			objEtiquetaProducto.setFecCreacion(new Date());
 			
 			sMensaje = this.etiquetaProductoService.agregarEtiquetaProducto(objEtiquetaProducto);
 			Utilitarios.mensaje("", sMensaje);
@@ -134,7 +138,9 @@ public class EtiquetaProductoMB {
 			if ("".equals(this.objEtiquetaProductoMain.getEstadoEtiqueta())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe seleccionar un estado.");
 				return;
-			} 
+			}
+			
+			this.objEtiquetaProductoMain.setFecModificacion(new Date());
 			sMensaje = this.etiquetaProductoService.editarEtiquetaProducto(this.objEtiquetaProductoMain);
 			Utilitarios.mensaje("", sMensaje);
 			this.canRegTablaPrincipal = getListaPrincipalEtiquetaProductos();
@@ -188,7 +194,7 @@ public class EtiquetaProductoMB {
 
 	public void obtenerEstadosEtiquetaProductos() {
 		try {
-			this.lstEstadosGenerales = this.parametroService.obtenerListaParametros(Constantes.TBL_STATUS_LIST);
+			this.lstEstadosGenerales = this.parametroGeneralService.obtenerListaParametros(propiedades.getComboEstados());
 		} catch (BallartelyException e) {
 			String sMensaje = "Error en obtenerEstadosEtiquetaProductos";
 			this.logger.error(e.getMessage(), e);
@@ -253,15 +259,7 @@ public class EtiquetaProductoMB {
 	public void setLstEstadosGenerales(List<ParametroGeneral> lstEstadosGenerales) {
 		this.lstEstadosGenerales = lstEstadosGenerales;
 	}
-
-	public EtiquetaProducto getObjEtiquetaProducto() {
-		return this.objEtiquetaProducto;
-	}
-
-	public void setObjEtiquetaProducto(EtiquetaProducto objEtiquetaProducto) {
-		this.objEtiquetaProducto = objEtiquetaProducto;
-	}
-
+	
 	public boolean isFlagConfirmEliEtiqProd() {
 		return this.flagConfirmEliEtiqProd;
 	}
@@ -302,12 +300,20 @@ public class EtiquetaProductoMB {
 		this.etiquetaProductoService = etiquetaProductoService;
 	}
 
-	public ParametroService getParametroService() {
-		return parametroService;
+	public ParametroGeneralService getParametroGeneralService() {
+		return parametroGeneralService;
 	}
 
-	public void setParametroService(ParametroService parametroService) {
-		this.parametroService = parametroService;
+	public void setParametroGeneralService(ParametroGeneralService parametroGeneralService) {
+		this.parametroGeneralService = parametroGeneralService;
+	}
+	
+	public Propiedades getPropiedades() {
+		return propiedades;
+	}
+
+	public void setPropiedades(Propiedades propiedades) {
+		this.propiedades = propiedades;
 	}
 	
 }

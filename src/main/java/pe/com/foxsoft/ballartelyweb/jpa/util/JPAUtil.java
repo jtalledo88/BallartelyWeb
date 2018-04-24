@@ -118,7 +118,8 @@ public class JPAUtil {
 
 	public static String removeEntity(EntityManager em, Object objEntity) throws BallartelyException {
 		try {
-			em.remove(objEntity);
+			Object objRemove = em.merge(objEntity);
+			em.remove(objRemove);
 			return Constantes.MESSAGE_REMOVE_SUCCESS;
 		} catch (Exception e) {
 			throw new BallartelyException(BallartelyException.GENERAL_ERROR, e.getMessage());

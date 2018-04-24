@@ -1,10 +1,8 @@
 package pe.com.foxsoft.ballartelyweb.prime.faces.managedbeans;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 
 import pe.com.foxsoft.ballartelyweb.jpa.data.Usuario;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
@@ -49,14 +47,22 @@ public class LoginMB {
 			
 			usuario.setUsuario(usuario.getUsuario().toUpperCase());
 			usuario = loginService.getUser(usuario);
+			Utilitarios.putObjectInSession("usuario", usuario);
 		} catch (BallartelyException e) {
 			if(e.getType() == BallartelyException.NO_RESULT_ERROR) {
-				FacesContext.getCurrentInstance().addMessage(null, 
-						new FacesMessage("Usuario y/o contraseña incorrectos."));
+				Utilitarios.mensajeError("", "Usuario y/o contraseña incorrectos.");
+			}else {
+				Utilitarios.mensajeError("", "Ocurrió un error: " + e.getMessage());
 			}
 			return "";
 		}
 		
 		return "bienvenido";
+	}
+	
+	public String logOut() {
+		Utilitarios.removeObjectInSession("usuario");
+		
+		return "login";
 	}
 }

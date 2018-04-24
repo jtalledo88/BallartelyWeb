@@ -28,9 +28,9 @@
 			<div id="usuario" style="margin: 0; padding: 0px">
 				<h:form
 					style="display:inline-block;margin:0;padding:0px;padding-right:10px;">
-					<h:outputLabel value="P0015740-KAREN ALDAZABAL" />
+					<h:outputLabel value="#{usuario.nombresUsuario}" />
 					<p:commandButton value="Salir" icon="ui-icon-unlocked"
-						onclick="PF('confirmationEditarProveedor2').show()" />
+						onclick="PF('confirmationCerrarSesion').show()" />
 				</h:form>
 			</div>
 			<!-- begin menu -->
@@ -69,12 +69,12 @@
 		width="300" showEffect="explode" hideEffect="explode"
 		style="left: 30px; top: 150px; position: absolute;"
 		header="Mensaje de Confirmación" severity="alert"
-		widgetVar="confirmationEditarProveedor2" modal="true">
+		widgetVar="confirmationCerrarSesion" modal="true">
 		<h:form>
-			<p:commandButton value="Si" onclick="cerrarSesion()"
-				oncomplete="confirmationEditarProveedor.hide()" />
+			<p:commandButton value="Si" action="#{loginMB.logOut}"
+				ajax="false"/>
 			<p:commandButton value="No"
-				onclick="confirmationEditarProveedor2.hide()" type="button" />
+				onclick="PF('confirmationCerrarSesion').hide()" type="button" />
 		</h:form>
 
 	</p:confirmDialog>
