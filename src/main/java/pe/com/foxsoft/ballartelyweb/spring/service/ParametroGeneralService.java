@@ -1,17 +1,16 @@
 package pe.com.foxsoft.ballartelyweb.spring.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import pe.com.foxsoft.ballartelyweb.jpa.data.ParametroGeneral;
-import pe.com.foxsoft.ballartelyweb.jpa.domain.ParametroJPA;
+import pe.com.foxsoft.ballartelyweb.jpa.dao.ParametroGeneralJPA;
+import pe.com.foxsoft.ballartelyweb.jpa.data.GeneralParameter;
 import pe.com.foxsoft.ballartelyweb.jpa.util.JPAUtil;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
 
@@ -21,7 +20,8 @@ public class ParametroGeneralService {
 	
 	private EntityManager em;
 	
-	private CriteriaBuilder cb;
+	@Autowired
+	private ParametroGeneralJPA parametroGeneralJPA;
 	
 	public EntityManager getEm() {
 		return em;
@@ -30,59 +30,49 @@ public class ParametroGeneralService {
 	@PersistenceContext
 	public void setEm(EntityManager em) {
 		this.em = em;
-		this.cb = this.em.getCriteriaBuilder();
+	}
+
+	public ParametroGeneralJPA getParametroGeneralJPA() {
+		return parametroGeneralJPA;
+	}
+
+	public void setParametroGeneralJPA(ParametroGeneralJPA parametroGeneralJPA) {
+		this.parametroGeneralJPA = parametroGeneralJPA;
 	}
 
 	@Transactional(readOnly=true, noRollbackFor=BallartelyException.class)
-	public List<ParametroGeneral> obtenerListaParametros(String tblCode) throws BallartelyException {
-		List<ParametroJPA> parametros = new ArrayList<ParametroJPA>();
-		ParametroJPA pParam = new ParametroJPA(ParametroGeneral.PARAM_TYPE, ParametroJPA.CLASS_STRING, 
-				tblCode, ParametroJPA.COMPARE_TYPE_EQUALS);
-		parametros.add(pParam);
-		
-		return JPAUtil.executeQueryList(em, cb, ParametroGeneral.class, parametros);
+	public List<GeneralParameter> obtenerListaParametros(String tblCode) throws BallartelyException {
+		return parametroGeneralJPA.getGeneralParametersDataBase(em, tblCode);
 	}
 
 	@Transactional(readOnly=true, noRollbackFor=BallartelyException.class)
-	public List<ParametroGeneral> buscarParametrosGenerales(ParametroGeneral objParametroGeneral) throws BallartelyException {
-		List<ParametroJPA> parametros = new ArrayList<ParametroJPA>();
-		ParametroJPA pParam = new ParametroJPA(ParametroGeneral.PARAM_CODE, ParametroJPA.CLASS_STRING, 
-				objParametroGeneral.getCodParametro(), ParametroJPA.COMPARE_TYPE_EQUALS);
-		parametros.add(pParam);
-		pParam = new ParametroJPA(ParametroGeneral.PARAM_DESCRIPTION, ParametroJPA.CLASS_STRING, 
-				objParametroGeneral.getCodParametro(), ParametroJPA.COMPARE_TYPE_LIKE);
-		parametros.add(pParam);
-		pParam = new ParametroJPA(ParametroGeneral.PARAM_STATUS, ParametroJPA.CLASS_STRING, 
-				objParametroGeneral.getCodParametro(), ParametroJPA.COMPARE_TYPE_EQUALS);
-		parametros.add(pParam);
-		return JPAUtil.executeQueryList(em, cb, ParametroGeneral.class, parametros);
+	public List<GeneralParameter> buscarParametrosGenerales(GeneralParameter generalParameter) throws BallartelyException {
+		return parametroGeneralJPA.getGeneralParametersDataBase(em, generalParameter);
 	}
 
 	@Transactional(readOnly=false, rollbackFor=Throwable.class)
-	public String agregarParametroGeneral(ParametroGeneral objParametroGeneral) throws BallartelyException {
-		return JPAUtil.persistEntity(em, objParametroGeneral);
+	public String agregarParametroGeneral(GeneralParameter generalParameter) throws BallartelyException {
+		return JPAUtil.persistEntity(em, generalParameter);
 	}
 
 	@Transactional(readOnly=true, noRollbackFor=BallartelyException.class)
-	public ParametroGeneral obtenerParametroGeneral(long itemParametroGeneral) throws BallartelyException {
-		return JPAUtil.findEntity(em, ParametroGeneral.class, itemParametroGeneral);
+	public GeneralParameter obtenerParametroGeneral(Integer itemGeneralParameter) throws BallartelyException {
+		return JPAUtil.findEntity(em, GeneralParameter.class, itemGeneralParameter);
 	}
 
 	@Transactional(readOnly=false, rollbackFor=Throwable.class)
-	public String editarParametroGeneral(ParametroGeneral objParametroGeneral) throws BallartelyException {
-		return JPAUtil.mergeEntity(em, objParametroGeneral);
+	public String editarParametroGeneral(GeneralParameter generalParameter) throws BallartelyException {
+		return JPAUtil.mergeEntity(em, generalParameter);
 	}
 
 	@Transactional(readOnly=false, rollbackFor=Throwable.class)
-	public String eliminarParametroGeneral(ParametroGeneral objParametroGeneral) throws BallartelyException {
-		return JPAUtil.removeEntity(em, objParametroGeneral);
+	public String eliminarParametroGeneral(GeneralParameter generalParameter) throws BallartelyException {
+		return JPAUtil.removeEntity(em, generalParameter);
 	}
 
 	@Transactional(readOnly=true, noRollbackFor=BallartelyException.class)
-	public List<ParametroGeneral> getListaParametrosGenerales() throws BallartelyException {
-		List<ParametroJPA> parametros = new ArrayList<ParametroJPA>();
-		
-		return JPAUtil.executeQueryList(em, cb, ParametroGeneral.class, parametros);
+	public List<GeneralParameter> getListaParametrosGenerales() throws BallartelyException {
+		return JPAUtil.executeQueryList(em, GeneralParameter.class, JPAUtil.NAMED_QUERY_ALL_GENERAL_PARAMETER);
 	}
 
 }

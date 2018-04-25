@@ -1,18 +1,14 @@
 package pe.com.foxsoft.ballartelyweb.spring.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import pe.com.foxsoft.ballartelyweb.jpa.data.Usuario;
-import pe.com.foxsoft.ballartelyweb.jpa.domain.ParametroJPA;
-import pe.com.foxsoft.ballartelyweb.jpa.util.JPAUtil;
+import pe.com.foxsoft.ballartelyweb.jpa.dao.LoginJPA;
+import pe.com.foxsoft.ballartelyweb.jpa.data.User;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
 
 @Component
@@ -21,7 +17,8 @@ public class LoginService {
 	
 	private EntityManager em;
 	
-	private CriteriaBuilder cb;
+	@Autowired
+	private LoginJPA loginJPA;
 	
 	public EntityManager getEm() {
 		return em;
@@ -30,20 +27,19 @@ public class LoginService {
 	@PersistenceContext
 	public void setEm(EntityManager em) {
 		this.em = em;
-		this.cb = this.em.getCriteriaBuilder();
+	}
+
+	public LoginJPA getLoginJPA() {
+		return loginJPA;
+	}
+	
+	public void setLoginJPA(LoginJPA loginJPA) {
+		this.loginJPA = loginJPA;
 	}
 
 	@Transactional(readOnly=true)
-	public Usuario getUser(Usuario user) throws BallartelyException {
-		List<ParametroJPA> parametrosUsuario = new ArrayList<ParametroJPA>();
-		ParametroJPA pUsuario = new ParametroJPA(Usuario.USER_NAME, ParametroJPA.CLASS_STRING, 
-				user.getUsuario(), ParametroJPA.COMPARE_TYPE_EQUALS);
-		parametrosUsuario.add(pUsuario);
-		pUsuario = new ParametroJPA(Usuario.USER_PASSWORD, ParametroJPA.CLASS_STRING, 
-				user.getContrasenia(), ParametroJPA.COMPARE_TYPE_EQUALS);
-		parametrosUsuario.add(pUsuario);
-		
-		return JPAUtil.executeQuerySingle(em, cb, Usuario.class, parametrosUsuario);
+	public User getUser(User user) throws BallartelyException {
+		return loginJPA.getUserDataBase(em, user);
 	}
 
 }

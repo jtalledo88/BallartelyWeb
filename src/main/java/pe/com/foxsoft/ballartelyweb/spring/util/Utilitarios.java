@@ -1,5 +1,6 @@
 package pe.com.foxsoft.ballartelyweb.spring.util;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -106,6 +107,15 @@ public class Utilitarios {
 		HttpSession session = (HttpSession) context.getSession(false);
 		session.removeAttribute(value);
 		session.invalidate();
+	}
+	
+	public static void redirectPage(String page) {
+		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+		try {
+			context.redirect(context.getRequestContextPath() + page);
+		} catch (IOException e) {
+			
+		}
 	}
 
 	public static String remove2(String input) {

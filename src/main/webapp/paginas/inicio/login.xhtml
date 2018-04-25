@@ -18,9 +18,9 @@
 			</div>
 			<p:panelGrid columns="2" styleClass="paneLogin">
 				<p:outputLabel value="Usuario:"></p:outputLabel>
-				<p:inputText value="#{loginMB.usuario.usuario}" styleClass="upperText"></p:inputText>
+				<p:inputText value="#{loginMB.usuario.userName}" styleClass="upperText"></p:inputText>
 				<p:outputLabel value="Contraseña:"></p:outputLabel>
-				<p:password value="#{loginMB.usuario.contrasenia}"></p:password>					
+				<p:password value="#{loginMB.usuario.userPassword}"></p:password>					
 			</p:panelGrid>
 			<p:commandButton value="Ingresar" action="#{loginMB.logIn}" update="messages"></p:commandButton>
 		</div>

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>REPORTES WEB</title>
+<title>BALLARTELY WEB</title>
 <script type="text/javascript">
 	var url = "paginas/inicio/login.xhtml";
 	var spec = "height=200,width=500,left=0,top=0,location=no,";

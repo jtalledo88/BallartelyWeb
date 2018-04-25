@@ -30,12 +30,12 @@
 							<div class="completo">
 								<div class="tercio">
 									<h:outputLabel for="txtDescEtiquetaProducto"
-										value="Nombre del producto:" />
+										value="Descripción:" />
 								</div>
 								<div class="dostercios">
 									<div class="input">
 										<p:autoComplete id="txtDescEtiquetaProducto" maxResults="10"
-										                    value="#{etiquetaProductoMB.objEtiquetaProductoMain.descEtiqueta}"
+										                    value="#{etiquetaProductoMB.objEtiquetaProductoSearch.productLabelDescription}"
 										                    completeMethod="#{etiquetaProductoMB.completeDesc}" autocomplete="false" ajax="false"/>
 									</div>
 									<div class="tooltip">
@@ -52,11 +52,9 @@
 								</div>
 								<div class="dostercios">
 									<div class="combo">
-										<p:selectOneMenu id="cboEstado" value="#{etiquetaProductoMB.objEtiquetaProductoMain.estadoEtiqueta}">
-												<f:selectItem itemLabel="Todos" itemValue="" />
-												<f:selectItems value="#{etiquetaProductoMB.lstEstadosGenerales}"
-												var="estadoGeneral" itemLabel="#{estadoGeneral.valorParametro}"
-												itemValue="#{estadoGeneral.codParametro}"/>
+										<p:selectOneMenu id="cboEstado" value="#{etiquetaProductoMB.objEtiquetaProductoSearch.generalParameter}">
+												<f:selectItems value="#{etiquetaProductoMB.lstEstadosGenerales}"/>
+												<f:converter binding="#{generalParameterConverter}"/>
 										</p:selectOneMenu>
 									</div>
 									<div class="tooltip">
@@ -76,7 +74,7 @@
 								<div class="dostercios">
 									<div class="input">
 										<p:autoComplete id="txtCodigo" maxResults="10"
-										                    value="#{etiquetaProductoMB.objEtiquetaProductoMain.codEtiqueta}"
+										                    value="#{etiquetaProductoMB.objEtiquetaProductoSearch.productLabelCode}"
 										                    completeMethod="#{etiquetaProductoMB.completeCod}" autocomplete="false" ajax="false"/>
 										
 									</div>
@@ -108,26 +106,48 @@
 			</div>
 
 			<div class="scrollTabla">
-				<p:dataTable paginator="true" paginatorPosition="bottom" rows="10"
+				<p:dataTable paginator="true" paginatorPosition="top" rows="10"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
-					style="width: 100%" var="etiquetaProducto" value="#{etiquetaProductoMB.lstEtiquetaProductosMain}" id="tblEtiquetaProductos" emptyMessage="No se encontraron registros">
+					style="width: 100%; margin-bottom:20px;" var="etiquetaProducto" value="#{etiquetaProductoMB.lstEtiquetaProductosMain}" id="tblEtiquetaProductos" emptyMessage="No se encontraron registros">
+					<f:facet name="{Exporters}">
+			           <h:commandLink>
+			               <p:graphicImage url="../../recursos/imagenes/excel.png" width="24"/>
+			               <p:dataExporter type="xls" target="tblEtiquetaProductos" fileName="EtiquetaProductos"/>
+			           </h:commandLink>
+			
+			           <h:commandLink>
+			               <p:graphicImage url="../../recursos/imagenes/pdf.png" width="24"/>
+			               <p:dataExporter type="pdf" target="tblEtiquetaProductos" fileName="EtiquetaProductos"/>
+			           </h:commandLink>
+			
+			           <h:commandLink>
+			               <p:graphicImage url="../../recursos/imagenes/csv.png" width="24"/>
+			               <p:dataExporter type="csv" target="tblEtiquetaProductos" fileName="EtiquetaProductos" />
+			           </h:commandLink>
+			
+			           <h:commandLink>
+			               <p:graphicImage url="../../recursos/imagenes/xml.png" width="24"/>
+			               <p:dataExporter type="xml" target="tblEtiquetaProductos" fileName="EtiquetaProductos" />
+			           </h:commandLink>
+			       </f:facet>
+					
 					<p:column styleClass="oficina">
 						<f:facet name="header">
 							<h:outputText value="Item" />
 						</f:facet>
-						<h:outputText value="#{etiquetaProducto.item}" />
+						<h:outputText value="#{etiquetaProducto.productLabelId}" />
 					</p:column>
-					<p:column styleClass="oficina">
+					<p:column styleClass="oficina" exportable="false">
 						<f:facet name="header">
 							<h:outputText value="Editar" title="Editar" />
 						</f:facet>
 						<p:commandLink value="Editar" onclick="PF('dlgEditarEtiquetaProducto').show()" action="#{etiquetaProductoMB.openEditarEtiquetaProducto}" 
 								update=":wEditEtiqProd:pEditEtiqProd">
-							<f:param name="itemEtiquetaProducto" value="#{etiquetaProducto.item}" id="itemEtiquetaProducto" />
+							<f:param name="itemEtiquetaProducto" value="#{etiquetaProducto.productLabelId}" id="itemEtiquetaProducto" />
 						</p:commandLink>
 					</p:column>
 					
-					<p:column styleClass="eliminar">
+					<p:column styleClass="eliminar" exportable="false">
 							<f:facet name="header">
 								<h:outputText value="Eliminar" />
 							</f:facet>
@@ -136,7 +156,7 @@
 							update="@form :confirmEliminarEtiquetaProducto">
 							<f:setPropertyActionListener value="#{etiquetaProducto}"
 								target="#{etiquetaProductoMB.objEtiquetaProductoMain}" />
-							<h:outputText value="#{etiquetaProducto.item}" />
+							<h:outputText value="#{etiquetaProducto.productLabelId}" />
 						</p:commandLink>
 					</p:column>
 					
@@ -144,25 +164,25 @@
 						<f:facet name="header">
 							<h:outputText value="C&#243;digo" />
 						</f:facet>
-						<h:outputText value="#{etiquetaProducto.codEtiqueta}" />
+						<h:outputText value="#{etiquetaProducto.productLabelCode}" />
 					</p:column>
 					<p:column styleClass="oficina">
 						<f:facet name="header">
 							<h:outputText value="Etiqueta Producto" />
 						</f:facet>
-						<h:outputText value="#{etiquetaProducto.descEtiqueta}" />
+						<h:outputText value="#{etiquetaProducto.productLabelDescription}" />
 					</p:column>
 					<p:column styleClass="oficina">
 						<f:facet name="header">
 							<h:outputText value="Estado" />
 						</f:facet>
-						<h:outputText value="#{etiquetaProducto.estadoEtiqueta}" />
+						<h:outputText value="#{etiquetaProducto.generalParameter.paramDescription}" />
 					</p:column>
 					<p:column styleClass="fecha">
 						<f:facet name="header">
 							<h:outputText value="Fecha Registro" />
 						</f:facet>
-						<h:outputText value="#{etiquetaProducto.fecCreacion}" >
+						<h:outputText value="#{etiquetaProducto.productLabelCreationDate}" >
 							<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
 						</h:outputText>
 					</p:column>
@@ -170,7 +190,7 @@
 						<f:facet name="header">
 							<h:outputText value="Fecha de Act." />
 						</f:facet>
-						<h:outputText value="#{etiquetaProducto.fecModificacion}" >
+						<h:outputText value="#{etiquetaProducto.productLabelModificationDate}" >
 						 	<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
 						</h:outputText>
 					</p:column>
@@ -205,7 +225,7 @@
 								</div>
 								<div class="dostercios">
 									<div class="input">
-										<p:inputText id="txtEtiquetaProductoNuevo" value="#{etiquetaProductoMB.objEtiquetaProductoMain.descEtiqueta}"/>
+										<p:inputText id="txtEtiquetaProductoNuevo" value="#{etiquetaProductoMB.objEtiquetaProductoMain.productLabelDescription}"/>
 									</div>
 									<div class="tooltip">
 										<h:graphicImage id="imgEtiquetaProducto"
@@ -221,11 +241,9 @@
 							</div>
 							<div class="dostercios">
 								<div class="combo">
-									<p:selectOneMenu id="cboEstado" value="#{etiquetaProductoMB.objEtiquetaProductoMain.estadoEtiqueta}">
-										<f:selectItem itemLabel="-- Seleccione --" itemValue="" />
-										<f:selectItems value="#{etiquetaProductoMB.lstEstadosGenerales}"
-										var="estadoGeneral" itemLabel="#{estadoGeneral.valorParametro}"
-										itemValue="#{estadoGeneral.codParametro}"/>
+									<p:selectOneMenu id="cboEstado" value="#{etiquetaProductoMB.objEtiquetaProductoMain.generalParameter}">
+										<f:selectItems value="#{etiquetaProductoMB.lstEstadosGenerales}" var="generalParameterNew"/>
+										<f:converter binding="#{generalParameterConverter}" for="generalParameterNew"/>
 									</p:selectOneMenu>
 								</div>
 								<div class="tooltip">
@@ -244,7 +262,7 @@
 								</div>
 								<div class="dostercios">
 									<div class="input">
-										<p:inputText id="txtCodEtiquetaNuevo" value="#{etiquetaProductoMB.objEtiquetaProductoMain.codEtiqueta}" />
+										<p:inputText id="txtCodEtiquetaNuevo" value="#{etiquetaProductoMB.objEtiquetaProductoMain.productLabelCode}" />
 									</div>
 									<div class="tooltip">
 										<h:graphicImage id="imgCodEtiqueta"
@@ -279,14 +297,14 @@
 				<p:accordionPanel id="pEditEtiqProd">
 					<p:tab title="Datos de la etiqueta">
 						<div class="filas">
-							<div class="mitad" style="width: 35%">
+							<div class="mitad">
 								<div class="completo">
 									<div class="tercio">
-										<h:outputLabel for="txtEtiquetaProductoEditar" value="Etiqueta Producto:" /><h:outputLabel value="*" style="Color:red"/>
+										<h:outputLabel for="txtEtiquetaProductoEditar" value="Descripción:" /><h:outputLabel value="*" style="Color:red"/>
 									</div>
 									<div class="dostercios">
 										<div class="input">
-											<p:inputText id="txtEtiquetaProductoEditar" value="#{etiquetaProductoMB.objEtiquetaProductoMain.descEtiqueta}"/>
+											<p:inputText id="txtEtiquetaProductoEditar" value="#{etiquetaProductoMB.objEtiquetaProductoMain.productLabelDescription}"/>
 										</div>
 										<div class="tooltip">
 											<h:graphicImage id="imgEtiquetaProductoEditar"
@@ -300,11 +318,11 @@
 								<div class="completo">
 									<div class="tercio">
 										<h:outputLabel for="txtCodEtiquetaEditar"
-											value="C&#243;digo BBVA:" /><h:outputLabel value="*" style="Color:red"/>
+											value="C&#243;digo:" /><h:outputLabel value="*" style="Color:red"/>
 									</div>
 									<div class="dostercios">
 										<div class="input">
-											<p:inputText id="txtCodEtiquetaEditar" value="#{etiquetaProductoMB.objEtiquetaProductoMain.codEtiqueta}"/>
+											<p:inputText id="txtCodEtiquetaEditar" value="#{etiquetaProductoMB.objEtiquetaProductoMain.productLabelCode}"/>
 										</div>
 										<div class="tooltip">
 											<h:graphicImage id="imgCodEtiquetaEditar"
@@ -315,31 +333,16 @@
 									<p:message for="txtCodEtiquetaEditar" />
 								</div>
 							</div>
-							<div class="mitad" style="width: 65%">
+							<div class="mitad">
 								<div class="completo">
-									<div class="tercio" style="width: 15%">
-										
-									</div>
-									<div class="dostercios" style="width: 85%;">
-										<div class="file">
-											
-										</div>
-										<div class="tooltip">
-											
-										</div>
-									</div>
-								</div>
-								<div class="completo">
-									<div class="tercio" style="width: 15%">
+									<div class="tercio">
 										<h:outputLabel for="cboEstadoEditar" value="Estado:" /><h:outputLabel value="*" style="Color:red"/>
 									</div>
-									<div class="dostercios" style="width: 85%; text-align: left;">
+									<div class="dostercios">
 										<div class="combo">
-											<p:selectOneMenu id="cboEstadoEditar" value="#{etiquetaProductoMB.objEtiquetaProductoMain.estadoEtiqueta}">
-												<f:selectItem itemLabel="-- Seleccione --" itemValue="" />
-												<f:selectItems value="#{etiquetaProductoMB.lstEstadosGenerales}"
-												var="estadoGeneral" itemLabel="#{estadoGeneral.valorParametro}"
-												itemValue="#{estadoGeneral.codParametro}"/>
+											<p:selectOneMenu id="cboEstadoEditar" value="#{etiquetaProductoMB.objEtiquetaProductoMain.generalParameter}">
+												<f:selectItems value="#{etiquetaProductoMB.lstEstadosGenerales}"/>
+												<f:converter binding="#{generalParameterConverter}"/>
 											</p:selectOneMenu>
 										</div>
 										<div class="tooltip">

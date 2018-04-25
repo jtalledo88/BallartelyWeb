@@ -13,7 +13,7 @@ import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 
-import pe.com.foxsoft.ballartelyweb.jpa.data.ParametroGeneral;
+import pe.com.foxsoft.ballartelyweb.jpa.data.GeneralParameter;
 import pe.com.foxsoft.ballartelyweb.spring.domain.TipoParametro;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
 import pe.com.foxsoft.ballartelyweb.spring.service.ParametroGeneralService;
@@ -32,9 +32,10 @@ public class ParametroGeneralMB {
 	@ManagedProperty("#{propiedades}")
 	private Propiedades propiedades;
 
-	private ParametroGeneral objParametroGeneralMain;
+	private GeneralParameter objParametroGeneralMain;
+	private GeneralParameter objParametroGeneralSearch;
 
-	private List<ParametroGeneral> lstParametrosGeneralesMain;
+	private List<GeneralParameter> lstParametrosGeneralesMain;
 	private List<TipoParametro> lstTiposParametros;
 	private List<String> lstDescParametroGeneralBUS;
 	private List<String> lstCodParametroGeneralBUS;
@@ -43,8 +44,8 @@ public class ParametroGeneralMB {
 	private boolean flagConfirmEliParamGen = false;
 
 	public ParametroGeneralMB() {
-		this.objParametroGeneralMain = new ParametroGeneral();
-		this.lstParametrosGeneralesMain = new ArrayList<ParametroGeneral>();
+		this.objParametroGeneralMain = new GeneralParameter();
+		this.lstParametrosGeneralesMain = new ArrayList<GeneralParameter>();
 		this.lstCodParametroGeneralBUS = new ArrayList<String>();
 		this.lstDescParametroGeneralBUS = new ArrayList<String>();
 		this.lstTiposParametros = new ArrayList<TipoParametro>();
@@ -53,7 +54,7 @@ public class ParametroGeneralMB {
 	public void buscarParametrosGenerales() {
 		try {
 			this.validaListaBuscar = false;
-			this.lstParametrosGeneralesMain = this.parametroGeneralService.buscarParametrosGenerales(this.objParametroGeneralMain);
+			this.lstParametrosGeneralesMain = this.parametroGeneralService.buscarParametrosGenerales(this.objParametroGeneralSearch);
 			this.canRegTablaPrincipal = this.lstParametrosGeneralesMain.size();
 		} catch (BallartelyException e) {
 			String sMensaje = "Error en buscarParametrosGenerales";
@@ -65,31 +66,39 @@ public class ParametroGeneralMB {
 	public void agregarParametroGeneral() {
 		String sMensaje = "";
 		
-		ParametroGeneral objParametroGeneral = new ParametroGeneral();
+		GeneralParameter objParametroGeneral = new GeneralParameter();
 		try {
-			if ("".equals(this.objParametroGeneralMain.getDescParametro())) {
+			if ("".equals(this.objParametroGeneralMain.getParamDescription())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar la descripción del parametro.");
 				return;
 			} 
-			if ("".equals(this.objParametroGeneralMain.getCodParametro())) {
+			if ("".equals(this.objParametroGeneralMain.getParamCode())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar el código del parametro.");
 				return;
 			} 
-			if ("".equals(this.objParametroGeneralMain.getEstadoParametro())) {
+			if ("".equals(this.objParametroGeneralMain.getParamStatus())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe seleccionar un estado.");
 				return;
-			} 
+			}
+			if ("".equals(this.objParametroGeneralMain.getParamType())) {
+				Utilitarios.mensajeError("Campos Obligatorios", "Debe seleccionar un tipo.");
+				return;
+			}
+			if ("".equals(this.objParametroGeneralMain.getParamValue())) {
+				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar el valor del parametro.");
+				return;
+			}
 			
-			objParametroGeneral.setTipoParametro(this.objParametroGeneralMain.getTipoParametro());
-			objParametroGeneral.setCodParametro(this.objParametroGeneralMain.getCodParametro().toUpperCase());
-			objParametroGeneral.setDescParametro(this.objParametroGeneralMain.getDescParametro());
-			objParametroGeneral.setValorParametro(this.getObjParametroGeneralMain().getValorParametro());
-			objParametroGeneral.setEstadoParametro(this.objParametroGeneralMain.getEstadoParametro());
-			objParametroGeneral.setFecCreacion(new Date());
+			objParametroGeneral.setParamType(this.objParametroGeneralMain.getParamType());
+			objParametroGeneral.setParamCode(this.objParametroGeneralMain.getParamCode().toUpperCase());
+			objParametroGeneral.setParamDescription(this.objParametroGeneralMain.getParamDescription());
+			objParametroGeneral.setParamValue(this.objParametroGeneralMain.getParamValue());
+			objParametroGeneral.setParamStatus(this.objParametroGeneralMain.getParamStatus());
+			objParametroGeneral.setParamCreationDate(new Date());
 			
 			sMensaje = this.parametroGeneralService.agregarParametroGeneral(objParametroGeneral);
 			Utilitarios.mensaje("", sMensaje);
-			setLstParametrosGeneralesMain(new ArrayList<ParametroGeneral>());
+			setLstParametrosGeneralesMain(new ArrayList<GeneralParameter>());
 			this.canRegTablaPrincipal = getListaPrincipalParametroGeneral();
 		
 		} catch (BallartelyException e) {
@@ -100,18 +109,19 @@ public class ParametroGeneralMB {
 	}
 
 	public void openAgregarParametroGeneral() {
-		this.objParametroGeneralMain = new ParametroGeneral();
-		this.objParametroGeneralMain.setCodParametro("");
-		this.objParametroGeneralMain.setDescParametro("");
-		this.objParametroGeneralMain.setEstadoParametro("");
+		this.objParametroGeneralMain.setParamType("");
+		this.objParametroGeneralMain.setParamCode("");
+		this.objParametroGeneralMain.setParamDescription("");
+		this.objParametroGeneralMain.setParamValue("");
+		this.objParametroGeneralMain.setParamStatus("");
 	}
 
 	public void openEditarParametroGeneral() {
-		setObjParametroGeneralMain(new ParametroGeneral());
+		setObjParametroGeneralMain(new GeneralParameter());
 
 		Map<String, String> paramMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 
-		long itemParametroGeneral = Long.parseLong((String) paramMap.get("itemParametroGeneral"));
+		int itemParametroGeneral = Integer.parseInt((String) paramMap.get("itemParametroGeneral"));
 		try {
 			this.objParametroGeneralMain = this.parametroGeneralService.obtenerParametroGeneral(itemParametroGeneral);
 		} catch (BallartelyException e) {
@@ -125,20 +135,28 @@ public class ParametroGeneralMB {
 		String sMensaje = "";
 		
 		try {
-			if ("".equals(this.objParametroGeneralMain.getDescParametro())) {
+			if ("".equals(this.objParametroGeneralMain.getParamDescription())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar la descripción del parametro.");
 				return;
 			} 
-			if ("".equals(this.objParametroGeneralMain.getCodParametro())) {
+			if ("".equals(this.objParametroGeneralMain.getParamCode())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar el código del parametro.");
 				return;
 			} 
-			if ("".equals(this.objParametroGeneralMain.getEstadoParametro())) {
+			if ("".equals(this.objParametroGeneralMain.getParamStatus())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe seleccionar un estado.");
 				return;
 			}
+			if ("".equals(this.objParametroGeneralMain.getParamType())) {
+				Utilitarios.mensajeError("Campos Obligatorios", "Debe seleccionar un tipo.");
+				return;
+			}
+			if ("".equals(this.objParametroGeneralMain.getParamValue())) {
+				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar el valor del parametro.");
+				return;
+			}
 			
-			this.objParametroGeneralMain.setFecModificacion(new Date());
+			this.objParametroGeneralMain.setParamModificationDate(new Date());
 			sMensaje = this.parametroGeneralService.editarParametroGeneral(this.objParametroGeneralMain);
 			Utilitarios.mensaje("", sMensaje);
 			this.canRegTablaPrincipal = getListaPrincipalParametroGeneral();
@@ -158,7 +176,7 @@ public class ParametroGeneralMB {
 		String sMensaje = "";
 		try {
 			sMensaje = this.parametroGeneralService.eliminarParametroGeneral(this.objParametroGeneralMain);
-			setLstParametrosGeneralesMain(new ArrayList<ParametroGeneral>());
+			setLstParametrosGeneralesMain(new ArrayList<GeneralParameter>());
 			this.canRegTablaPrincipal = getListaPrincipalParametroGeneral();
 			Utilitarios.mensaje("", sMensaje);
 		} catch (BallartelyException e) {
@@ -174,12 +192,12 @@ public class ParametroGeneralMB {
 		try {
 			this.lstParametrosGeneralesMain = this.parametroGeneralService.getListaParametrosGenerales();
 			can = this.lstParametrosGeneralesMain.size();
-			for (ParametroGeneral p : this.lstParametrosGeneralesMain) {
-				if (p.getCodParametro() != null) {
-					this.lstCodParametroGeneralBUS.add(p.getCodParametro());
+			for (GeneralParameter p : this.lstParametrosGeneralesMain) {
+				if (p.getParamCode() != null) {
+					this.lstCodParametroGeneralBUS.add(p.getParamCode());
 				}
-				if (p.getDescParametro() != null) {
-					this.lstDescParametroGeneralBUS.add(p.getDescParametro());
+				if (p.getParamDescription() != null) {
+					this.lstDescParametroGeneralBUS.add(p.getParamDescription());
 				}
 			}
 		} catch (BallartelyException e) {
@@ -220,22 +238,30 @@ public class ParametroGeneralMB {
 		return results;
 	}
 
-	public ParametroGeneral getObjParametroGeneralMain() {
+	public GeneralParameter getObjParametroGeneralMain() {
 		return this.objParametroGeneralMain;
 	}
 
-	public void setObjParametroGeneralMain(ParametroGeneral objParametroGeneralMain) {
+	public void setObjParametroGeneralMain(GeneralParameter objParametroGeneralMain) {
 		this.objParametroGeneralMain = objParametroGeneralMain;
 	}
+	
+	public GeneralParameter getObjParametroGeneralSearch() {
+		return objParametroGeneralSearch;
+	}
 
-	public List<ParametroGeneral> getLstParametrosGeneralesMain() {
+	public void setObjParametroGeneralSearch(GeneralParameter objParametroGeneralSearch) {
+		this.objParametroGeneralSearch = objParametroGeneralSearch;
+	}
+
+	public List<GeneralParameter> getLstParametrosGeneralesMain() {
 		if ((this.lstParametrosGeneralesMain.isEmpty()) && (this.validaListaBuscar)) {
 			this.canRegTablaPrincipal = getListaPrincipalParametroGeneral();
 		}
 		return this.lstParametrosGeneralesMain;
 	}
 
-	public void setLstParametrosGeneralesMain(List<ParametroGeneral> lstParametrosGeneralesMain) {
+	public void setLstParametrosGeneralesMain(List<GeneralParameter> lstParametrosGeneralesMain) {
 		this.lstParametrosGeneralesMain = lstParametrosGeneralesMain;
 	}
 

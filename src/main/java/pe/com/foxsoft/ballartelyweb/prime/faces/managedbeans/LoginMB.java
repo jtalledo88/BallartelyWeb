@@ -4,9 +4,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
-import pe.com.foxsoft.ballartelyweb.jpa.data.Usuario;
+import pe.com.foxsoft.ballartelyweb.jpa.data.User;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
 import pe.com.foxsoft.ballartelyweb.spring.service.LoginService;
+import pe.com.foxsoft.ballartelyweb.spring.util.Constantes;
 import pe.com.foxsoft.ballartelyweb.spring.util.Utilitarios;
 
 @ManagedBean
@@ -16,7 +17,7 @@ public class LoginMB {
 	@ManagedProperty("#{loginService}")
 	private LoginService loginService;
 
-	private Usuario usuario = new Usuario();
+	private User usuario = new User();
 
 	public LoginService getLoginService() {
 		return loginService;
@@ -26,28 +27,28 @@ public class LoginMB {
 		this.loginService = loginService;
 	}
 
-	public Usuario getUsuario() {
+	public User getUsuario() {
 		return usuario;
 	}
 
-	public void setUsuario(Usuario usuario) {
+	public void setUsuario(User usuario) {
 		this.usuario = usuario;
 	}
 
 	public String logIn() {
 		try {
-			if("".equals(usuario.getUsuario())) {
+			if("".equals(usuario.getUserName())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar el usuario.");
 				return "";
 			}
-			if("".equals(usuario.getContrasenia())) {
+			if("".equals(usuario.getUserPassword())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar la contraseña.");
 				return "";
 			}
 			
-			usuario.setUsuario(usuario.getUsuario().toUpperCase());
+			usuario.setUserName(usuario.getUserName().toUpperCase());
 			usuario = loginService.getUser(usuario);
-			Utilitarios.putObjectInSession("usuario", usuario);
+			Utilitarios.putObjectInSession(Constantes.SESSION_USUARIO_ATTR, usuario);
 		} catch (BallartelyException e) {
 			if(e.getType() == BallartelyException.NO_RESULT_ERROR) {
 				Utilitarios.mensajeError("", "Usuario y/o contraseña incorrectos.");
@@ -60,9 +61,8 @@ public class LoginMB {
 		return "bienvenido";
 	}
 	
-	public String logOut() {
-		Utilitarios.removeObjectInSession("usuario");
-		
-		return "login";
+	public void logOut() {
+		Utilitarios.removeObjectInSession(Constantes.SESSION_USUARIO_ATTR);
+		Utilitarios.redirectPage("/index.jsp");
 	}
 }

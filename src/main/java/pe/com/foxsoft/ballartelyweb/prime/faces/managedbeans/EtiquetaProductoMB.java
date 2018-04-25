@@ -10,11 +10,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 
-import pe.com.foxsoft.ballartelyweb.jpa.data.EtiquetaProducto;
-import pe.com.foxsoft.ballartelyweb.jpa.data.ParametroGeneral;
+import pe.com.foxsoft.ballartelyweb.jpa.data.GeneralParameter;
+import pe.com.foxsoft.ballartelyweb.jpa.data.ProductLabel;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
 import pe.com.foxsoft.ballartelyweb.spring.service.EtiquetaProductoService;
 import pe.com.foxsoft.ballartelyweb.spring.service.ParametroGeneralService;
@@ -36,10 +37,11 @@ public class EtiquetaProductoMB {
 	@ManagedProperty("#{propiedades}")
 	private Propiedades propiedades;
 
-	private EtiquetaProducto objEtiquetaProductoMain;
+	private ProductLabel objEtiquetaProductoMain;
+	private ProductLabel objEtiquetaProductoSearch;
 
-	private List<EtiquetaProducto> lstEtiquetaProductosMain;
-	private List<ParametroGeneral> lstEstadosGenerales;
+	private List<ProductLabel> lstEtiquetaProductosMain;
+	private List<SelectItem> lstEstadosGenerales;
 	private List<String> lstDescEtiquetaProductoBUS;
 	private List<String> lstCodEtiquetaProductoBUS;
 	private boolean validaListaBuscar = true;
@@ -47,9 +49,10 @@ public class EtiquetaProductoMB {
 	private boolean flagConfirmEliEtiqProd = false;
 
 	public EtiquetaProductoMB() {
-		this.objEtiquetaProductoMain = new EtiquetaProducto();
-		this.lstEtiquetaProductosMain = new ArrayList<EtiquetaProducto>();
-		this.lstEstadosGenerales = new ArrayList<ParametroGeneral>();
+		this.objEtiquetaProductoMain = new ProductLabel();
+		this.objEtiquetaProductoSearch = new ProductLabel();
+		this.lstEtiquetaProductosMain = new ArrayList<ProductLabel>();
+		this.lstEstadosGenerales = new ArrayList<SelectItem>();
 		this.lstCodEtiquetaProductoBUS = new ArrayList<String>();
 		this.lstDescEtiquetaProductoBUS = new ArrayList<String>();
 	}
@@ -57,7 +60,7 @@ public class EtiquetaProductoMB {
 	public void buscarEtiquetaProductos() {
 		try {
 			this.validaListaBuscar = false;
-			this.lstEtiquetaProductosMain = this.etiquetaProductoService.buscarEtiquetaProductos(this.objEtiquetaProductoMain);
+			this.lstEtiquetaProductosMain = this.etiquetaProductoService.buscarEtiquetaProductos(this.objEtiquetaProductoSearch);
 			this.canRegTablaPrincipal = this.lstEtiquetaProductosMain.size();
 		} catch (BallartelyException e) {
 			String sMensaje = "Error en buscarEtiquetaProductos";
@@ -69,29 +72,29 @@ public class EtiquetaProductoMB {
 	public void agregarEtiquetaProducto() {
 		String sMensaje = "";
 		
-		EtiquetaProducto objEtiquetaProducto = new EtiquetaProducto();
+		ProductLabel objEtiquetaProducto = new ProductLabel();
 		try {
-			if ("".equals(this.objEtiquetaProductoMain.getDescEtiqueta())) {
+			if ("".equals(this.objEtiquetaProductoMain.getProductLabelDescription())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar la descripción de la etiqueta.");
 				return;
 			} 
-			if ("".equals(this.objEtiquetaProductoMain.getCodEtiqueta())) {
+			if ("".equals(this.objEtiquetaProductoMain.getProductLabelCode())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar el código de la etiqueta.");
 				return;
 			} 
-			if ("".equals(this.objEtiquetaProductoMain.getEstadoEtiqueta())) {
+			if (this.objEtiquetaProductoMain.getGeneralParameter() == null) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe seleccionar un estado.");
 				return;
 			} 
 			
-			objEtiquetaProducto.setCodEtiqueta(this.objEtiquetaProductoMain.getCodEtiqueta().toUpperCase());
-			objEtiquetaProducto.setDescEtiqueta(this.objEtiquetaProductoMain.getDescEtiqueta());
-			objEtiquetaProducto.setEstadoEtiqueta(this.objEtiquetaProductoMain.getEstadoEtiqueta());
-			objEtiquetaProducto.setFecCreacion(new Date());
+			objEtiquetaProducto.setProductLabelCode(this.objEtiquetaProductoMain.getProductLabelCode().toUpperCase());
+			objEtiquetaProducto.setProductLabelDescription(this.objEtiquetaProductoMain.getProductLabelDescription());
+			objEtiquetaProducto.setGeneralParameter(this.objEtiquetaProductoMain.getGeneralParameter());
+			objEtiquetaProducto.setProductLabelCreationDate(new Date());
 			
 			sMensaje = this.etiquetaProductoService.agregarEtiquetaProducto(objEtiquetaProducto);
 			Utilitarios.mensaje("", sMensaje);
-			setLstEtiquetaProductosMain(new ArrayList<EtiquetaProducto>());
+			setLstEtiquetaProductosMain(new ArrayList<ProductLabel>());
 			this.canRegTablaPrincipal = getListaPrincipalEtiquetaProductos();
 		
 		} catch (BallartelyException e) {
@@ -102,18 +105,18 @@ public class EtiquetaProductoMB {
 	}
 
 	public void openAgregarEtiquetaProducto() {
-		this.objEtiquetaProductoMain = new EtiquetaProducto();
-		this.objEtiquetaProductoMain.setCodEtiqueta("");
-		this.objEtiquetaProductoMain.setDescEtiqueta("");
-		this.objEtiquetaProductoMain.setEstadoEtiqueta("");
+		this.objEtiquetaProductoMain = new ProductLabel();
+		this.objEtiquetaProductoMain.setProductLabelCode("");
+		this.objEtiquetaProductoMain.setProductLabelDescription("");
+		this.objEtiquetaProductoMain.setGeneralParameter(new GeneralParameter());
 	}
 
 	public void openEditarEtiquetaProducto() {
-		setObjEtiquetaProductoMain(new EtiquetaProducto());
+		setObjEtiquetaProductoMain(new ProductLabel());
 
 		Map<String, String> paramMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 
-		long itemEtiquetaProducto = Long.parseLong((String) paramMap.get("itemEtiquetaProducto"));
+		int itemEtiquetaProducto = Integer.parseInt((String) paramMap.get("itemEtiquetaProducto"));
 		try {
 			this.objEtiquetaProductoMain = this.etiquetaProductoService.obtenerEtiquetaProducto(itemEtiquetaProducto);
 		} catch (BallartelyException e) {
@@ -127,20 +130,20 @@ public class EtiquetaProductoMB {
 		String sMensaje = "";
 		
 		try {
-			if ("".equals(this.objEtiquetaProductoMain.getDescEtiqueta())) {
+			if ("".equals(this.objEtiquetaProductoMain.getProductLabelDescription())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar la descripción de la etiqueta.");
 				return;
 			} 
-			if ("".equals(this.objEtiquetaProductoMain.getCodEtiqueta())) {
+			if ("".equals(this.objEtiquetaProductoMain.getProductLabelCode())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar el código de la etiqueta.");
 				return;
 			} 
-			if ("".equals(this.objEtiquetaProductoMain.getEstadoEtiqueta())) {
+			if (this.objEtiquetaProductoMain.getGeneralParameter() == null) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe seleccionar un estado.");
 				return;
-			}
+			} 
 			
-			this.objEtiquetaProductoMain.setFecModificacion(new Date());
+			this.objEtiquetaProductoMain.setProductLabelModificationDate(new Date());
 			sMensaje = this.etiquetaProductoService.editarEtiquetaProducto(this.objEtiquetaProductoMain);
 			Utilitarios.mensaje("", sMensaje);
 			this.canRegTablaPrincipal = getListaPrincipalEtiquetaProductos();
@@ -160,7 +163,7 @@ public class EtiquetaProductoMB {
 		String sMensaje = "";
 		try {
 			sMensaje = this.etiquetaProductoService.eliminarEtiquetaProducto(this.objEtiquetaProductoMain);
-			setLstEtiquetaProductosMain(new ArrayList<EtiquetaProducto>());
+			setLstEtiquetaProductosMain(new ArrayList<ProductLabel>());
 			this.canRegTablaPrincipal = getListaPrincipalEtiquetaProductos();
 			Utilitarios.mensaje("", sMensaje);
 		} catch (BallartelyException e) {
@@ -176,12 +179,12 @@ public class EtiquetaProductoMB {
 		try {
 			this.lstEtiquetaProductosMain = this.etiquetaProductoService.getListaEtiquetaProductos();
 			can = this.lstEtiquetaProductosMain.size();
-			for (EtiquetaProducto p : this.lstEtiquetaProductosMain) {
-				if (p.getCodEtiqueta() != null) {
-					this.lstCodEtiquetaProductoBUS.add(p.getCodEtiqueta());
+			for (ProductLabel p : this.lstEtiquetaProductosMain) {
+				if (p.getProductLabelCode() != null) {
+					this.lstCodEtiquetaProductoBUS.add(p.getProductLabelCode());
 				}
-				if (p.getDescEtiqueta() != null) {
-					this.lstDescEtiquetaProductoBUS.add(p.getDescEtiqueta());
+				if (p.getProductLabelDescription() != null) {
+					this.lstDescEtiquetaProductoBUS.add(p.getProductLabelDescription());
 				}
 			}
 		} catch (BallartelyException e) {
@@ -194,7 +197,12 @@ public class EtiquetaProductoMB {
 
 	public void obtenerEstadosEtiquetaProductos() {
 		try {
-			this.lstEstadosGenerales = this.parametroGeneralService.obtenerListaParametros(propiedades.getComboEstados());
+			this.lstEstadosGenerales = new ArrayList<>();
+			this.lstEstadosGenerales.add(new SelectItem(new GeneralParameter(), "-- Seleccione --"));
+			List<GeneralParameter> lstGeneralParameters = this.parametroGeneralService.obtenerListaParametros(propiedades.getComboEstados());
+			for(GeneralParameter g: lstGeneralParameters) {
+				this.lstEstadosGenerales.add(new SelectItem(g, g.getParamValue()));
+			} 
 		} catch (BallartelyException e) {
 			String sMensaje = "Error en obtenerEstadosEtiquetaProductos";
 			this.logger.error(e.getMessage(), e);
@@ -222,22 +230,30 @@ public class EtiquetaProductoMB {
 		return results;
 	}
 
-	public EtiquetaProducto getObjEtiquetaProductoMain() {
+	public ProductLabel getObjEtiquetaProductoMain() {
 		return this.objEtiquetaProductoMain;
 	}
 
-	public void setObjEtiquetaProductoMain(EtiquetaProducto objEtiquetaProductoMain) {
+	public void setObjEtiquetaProductoMain(ProductLabel objEtiquetaProductoMain) {
 		this.objEtiquetaProductoMain = objEtiquetaProductoMain;
 	}
+	
+	public ProductLabel getObjEtiquetaProductoSearch() {
+		return objEtiquetaProductoSearch;
+	}
 
-	public List<EtiquetaProducto> getLstEtiquetaProductosMain() {
+	public void setObjEtiquetaProductoSearch(ProductLabel objEtiquetaProductoSearch) {
+		this.objEtiquetaProductoSearch = objEtiquetaProductoSearch;
+	}
+
+	public List<ProductLabel> getLstEtiquetaProductosMain() {
 		if ((this.lstEtiquetaProductosMain.isEmpty()) && (this.validaListaBuscar)) {
 			this.canRegTablaPrincipal = getListaPrincipalEtiquetaProductos();
 		}
 		return this.lstEtiquetaProductosMain;
 	}
 
-	public void setLstEtiquetaProductosMain(List<EtiquetaProducto> lstEtiquetaProductosMain) {
+	public void setLstEtiquetaProductosMain(List<ProductLabel> lstEtiquetaProductosMain) {
 		this.lstEtiquetaProductosMain = lstEtiquetaProductosMain;
 	}
 
@@ -249,14 +265,12 @@ public class EtiquetaProductoMB {
 		this.canRegTablaPrincipal = canRegTablaPrincipal;
 	}
 
-	public List<ParametroGeneral> getLstEstadosGenerales() {
-		if (this.lstEstadosGenerales.isEmpty()) {
-			obtenerEstadosEtiquetaProductos();
-		}
+	public List<SelectItem> getLstEstadosGenerales() {
+		obtenerEstadosEtiquetaProductos();
 		return this.lstEstadosGenerales;
 	}
 
-	public void setLstEstadosGenerales(List<ParametroGeneral> lstEstadosGenerales) {
+	public void setLstEstadosGenerales(List<SelectItem> lstEstadosGenerales) {
 		this.lstEstadosGenerales = lstEstadosGenerales;
 	}
 	

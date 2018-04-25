@@ -33,7 +33,7 @@
 								</div>
 								<div class="dostercios">
 									<div class="combo">
-										<p:selectOneMenu id="cboTipoParam" value="#{parametroGeneralMB.objParametroGeneralMain.tipoParametro}">
+										<p:selectOneMenu id="cboTipoParam" value="#{parametroGeneralMB.objParametroGeneralSearch.paramType}">
 												<f:selectItem itemLabel="Todos" itemValue="" />
 												<f:selectItems value="#{parametroGeneralMB.lstTiposParametros}"
 												var="tipoParametro" itemLabel="#{tipoParametro.description}"
@@ -55,7 +55,7 @@
 								<div class="dostercios">
 									<div class="input">
 										<p:autoComplete id="txtCodigo" maxResults="10"
-										                    value="#{parametroGeneralMB.objParametroGeneralMain.codParametro}"
+										                    value="#{parametroGeneralMB.objParametroGeneralSearch.paramCode}"
 										                    completeMethod="#{parametroGeneralMB.completeCod}" autocomplete="false" ajax="false"/>
 										
 									</div>
@@ -77,7 +77,7 @@
 								<div class="dostercios">
 									<div class="input">
 										<p:autoComplete id="txtDescParam" maxResults="10"
-										                    value="#{parametroGeneralMB.objParametroGeneralMain.descParametro}"
+										                    value="#{parametroGeneralMB.objParametroGeneralSearch.paramDescription}"
 										                    completeMethod="#{parametroGeneralMB.completeDesc}" autocomplete="false" ajax="false"/>
 									</div>
 									<div class="tooltip">
@@ -94,7 +94,7 @@
 								</div>
 								<div class="dostercios">
 									<div class="combo">
-										<p:selectOneMenu id="cboEstado" value="#{parametroGeneralMB.objParametroGeneralMain.estadoParametro}">
+										<p:selectOneMenu id="cboEstado" value="#{parametroGeneralMB.objParametroGeneralSearch.paramStatus}">
 												<f:selectItem itemLabel="Todos" itemValue="" />
 												<f:selectItem itemLabel="Activo" itemValue="1" />
 												<f:selectItem itemLabel="Inactivo" itemValue="0" />
@@ -128,26 +128,47 @@
 			</div>
 
 			<div class="scrollTabla">
-				<p:dataTable paginator="true" paginatorPosition="bottom" rows="10"
-					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
-					style="width: 100%" var="parametroGeneral" value="#{parametroGeneralMB.lstParametrosGeneralesMain}" id="tblParametrosGenerales" emptyMessage="No se encontraron registros">
+				<p:dataTable paginator="true" paginatorPosition="top" rows="10"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+					style="width: 100%; margin-bottom:20px;" var="parametroGeneral" value="#{parametroGeneralMB.lstParametrosGeneralesMain}" id="tblParametrosGenerales" emptyMessage="No se encontraron registros">
+					<f:facet name="{Exporters}">
+			           <h:commandLink>
+			               <p:graphicImage url="../../recursos/imagenes/excel.png" width="24"/>
+			               <p:dataExporter type="xls" target="tblParametrosGenerales" fileName="ParametrosGenerales"/>
+			           </h:commandLink>
+			
+			           <h:commandLink>
+			               <p:graphicImage url="../../recursos/imagenes/pdf.png" width="24"/>
+			               <p:dataExporter type="pdf" target="tblParametrosGenerales" fileName="ParametrosGenerales"/>
+			           </h:commandLink>
+			
+			           <h:commandLink>
+			               <p:graphicImage url="../../recursos/imagenes/csv.png" width="24"/>
+			               <p:dataExporter type="csv" target="tblParametrosGenerales" fileName="ParametrosGenerales" />
+			           </h:commandLink>
+			
+			           <h:commandLink>
+			               <p:graphicImage url="../../recursos/imagenes/xml.png" width="24"/>
+			               <p:dataExporter type="xml" target="tblParametrosGenerales" fileName="ParametrosGenerales" />
+			           </h:commandLink>
+			       </f:facet>
 					<p:column styleClass="oficina">
 						<f:facet name="header">
 							<h:outputText value="Item" />
 						</f:facet>
-						<h:outputText value="#{parametroGeneral.item}" />
+						<h:outputText value="#{parametroGeneral.paramId}" />
 					</p:column>
-					<p:column styleClass="oficina">
+					<p:column styleClass="oficina" exportable="false">
 						<f:facet name="header">
 							<h:outputText value="Editar" title="Editar" />
 						</f:facet>
 						<p:commandLink value="Editar" onclick="PF('dlgEditarParametroGeneral').show()" action="#{parametroGeneralMB.openEditarParametroGeneral}" 
 								update=":wEditParamGen:pEditParamGen">
-							<f:param name="itemParametroGeneral" value="#{parametroGeneral.item}" id="itemParametroGeneral" />
+							<f:param name="itemParametroGeneral" value="#{parametroGeneral.paramId}" id="itemParametroGeneral" />
 						</p:commandLink>
 					</p:column>
 					
-					<p:column styleClass="eliminar">
+					<p:column styleClass="eliminar" exportable="false">
 							<f:facet name="header">
 								<h:outputText value="Eliminar" />
 							</f:facet>
@@ -156,39 +177,45 @@
 							update="@form :confirmEliminarParametroGeneral">
 							<f:setPropertyActionListener value="#{parametroGeneral}"
 								target="#{parametroGeneralMB.objParametroGeneralMain}" />
-							<h:outputText value="#{parametroGeneral.item}" />
+							<h:outputText value="#{parametroGeneral.paramId}" />
 						</p:commandLink>
 					</p:column>
-					
 					<p:column styleClass="oficina">
 						<f:facet name="header">
 							<h:outputText value="C&#243;digo" />
 						</f:facet>
-						<h:outputText value="#{parametroGeneral.codParametro}" />
+						<h:outputText value="#{parametroGeneral.paramType}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="C&#243;digo" />
+						</f:facet>
+						<h:outputText value="#{parametroGeneral.paramCode}" />
 					</p:column>
 					<p:column styleClass="oficina">
 						<f:facet name="header">
 							<h:outputText value="Parametro" />
 						</f:facet>
-						<h:outputText value="#{parametroGeneral.descParametro}" />
+						<h:outputText value="#{parametroGeneral.paramDescription}" />
 					</p:column>
 					<p:column styleClass="oficina">
 						<f:facet name="header">
 							<h:outputText value="Valor" />
 						</f:facet>
-						<h:outputText value="#{parametroGeneral.valorParametro}" />
+						<h:outputText value="#{parametroGeneral.paramValue}" />
 					</p:column>
 					<p:column styleClass="oficina">
 						<f:facet name="header">
 							<h:outputText value="Estado" />
 						</f:facet>
-						<h:outputText value="#{parametroGeneral.estadoParametro}" />
+						<h:outputText value="ACTIVO" rendered="#{parametroGeneral.paramStatus == '1'}"/>
+						<h:outputText value="INACTIVO" rendered="#{parametroGeneral.paramStatus == '0'}"/>
 					</p:column>
 					<p:column styleClass="fecha">
 						<f:facet name="header">
 							<h:outputText value="Fecha Registro" />
 						</f:facet>
-						<h:outputText value="#{parametroGeneral.fecCreacion}" >
+						<h:outputText value="#{parametroGeneral.paramCreationDate}" >
 							<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
 						</h:outputText>
 					</p:column>
@@ -196,7 +223,7 @@
 						<f:facet name="header">
 							<h:outputText value="Fecha de Act." />
 						</f:facet>
-						<h:outputText value="#{parametroGeneral.fecModificacion}" >
+						<h:outputText value="#{parametroGeneral.paramModificationDate}" >
 						 	<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
 						</h:outputText>
 					</p:column>
@@ -231,7 +258,7 @@
 								</div>
 								<div class="dostercios">
 									<div class="combo">
-										<p:selectOneMenu id="cboTipoParametroNuevo" value="#{parametroGeneralMB.objParametroGeneralMain.tipoParametro}">
+										<p:selectOneMenu id="cboTipoParametroNuevo" value="#{parametroGeneralMB.objParametroGeneralMain.paramType}">
 											<f:selectItem itemLabel="-- Seleccione --" itemValue="" />
 											<f:selectItems value="#{parametroGeneralMB.lstTiposParametros}"
 											var="tipoParametro" itemLabel="#{tipoParametro.description}"
@@ -252,7 +279,7 @@
 								</div>
 								<div class="dostercios">
 									<div class="input">
-										<p:inputText id="txtCodParametroNuevo" value="#{parametroGeneralMB.objParametroGeneralMain.codParametro}" />
+										<p:inputText id="txtCodParametroNuevo" value="#{parametroGeneralMB.objParametroGeneralMain.paramCode}" />
 									</div>
 									<div class="tooltip">
 										<h:graphicImage id="imgCodParametro"
@@ -268,7 +295,7 @@
 								</div>
 								<div class="dostercios">
 									<div class="combo">
-										<p:selectOneMenu id="cboEstado" value="#{parametroGeneralMB.objParametroGeneralMain.estadoParametro}">
+										<p:selectOneMenu id="cboEstado" value="#{parametroGeneralMB.objParametroGeneralMain.paramStatus}">
 											<f:selectItem itemLabel="-- Seleccione --" itemValue="" />
 											<f:selectItem itemLabel="Activo" itemValue="1" />
 											<f:selectItem itemLabel="Inactivo" itemValue="0" />
@@ -290,7 +317,7 @@
 								</div>
 								<div class="dostercios">
 									<div class="input">
-										<p:inputText id="txtParametroNuevo" value="#{parametroGeneralMB.objParametroGeneralMain.descParametro}"/>
+										<p:inputText id="txtParametroNuevo" value="#{parametroGeneralMB.objParametroGeneralMain.paramDescription}"/>
 									</div>
 									<div class="tooltip">
 										<h:graphicImage id="imgParametro"
@@ -306,7 +333,7 @@
 								</div>
 								<div class="dostercios">
 									<div class="input">
-										<p:inputText id="txtValorParametroNuevo" value="#{parametroGeneralMB.objParametroGeneralMain.valorParametro}"/>
+										<p:inputText id="txtValorParametroNuevo" value="#{parametroGeneralMB.objParametroGeneralMain.paramValue}"/>
 									</div>
 									<div class="tooltip">
 										<h:graphicImage id="imgValorParametro"
@@ -348,7 +375,7 @@
 									</div>
 									<div class="dostercios" style="width: 85%">
 										<div class="combo">
-											<p:selectOneMenu id="cboTipoParametroEditar" value="#{parametroGeneralMB.objParametroGeneralMain.tipoParametro}">
+											<p:selectOneMenu id="cboTipoParametroEditar" value="#{parametroGeneralMB.objParametroGeneralMain.paramType}">
 												<f:selectItem itemLabel="-- Seleccione --" itemValue="" />
 												<f:selectItems value="#{parametroGeneralMB.lstTiposParametros}"
 												var="tipoParametro" itemLabel="#{tipoParametro.description}"
@@ -368,7 +395,7 @@
 									</div>
 									<div class="dostercios">
 										<div class="input">
-											<p:inputText id="txtParametroGeneralEditar" value="#{parametroGeneralMB.objParametroGeneralMain.descParametro}"/>
+											<p:inputText id="txtParametroGeneralEditar" value="#{parametroGeneralMB.objParametroGeneralMain.paramDescription}"/>
 										</div>
 										<div class="tooltip">
 											<h:graphicImage id="imgParametroEditar"
@@ -386,7 +413,7 @@
 									</div>
 									<div class="dostercios">
 										<div class="input">
-											<p:inputText id="txtCodParametroEditar" value="#{parametroGeneralMB.objParametroGeneralMain.codParametro}"/>
+											<p:inputText id="txtCodParametroEditar" value="#{parametroGeneralMB.objParametroGeneralMain.paramCode}"/>
 										</div>
 										<div class="tooltip">
 											<h:graphicImage id="imgCodParametroEditar"
@@ -417,7 +444,7 @@
 									</div>
 									<div class="dostercios" style="width: 85%; text-align: left;">
 										<div class="combo">
-											<p:selectOneMenu id="cboEstadoEditar" value="#{parametroGeneralMB.objParametroGeneralMain.estadoParametro}">
+											<p:selectOneMenu id="cboEstadoEditar" value="#{parametroGeneralMB.objParametroGeneralMain.paramStatus}">
 												<f:selectItem itemLabel="-- Seleccione --" itemValue="" />
 												<f:selectItem itemLabel="Activo" itemValue="1" />
 												<f:selectItem itemLabel="Inactivo" itemValue="0" />
