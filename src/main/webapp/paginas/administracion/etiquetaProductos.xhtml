@@ -52,7 +52,7 @@
 								</div>
 								<div class="dostercios">
 									<div class="combo">
-										<p:selectOneMenu id="cboEstado" value="#{etiquetaProductoMB.objEtiquetaProductoSearch.generalParameter}">
+										<p:selectOneMenu id="cboEstado" value="#{etiquetaProductoMB.objEtiquetaProductoSearch.productLabelStatus}">
 												<f:selectItems value="#{etiquetaProductoMB.lstEstadosGenerales}"/>
 												<f:converter binding="#{generalParameterConverter}"/>
 										</p:selectOneMenu>
@@ -168,7 +168,7 @@
 					</p:column>
 					<p:column styleClass="oficina">
 						<f:facet name="header">
-							<h:outputText value="Etiqueta Producto" />
+							<h:outputText value="Descripción" />
 						</f:facet>
 						<h:outputText value="#{etiquetaProducto.productLabelDescription}" />
 					</p:column>
@@ -176,7 +176,7 @@
 						<f:facet name="header">
 							<h:outputText value="Estado" />
 						</f:facet>
-						<h:outputText value="#{etiquetaProducto.generalParameter.paramDescription}" />
+						<h:outputText value="#{etiquetaProducto.productLabelStatus.paramDescription}" />
 					</p:column>
 					<p:column styleClass="fecha">
 						<f:facet name="header">
@@ -241,7 +241,7 @@
 							</div>
 							<div class="dostercios">
 								<div class="combo">
-									<p:selectOneMenu id="cboEstado" value="#{etiquetaProductoMB.objEtiquetaProductoMain.generalParameter}">
+									<p:selectOneMenu id="cboEstado" value="#{etiquetaProductoMB.objEtiquetaProductoMain.productLabelStatus}">
 										<f:selectItems value="#{etiquetaProductoMB.lstEstadosGenerales}" var="generalParameterNew"/>
 										<f:converter binding="#{generalParameterConverter}" for="generalParameterNew"/>
 									</p:selectOneMenu>
@@ -340,7 +340,7 @@
 									</div>
 									<div class="dostercios">
 										<div class="combo">
-											<p:selectOneMenu id="cboEstadoEditar" value="#{etiquetaProductoMB.objEtiquetaProductoMain.generalParameter}">
+											<p:selectOneMenu id="cboEstadoEditar" value="#{etiquetaProductoMB.objEtiquetaProductoMain.productLabelStatus}">
 												<f:selectItems value="#{etiquetaProductoMB.lstEstadosGenerales}"/>
 												<f:converter binding="#{generalParameterConverter}"/>
 											</p:selectOneMenu>

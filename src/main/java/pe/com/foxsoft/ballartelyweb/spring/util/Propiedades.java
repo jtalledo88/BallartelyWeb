@@ -13,6 +13,9 @@ public class Propiedades {
 	
 	@Value("${ballartelyweb.combo.status}")
 	private String comboEstados;
+	
+	private String documentTypeCodeRuc;
+	private String documentTypeCodeDni;
 
 	public String getTiposParametro() {
 		return tiposParametro;

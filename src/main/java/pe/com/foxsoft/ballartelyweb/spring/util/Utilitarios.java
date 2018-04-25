@@ -125,22 +125,6 @@ public class Utilitarios {
 		return pattern.matcher(normalized).replaceAll("");
 	}
 
-	public static String quitarTilde(String palabra) {
-		String tustring = palabra;
-		tustring = tustring.replace('á', 'a');
-		tustring = tustring.replace('Á', 'A');
-		tustring = tustring.replace('é', 'e');
-		tustring = tustring.replace('É', 'E');
-		tustring = tustring.replace('í', 'i');
-		tustring = tustring.replace('Í', 'I');
-		tustring = tustring.replace('ó', 'o');
-		tustring = tustring.replace('Ó', 'O');
-		tustring = tustring.replace('ú', 'u');
-		tustring = tustring.replace('Ú', 'U');
-
-		return tustring.replaceAll(" ", "");
-	}
-
 	public static List<TipoParametro> obtenerListaTipoParametros(String cadena) throws BallartelyException {
 		try {
 			List<TipoParametro> lstValores = new ArrayList<TipoParametro>();

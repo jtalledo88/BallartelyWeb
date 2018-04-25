@@ -2,9 +2,6 @@ package pe.com.foxsoft.ballartelyweb.jpa.data;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
-import pe.com.foxsoft.ballartelyweb.jpa.util.JPAUtil;
-
 import java.util.Date;
 
 
@@ -14,11 +11,12 @@ import java.util.Date;
  */
 @Entity
 @Table(name="product_label")
-@NamedQuery(name=JPAUtil.NAMED_QUERY_ALL_PRODUCT_LABEL, query="SELECT p FROM ProductLabel p join fetch p.generalParameter")
+@NamedQuery(name="ProductLabel.findAll", query="SELECT p FROM ProductLabel p")
 public class ProductLabel implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="product_label_id")
 	private int productLabelId;
 
@@ -39,7 +37,7 @@ public class ProductLabel implements Serializable {
 	//bi-directional many-to-one association to GeneralParameter
 	@ManyToOne
 	@JoinColumn(name="product_label_status")
-	private GeneralParameter generalParameter;
+	private GeneralParameter productLabelStatus;
 
 	public ProductLabel() {
 	}
@@ -84,12 +82,12 @@ public class ProductLabel implements Serializable {
 		this.productLabelModificationDate = productLabelModificationDate;
 	}
 
-	public GeneralParameter getGeneralParameter() {
-		return this.generalParameter;
+	public GeneralParameter getProductLabelStatus() {
+		return this.productLabelStatus;
 	}
 
-	public void setGeneralParameter(GeneralParameter generalParameter) {
-		this.generalParameter = generalParameter;
+	public void setProductLabelStatus(GeneralParameter productLabelStatus) {
+		this.productLabelStatus = productLabelStatus;
 	}
 
 }

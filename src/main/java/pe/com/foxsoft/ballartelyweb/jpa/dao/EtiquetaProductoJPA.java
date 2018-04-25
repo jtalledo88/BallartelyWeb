@@ -17,11 +17,11 @@ public class EtiquetaProductoJPA {
 	public List<ProductLabel> getProductLabelsDataBase(EntityManager em, ProductLabel productLabel) throws BallartelyException {
 		try {
 			TypedQuery<ProductLabel> queryProductLabel = em.createQuery(
-					"select p from ProductLabel p join fetch p.generalParameter where p.productLabelCode = :productLabelCode "
-					+ "or p.productLabelDescription like :productLabelDescription or p.generalParameter =:generalParameter", ProductLabel.class);
+					"select p from ProductLabel p join fetch p.productLabelStatus ps where p.productLabelCode = :productLabelCode "
+					+ "or p.productLabelDescription like :productLabelDescription or ps.paramId =:productLabelStatus", ProductLabel.class);
 			queryProductLabel.setParameter("productLabelCode", productLabel.getProductLabelCode());
 			queryProductLabel.setParameter("productLabelDescription", productLabel.getProductLabelDescription());
-			queryProductLabel.setParameter("generalParameter", productLabel.getGeneralParameter());
+			queryProductLabel.setParameter("productLabelStatus", productLabel.getProductLabelStatus().getParamId());
 			
 			return queryProductLabel.getResultList();
 		} catch (NoResultException nre) {

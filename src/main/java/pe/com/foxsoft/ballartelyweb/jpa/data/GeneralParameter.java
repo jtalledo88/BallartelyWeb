@@ -17,6 +17,7 @@ public class GeneralParameter implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="param_id")
 	private int paramId;
 
@@ -43,8 +44,20 @@ public class GeneralParameter implements Serializable {
 	@Column(name="param_value")
 	private String paramValue;
 
+	//bi-directional many-to-one association to Client
+	@OneToMany(mappedBy="clientStatus")
+	private List<Client> clients1;
+
+	//bi-directional many-to-one association to Client
+	@OneToMany(mappedBy="clientType")
+	private List<Client> clients2;
+
+	//bi-directional many-to-one association to Client
+	@OneToMany(mappedBy="documentType")
+	private List<Client> clients3;
+
 	//bi-directional many-to-one association to ProductLabel
-	@OneToMany(mappedBy="generalParameter")
+	@OneToMany(mappedBy="productLabelStatus")
 	private List<ProductLabel> productLabels;
 
 	public GeneralParameter() {
@@ -114,6 +127,72 @@ public class GeneralParameter implements Serializable {
 		this.paramValue = paramValue;
 	}
 
+	public List<Client> getClients1() {
+		return this.clients1;
+	}
+
+	public void setClients1(List<Client> clients1) {
+		this.clients1 = clients1;
+	}
+
+	public Client addClients1(Client clients1) {
+		getClients1().add(clients1);
+		clients1.setClientStatus(this);
+
+		return clients1;
+	}
+
+	public Client removeClients1(Client clients1) {
+		getClients1().remove(clients1);
+		clients1.setClientStatus(null);
+
+		return clients1;
+	}
+
+	public List<Client> getClients2() {
+		return this.clients2;
+	}
+
+	public void setClients2(List<Client> clients2) {
+		this.clients2 = clients2;
+	}
+
+	public Client addClients2(Client clients2) {
+		getClients2().add(clients2);
+		clients2.setClientType(this);
+
+		return clients2;
+	}
+
+	public Client removeClients2(Client clients2) {
+		getClients2().remove(clients2);
+		clients2.setClientType(null);
+
+		return clients2;
+	}
+
+	public List<Client> getClients3() {
+		return this.clients3;
+	}
+
+	public void setClients3(List<Client> clients3) {
+		this.clients3 = clients3;
+	}
+
+	public Client addClients3(Client clients3) {
+		getClients3().add(clients3);
+		clients3.setDocumentType(this);
+
+		return clients3;
+	}
+
+	public Client removeClients3(Client clients3) {
+		getClients3().remove(clients3);
+		clients3.setDocumentType(null);
+
+		return clients3;
+	}
+
 	public List<ProductLabel> getProductLabels() {
 		return this.productLabels;
 	}
@@ -124,35 +203,16 @@ public class GeneralParameter implements Serializable {
 
 	public ProductLabel addProductLabel(ProductLabel productLabel) {
 		getProductLabels().add(productLabel);
-		productLabel.setGeneralParameter(this);
+		productLabel.setProductLabelStatus(this);
 
 		return productLabel;
 	}
 
 	public ProductLabel removeProductLabel(ProductLabel productLabel) {
 		getProductLabels().remove(productLabel);
-		productLabel.setGeneralParameter(null);
+		productLabel.setProductLabelStatus(null);
 
 		return productLabel;
 	}
-	
-	@Override
-    public int hashCode() {
-        int hash = 0;
-        hash += paramId;
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (!(object instanceof GeneralParameter)) {
-            return false;
-        }
-        GeneralParameter other = (GeneralParameter) object;
-        if ((this.paramId != other.getParamId())) {
-            return false;
-        }
-        return true;
-    }
 
 }
