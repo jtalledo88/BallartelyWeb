@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import pe.com.foxsoft.ballartelyweb.jpa.dao.ClienteJPA;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Client;
-import pe.com.foxsoft.ballartelyweb.jpa.data.ProductLabel;
 import pe.com.foxsoft.ballartelyweb.jpa.util.JPAUtil;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
 
@@ -47,28 +46,28 @@ public class ClienteService {
 	}
 
 	@Transactional(readOnly=false, rollbackFor=Throwable.class)
-	public String agregarEtiquetaProducto(ProductLabel productLabel) throws BallartelyException {
-		return JPAUtil.persistEntity(em, productLabel);
+	public String agregarCliente(Client client) throws BallartelyException {
+		return JPAUtil.persistEntity(em, client);
 	}
 
 	@Transactional(readOnly=true, noRollbackFor=BallartelyException.class)
-	public ProductLabel obtenerEtiquetaProducto(int itemProductLabel) throws BallartelyException {
-		return JPAUtil.findEntity(em, ProductLabel.class, itemProductLabel);
+	public Client obtenerCliente(int itemClient) throws BallartelyException {
+		return JPAUtil.findEntity(em, Client.class, itemClient);
 	}
 
 	@Transactional(readOnly=false, rollbackFor=Throwable.class)
-	public String editarEtiquetaProducto(ProductLabel productLabel) throws BallartelyException {
-		return JPAUtil.mergeEntity(em, productLabel);
+	public String editarCliente(Client client) throws BallartelyException {
+		return JPAUtil.mergeEntity(em, client);
 	}
 
 	@Transactional(readOnly=false, rollbackFor=Throwable.class)
-	public String eliminarEtiquetaProducto(ProductLabel productLabel) throws BallartelyException {
-		return JPAUtil.removeEntity(em, productLabel);
+	public String eliminarCliente(Client client) throws BallartelyException {
+		return JPAUtil.removeEntity(em, client);
 	}
 
 	@Transactional(readOnly=true, noRollbackFor=BallartelyException.class)
-	public List<ProductLabel> getListaEtiquetaProductos() throws BallartelyException {
-		return JPAUtil.executeQueryList(em, ProductLabel.class, JPAUtil.NAMED_QUERY_ALL_PRODUCT_LABEL);
+	public List<Client> getListaClientes() throws BallartelyException {
+		return JPAUtil.executeQueryList(em, Client.class, JPAUtil.NAMED_QUERY_ALL_CLIENT);
 	}
 
 }

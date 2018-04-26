@@ -16,10 +16,8 @@ import org.apache.log4j.Logger;
 
 import pe.com.foxsoft.ballartelyweb.jpa.data.Client;
 import pe.com.foxsoft.ballartelyweb.jpa.data.GeneralParameter;
-import pe.com.foxsoft.ballartelyweb.jpa.data.ProductLabel;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
 import pe.com.foxsoft.ballartelyweb.spring.service.ClienteService;
-import pe.com.foxsoft.ballartelyweb.spring.service.EtiquetaProductoService;
 import pe.com.foxsoft.ballartelyweb.spring.service.ParametroGeneralService;
 import pe.com.foxsoft.ballartelyweb.spring.util.Propiedades;
 import pe.com.foxsoft.ballartelyweb.spring.util.Utilitarios;
@@ -44,8 +42,10 @@ public class ClienteMB {
 
 	private List<Client> lstClientesMain;
 	private List<SelectItem> lstEstadosGenerales;
-	private List<String> lstDescEtiquetaProductoBUS;
-	private List<String> lstCodEtiquetaProductoBUS;
+	private List<SelectItem> lstTiposDocGenerales;
+	private List<SelectItem> lstTiposCliGenerales;
+	private List<String> lstRazSocClienteBUS;
+	private List<String> lstNomClienteBUS;
 	private boolean validaListaBuscar = true;
 	private int canRegTablaPrincipal;
 	private boolean flagConfirmEliClient = false;
@@ -55,8 +55,10 @@ public class ClienteMB {
 		this.objClienteSearch = new Client();
 		this.lstClientesMain = new ArrayList<Client>();
 		this.lstEstadosGenerales = new ArrayList<SelectItem>();
-		this.lstCodEtiquetaProductoBUS = new ArrayList<String>();
-		this.lstDescEtiquetaProductoBUS = new ArrayList<String>();
+		this.lstTiposDocGenerales = new ArrayList<>();
+		this.lstTiposCliGenerales = new ArrayList<>();
+		this.lstRazSocClienteBUS = new ArrayList<String>();
+		this.lstNomClienteBUS = new ArrayList<String>();
 	}
 
 	public void buscarClientes() {
@@ -65,13 +67,13 @@ public class ClienteMB {
 			this.lstClientesMain = this.clienteService.buscarClientes(this.objClienteSearch);
 			this.canRegTablaPrincipal = this.lstClientesMain.size();
 		} catch (BallartelyException e) {
-			String sMensaje = "Error en buscarEtiquetaProductos";
+			String sMensaje = "Error en buscarClientes";
 			this.logger.error(e.getMessage());
 			throw new FacesException(sMensaje, e);
 		}
 	}
 
-	public void agregarClientes() {
+	public void agregarCliente() {
 		String sMensaje = "";
 		
 		Client objCliente = new Client();
@@ -80,130 +82,165 @@ public class ClienteMB {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe seleccionar un tipo de documento.");
 				return;
 			} 
-			if(propiedades.getthis.objClienteMain.getDocumentType().getParamCode()) 
 			if ("".equals(this.objClienteMain.getDocumentNumber())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar el número de documento del cliente.");
 				return;
-			} 
-			if (this.objClienteMain.getClientStatus() == null) {
-				Utilitarios.mensajeError("Campos Obligatorios", "Debe seleccionar un estado.");
+			}
+			if ("".equals(this.objClienteMain.getClientNames()) && "".equals(this.objClienteMain.getClientSocialReason())) {
+				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar el nombre o razón social del cliente.");
+				return;
+			}
+			if ("".equals(this.objClienteMain.getClientAddress())) {
+				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar la dirección del cliente.");
+				return;
+			}
+			if ("".equals(this.objClienteMain.getClientPhoneNumber())) {
+				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar el número de teléfono del cliente.");
 				return;
 			}
 			if (this.objClienteMain.getClientStatus() == null) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe seleccionar un estado.");
 				return;
+			}
+			if (this.objClienteMain.getClientType() == null) {
+				Utilitarios.mensajeError("Campos Obligatorios", "Debe seleccionar un tipo de cliente.");
+				return;
 			} 
 			
 			
-			objEtiquetaProducto.setProductLabelCode(this.objEtiquetaProductoMain.getProductLabelCode().toUpperCase());
-			objEtiquetaProducto.setProductLabelDescription(this.objEtiquetaProductoMain.getProductLabelDescription());
-			objEtiquetaProducto.setProductLabelStatus(this.objEtiquetaProductoMain.getProductLabelStatus());
-			objEtiquetaProducto.setProductLabelCreationDate(new Date());
+			objCliente.setDocumentType(this.objClienteMain.getDocumentType());
+			objCliente.setDocumentNumber(this.objClienteMain.getDocumentNumber());
+			objCliente.setClientAddress(this.objClienteMain.getClientAddress());
+			objCliente.setClientPhoneNumber(this.objClienteMain.getClientPhoneNumber());
+			objCliente.setClientStatus(this.objClienteMain.getClientStatus());
+			objCliente.setClientType(this.objClienteMain.getClientType());
+			objCliente.setClientCreationDate(new Date());
 			
-			sMensaje = this.etiquetaProductoService.agregarEtiquetaProducto(objEtiquetaProducto);
+			sMensaje = this.clienteService.agregarCliente(objCliente);
 			Utilitarios.mensaje("", sMensaje);
-			setLstEtiquetaProductosMain(new ArrayList<ProductLabel>());
-			this.canRegTablaPrincipal = getListaPrincipalEtiquetaProductos();
+			setLstClientesMain(new ArrayList<Client>());
+			this.canRegTablaPrincipal = getListaPrincipalClientes();
 		
 		} catch (BallartelyException e) {
-			sMensaje = "Error en agregarEtiquetaProducto";
+			sMensaje = "Error en agregarCliente";
 			this.logger.error(e.getMessage());
 			throw new FacesException(sMensaje, e);
 		}
 	}
 
-	public void openAgregarEtiquetaProducto() {
-		this.objEtiquetaProductoMain = new ProductLabel();
-		this.objEtiquetaProductoMain.setProductLabelCode("");
-		this.objEtiquetaProductoMain.setProductLabelDescription("");
-		this.objEtiquetaProductoMain.setProductLabelStatus(new GeneralParameter());
+	public void openAgregarCliente() {
+		this.objClienteMain = new Client();
+		this.objClienteMain.setDocumentType(new GeneralParameter());
+		this.objClienteMain.setDocumentNumber("");
+		this.objClienteMain.setClientNames("");
+		this.objClienteMain.setClientSocialReason("");
+		this.objClienteMain.setClientAddress("");
+		this.objClienteMain.setClientPhoneNumber("");
+		this.objClienteMain.setClientType(new GeneralParameter());
+		this.objClienteMain.setClientStatus(new GeneralParameter());
 	}
 
-	public void openEditarEtiquetaProducto() {
-		setObjEtiquetaProductoMain(new ProductLabel());
+	public void openEditarCliente() {
+		setObjClienteMain(new Client());
 
 		Map<String, String> paramMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 
-		int itemEtiquetaProducto = Integer.parseInt((String) paramMap.get("itemEtiquetaProducto"));
+		int itemCliente = Integer.parseInt((String) paramMap.get("itemCliente"));
 		try {
-			this.objEtiquetaProductoMain = this.etiquetaProductoService.obtenerEtiquetaProducto(itemEtiquetaProducto);
+			this.objClienteMain = this.clienteService.obtenerCliente(itemCliente);
 		} catch (BallartelyException e) {
-			String sMensaje = "Error en openEditarEtiquetaProducto";
+			String sMensaje = "Error en openEditarCliente";
 			this.logger.error(e.getMessage());
 			throw new FacesException(sMensaje, e);
 		}
 	}
 
-	public void editarEtiquetaProducto() {
+	public void editarCliente() {
 		String sMensaje = "";
 		
 		try {
-			if ("".equals(this.objEtiquetaProductoMain.getProductLabelDescription())) {
-				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar la descripciÃ³n de la etiqueta.");
+			if (this.objClienteMain.getDocumentType() == null) {
+				Utilitarios.mensajeError("Campos Obligatorios", "Debe seleccionar un tipo de documento.");
 				return;
 			} 
-			if ("".equals(this.objEtiquetaProductoMain.getProductLabelCode())) {
-				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar el cÃ³digo de la etiqueta.");
+			if ("".equals(this.objClienteMain.getDocumentNumber())) {
+				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar el número de documento del cliente.");
 				return;
-			} 
-			if (this.objEtiquetaProductoMain.getProductLabelStatus() == null) {
+			}
+			if ("".equals(this.objClienteMain.getClientNames()) && "".equals(this.objClienteMain.getClientSocialReason())) {
+				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar el nombre o razón social del cliente.");
+				return;
+			}
+			if ("".equals(this.objClienteMain.getClientAddress())) {
+				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar la dirección del cliente.");
+				return;
+			}
+			if ("".equals(this.objClienteMain.getClientPhoneNumber())) {
+				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar el número de teléfono del cliente.");
+				return;
+			}
+			if (this.objClienteMain.getClientStatus() == null) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe seleccionar un estado.");
 				return;
-			} 
+			}
+			if (this.objClienteMain.getClientType() == null) {
+				Utilitarios.mensajeError("Campos Obligatorios", "Debe seleccionar un tipo de cliente.");
+				return;
+			}
 			
-			this.objEtiquetaProductoMain.setProductLabelModificationDate(new Date());
-			sMensaje = this.etiquetaProductoService.editarEtiquetaProducto(this.objEtiquetaProductoMain);
+			this.objClienteMain.setClientModificationDate(new Date());
+			sMensaje = this.clienteService.editarCliente(this.objClienteMain);
 			Utilitarios.mensaje("", sMensaje);
-			this.canRegTablaPrincipal = getListaPrincipalEtiquetaProductos();
+			this.canRegTablaPrincipal = getListaPrincipalClientes();
 			
 		} catch (BallartelyException e) {
-			sMensaje = "Error en editarEtiquetaProducto";
+			sMensaje = "Error en editarCliente";
 			this.logger.error(e.getMessage());
 			throw new FacesException(sMensaje, e);
 		}
 	}
 
-	public void visibleConfirmElimEtiquetaProducto() {
-		this.flagConfirmEliEtiqProd = true;
+	public void visibleConfirmElimCliente() {
+		this.flagConfirmEliClient = true;
 	}
 
-	public void eliminarEtiquetaProducto() {
+	public void eliminarCliente() {
 		String sMensaje = "";
 		try {
-			sMensaje = this.etiquetaProductoService.eliminarEtiquetaProducto(this.objEtiquetaProductoMain);
-			setLstEtiquetaProductosMain(new ArrayList<ProductLabel>());
-			this.canRegTablaPrincipal = getListaPrincipalEtiquetaProductos();
+			sMensaje = this.clienteService.eliminarCliente(this.objClienteMain);
+			setLstClientesMain(new ArrayList<Client>());
+			this.canRegTablaPrincipal = getListaPrincipalClientes();
 			Utilitarios.mensaje("", sMensaje);
 		} catch (BallartelyException e) {
-			sMensaje = "Error en eliminarEtiquetaProducto";
+			sMensaje = "Error en eliminarCliente";
 			this.logger.error(e.getMessage());
 			throw new FacesException(sMensaje, e);
 		}
-		this.flagConfirmEliEtiqProd = false;
+		this.flagConfirmEliClient = false;
 	}
 
-	public int getListaPrincipalEtiquetaProductos() {
+	public int getListaPrincipalClientes() {
 		int can = 0;
 		try {
-			this.lstEtiquetaProductosMain = this.etiquetaProductoService.getListaEtiquetaProductos();
-			can = this.lstEtiquetaProductosMain.size();
-			for (ProductLabel p : this.lstEtiquetaProductosMain) {
-				if (p.getProductLabelCode() != null) {
-					this.lstCodEtiquetaProductoBUS.add(p.getProductLabelCode());
+			this.lstClientesMain = this.clienteService.getListaClientes();
+			can = this.lstClientesMain.size();
+			for (Client c : this.lstClientesMain) {
+				if (c.getClientNames() != null) {
+					this.lstNomClienteBUS.add(c.getClientNames());
 				}
-				if (p.getProductLabelDescription() != null) {
-					this.lstDescEtiquetaProductoBUS.add(p.getProductLabelDescription());
+				if (c.getClientSocialReason() != null) {
+					this.lstRazSocClienteBUS.add(c.getClientSocialReason());
 				}
 			}
 		} catch (BallartelyException e) {
-			String sMensaje = "Error en getListaPrincipalEtiquetaProductos";
+			String sMensaje = "Error en getListaPrincipalClientes";
 			this.logger.error(e.getMessage(), e);
 			throw new FacesException(sMensaje, e);
 		}
 		return can;
 	}
 
-	public void obtenerEstadosEtiquetaProductos() {
+	public void obtenerEstadosClientes() {
 		try {
 			this.lstEstadosGenerales = new ArrayList<>();
 			this.lstEstadosGenerales.add(new SelectItem(new GeneralParameter(), "-- Seleccione --"));
@@ -212,15 +249,45 @@ public class ClienteMB {
 				this.lstEstadosGenerales.add(new SelectItem(g, g.getParamValue()));
 			} 
 		} catch (BallartelyException e) {
-			String sMensaje = "Error en obtenerEstadosEtiquetaProductos";
+			String sMensaje = "Error en obtenerEstadosClientes";
+			this.logger.error(e.getMessage(), e);
+			throw new FacesException(sMensaje, e);
+		}
+	}
+	
+	public void obtenerTiposDocumentoClientes() {
+		try {
+			this.lstTiposDocGenerales = new ArrayList<>();
+			this.lstTiposDocGenerales.add(new SelectItem(new GeneralParameter(), "-- Seleccione --"));
+			List<GeneralParameter> lstGeneralParameters = this.parametroGeneralService.obtenerListaParametros(propiedades.getComboTiposDocumento());
+			for(GeneralParameter g: lstGeneralParameters) {
+				this.lstTiposDocGenerales.add(new SelectItem(g, g.getParamValue()));
+			} 
+		} catch (BallartelyException e) {
+			String sMensaje = "Error en obtenerTiposDocumentoClientes";
+			this.logger.error(e.getMessage(), e);
+			throw new FacesException(sMensaje, e);
+		}
+	}
+	
+	public void obtenerTiposClientes() {
+		try {
+			this.lstTiposCliGenerales = new ArrayList<>();
+			this.lstTiposCliGenerales.add(new SelectItem(new GeneralParameter(), "-- Seleccione --"));
+			List<GeneralParameter> lstGeneralParameters = this.parametroGeneralService.obtenerListaParametros(propiedades.getComboTiposCliente());
+			for(GeneralParameter g: lstGeneralParameters) {
+				this.lstTiposCliGenerales.add(new SelectItem(g, g.getParamValue()));
+			} 
+		} catch (BallartelyException e) {
+			String sMensaje = "Error en obtenerTiposClientes";
 			this.logger.error(e.getMessage(), e);
 			throw new FacesException(sMensaje, e);
 		}
 	}
 
-	public List<String> completeDesc(String query) {
+	public List<String> completeNom(String query) {
 		List<String> results = new ArrayList<String>();
-		for (String s : this.lstDescEtiquetaProductoBUS) {
+		for (String s : this.lstNomClienteBUS) {
 			if (Utilitarios.compararCadenas(s, query.trim())) {
 				results.add(s);
 			}
@@ -228,9 +295,9 @@ public class ClienteMB {
 		return results;
 	}
 
-	public List<String> completeCod(String query) {
+	public List<String> completeRazSoc(String query) {
 		List<String> results = new ArrayList<String>();
-		for (String s : this.lstCodEtiquetaProductoBUS) {
+		for (String s : this.lstRazSocClienteBUS) {
 			if (Utilitarios.compararCadenas(s, query.trim())) {
 				results.add(s);
 			}
@@ -238,31 +305,31 @@ public class ClienteMB {
 		return results;
 	}
 
-	public ProductLabel getObjEtiquetaProductoMain() {
-		return this.objEtiquetaProductoMain;
+	public Client getObjClienteMain() {
+		return this.objClienteMain;
 	}
 
-	public void setObjEtiquetaProductoMain(ProductLabel objEtiquetaProductoMain) {
-		this.objEtiquetaProductoMain = objEtiquetaProductoMain;
+	public void setObjClienteMain(Client objClienteMain) {
+		this.objClienteMain = objClienteMain;
 	}
 	
-	public ProductLabel getObjEtiquetaProductoSearch() {
-		return objEtiquetaProductoSearch;
+	public Client getObjClienteSearch() {
+		return objClienteSearch;
 	}
 
-	public void setObjEtiquetaProductoSearch(ProductLabel objEtiquetaProductoSearch) {
-		this.objEtiquetaProductoSearch = objEtiquetaProductoSearch;
+	public void setObjClienteSearch(Client objClienteSearch) {
+		this.objClienteSearch = objClienteSearch;
 	}
 
-	public List<ProductLabel> getLstEtiquetaProductosMain() {
-		if ((this.lstEtiquetaProductosMain.isEmpty()) && (this.validaListaBuscar)) {
-			this.canRegTablaPrincipal = getListaPrincipalEtiquetaProductos();
+	public List<Client> getLstClientesMain() {
+		if ((this.lstClientesMain.isEmpty()) && (this.validaListaBuscar)) {
+			this.canRegTablaPrincipal = getListaPrincipalClientes();
 		}
-		return this.lstEtiquetaProductosMain;
+		return this.lstClientesMain;
 	}
 
-	public void setLstEtiquetaProductosMain(List<ProductLabel> lstEtiquetaProductosMain) {
-		this.lstEtiquetaProductosMain = lstEtiquetaProductosMain;
+	public void setLstClientesMain(List<Client> lstClientesMain) {
+		this.lstClientesMain = lstClientesMain;
 	}
 
 	public int getCanRegTablaPrincipal() {
@@ -274,7 +341,7 @@ public class ClienteMB {
 	}
 
 	public List<SelectItem> getLstEstadosGenerales() {
-		obtenerEstadosEtiquetaProductos();
+		obtenerEstadosClientes();
 		return this.lstEstadosGenerales;
 	}
 
@@ -282,28 +349,46 @@ public class ClienteMB {
 		this.lstEstadosGenerales = lstEstadosGenerales;
 	}
 	
-	public boolean isFlagConfirmEliEtiqProd() {
-		return this.flagConfirmEliEtiqProd;
+	public List<SelectItem> getLstTiposDocGenerales() {
+		obtenerTiposDocumentoClientes();
+		return lstTiposDocGenerales;
 	}
 
-	public void setFlagConfirmEliEtiqProd(boolean flagConfirmEliEtiqProd) {
-		this.flagConfirmEliEtiqProd = flagConfirmEliEtiqProd;
+	public void setLstTiposDocGenerales(List<SelectItem> lstTiposDocGenerales) {
+		this.lstTiposDocGenerales = lstTiposDocGenerales;
 	}
 
-	public List<String> getLstDescEtiquetaProductoBUS() {
-		return this.lstDescEtiquetaProductoBUS;
+	public List<SelectItem> getLstTiposCliGenerales() {
+		obtenerTiposClientes();
+		return lstTiposCliGenerales;
 	}
 
-	public void setLstDescEtiquetaProductoBUS(List<String> lstDescEtiquetaProductoBUS) {
-		this.lstDescEtiquetaProductoBUS = lstDescEtiquetaProductoBUS;
+	public void setLstTiposCliGenerales(List<SelectItem> lstTiposCliGenerales) {
+		this.lstTiposCliGenerales = lstTiposCliGenerales;
+	}
+	
+	public boolean isFlagConfirmEliClient() {
+		return this.flagConfirmEliClient;
 	}
 
-	public List<String> getLstCodEtiquetaProductoBUS() {
-		return this.lstCodEtiquetaProductoBUS;
+	public void setFlagConfirmEliClient(boolean flagConfirmEliClient) {
+		this.flagConfirmEliClient = flagConfirmEliClient;
 	}
 
-	public void setLstCodEtiquetaProductoBUS(List<String> lstCodEtiquetaProductoBUS) {
-		this.lstCodEtiquetaProductoBUS = lstCodEtiquetaProductoBUS;
+	public List<String> getLstRazSocClienteBUS() {
+		return lstRazSocClienteBUS;
+	}
+
+	public void setLstRazSocClienteBUS(List<String> lstRazSocClienteBUS) {
+		this.lstRazSocClienteBUS = lstRazSocClienteBUS;
+	}
+
+	public List<String> getLstNomClienteBUS() {
+		return lstNomClienteBUS;
+	}
+
+	public void setLstNomClienteBUS(List<String> lstNomClienteBUS) {
+		this.lstNomClienteBUS = lstNomClienteBUS;
 	}
 
 	public boolean isValidaListaBuscar() {
@@ -314,12 +399,12 @@ public class ClienteMB {
 		this.validaListaBuscar = validaListaBuscar;
 	}
 
-	public EtiquetaProductoService getEtiquetaProductoService() {
-		return etiquetaProductoService;
+	public ClienteService getClienteService() {
+		return clienteService;
 	}
 
-	public void setEtiquetaProductoService(EtiquetaProductoService etiquetaProductoService) {
-		this.etiquetaProductoService = etiquetaProductoService;
+	public void setClienteService(ClienteService clienteService) {
+		this.clienteService = clienteService;
 	}
 
 	public ParametroGeneralService getParametroGeneralService() {

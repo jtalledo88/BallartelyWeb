@@ -14,9 +14,12 @@ public class Propiedades {
 	@Value("${ballartelyweb.combo.status}")
 	private String comboEstados;
 	
-	private String documentTypeCodeRuc;
-	private String documentTypeCodeDni;
+	@Value("${ballartelyweb.combo.doctype}")
+	private String comboTiposDocumento;
 
+	@Value("${ballartelyweb.combo.clienttype}")
+	private String comboTiposCliente;
+	
 	public String getTiposParametro() {
 		return tiposParametro;
 	}
@@ -31,6 +34,22 @@ public class Propiedades {
 
 	public void setComboEstados(String comboEstados) {
 		this.comboEstados = comboEstados;
+	}
+
+	public String getComboTiposDocumento() {
+		return comboTiposDocumento;
+	}
+
+	public void setComboTiposDocumento(String comboTiposDocumento) {
+		this.comboTiposDocumento = comboTiposDocumento;
+	}
+
+	public String getComboTiposCliente() {
+		return comboTiposCliente;
+	}
+
+	public void setComboTiposCliente(String comboTiposCliente) {
+		this.comboTiposCliente = comboTiposCliente;
 	}
 	
 	

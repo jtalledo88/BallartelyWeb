@@ -2,6 +2,9 @@ package pe.com.foxsoft.ballartelyweb.jpa.data;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import pe.com.foxsoft.ballartelyweb.jpa.util.JPAUtil;
+
 import java.util.Date;
 
 
@@ -10,7 +13,7 @@ import java.util.Date;
  * 
  */
 @Entity
-@NamedQuery(name="Client.findAll", query="SELECT c FROM Client c")
+@NamedQuery(name=JPAUtil.NAMED_QUERY_ALL_CLIENT, query="SELECT c FROM Client c join fetch c.clientStatus join fetch c.clientType join fetch c.documentType")
 public class Client implements Serializable {
 	private static final long serialVersionUID = 1L;
 
