@@ -29,7 +29,6 @@ CREATE TABLE `client` (
   `document_type` int(11) NOT NULL,
   `document_number` varchar(11) NOT NULL,
   `client_names` varchar(450) DEFAULT NULL,
-  `client_social_reason` varchar(650) DEFAULT NULL,
   `client_address` varchar(500) NOT NULL,
   `client_phone_number` varchar(15) NOT NULL,
   `client_type` int(11) NOT NULL,
@@ -56,4 +55,4 @@ CREATE TABLE `client` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-25 12:39:53
+-- Dump completed on 2018-04-26 21:25:16

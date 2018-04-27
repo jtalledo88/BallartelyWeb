@@ -18,22 +18,23 @@ USE `db_ballartelyweb`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `user`
+-- Table structure for table `account`
 --
 
-DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS `account`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `user` (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_name` varchar(10) NOT NULL,
-  `user_password` varchar(8) NOT NULL,
-  `user_complete_names` varchar(450) NOT NULL,
-  `user_creation_date` datetime DEFAULT CURRENT_TIMESTAMP,
-  `user_modification_date` datetime DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`user_id`),
-  UNIQUE KEY `user_name_UNIQUE` (`user_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+CREATE TABLE `account` (
+  `account_id` int(20) unsigned zerofill NOT NULL AUTO_INCREMENT,
+  `account_creation_date` int(20) NOT NULL,
+  `account_owner` int(11) DEFAULT NULL,
+  `account_status` char(1) NOT NULL,
+  `account_type` char(1) NOT NULL,
+  PRIMARY KEY (`account_id`),
+  UNIQUE KEY `account_number_UNIQUE` (`account_creation_date`),
+  KEY `fk_account_client_idx` (`account_owner`),
+  CONSTRAINT `fk_account_client` FOREIGN KEY (`account_owner`) REFERENCES `client` (`client_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -45,4 +46,4 @@ CREATE TABLE `user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-26 21:25:17
+-- Dump completed on 2018-04-26 21:25:16
