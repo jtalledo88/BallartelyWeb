@@ -39,10 +39,8 @@ public class Provider implements Serializable {
 	@Column(name="provider_social_reason")
 	private String providerSocialReason;
 
-	//bi-directional many-to-one association to GeneralParameter
-	@ManyToOne
-	@JoinColumn(name="provider_status")
-	private GeneralParameter generalParameter;
+	@Column(name="provider_status")
+	private String providerStatus;
 
 	public Provider() {
 	}
@@ -103,12 +101,12 @@ public class Provider implements Serializable {
 		this.providerSocialReason = providerSocialReason;
 	}
 
-	public GeneralParameter getGeneralParameter() {
-		return this.generalParameter;
+	public String getProviderStatus() {
+		return this.providerStatus;
 	}
 
-	public void setGeneralParameter(GeneralParameter generalParameter) {
-		this.generalParameter = generalParameter;
+	public void setProviderStatus(String providerStatus) {
+		this.providerStatus = providerStatus;
 	}
 
 }

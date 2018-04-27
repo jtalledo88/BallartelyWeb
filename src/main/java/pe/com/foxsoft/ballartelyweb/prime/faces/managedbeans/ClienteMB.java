@@ -10,15 +10,17 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 
+import pe.com.foxsoft.ballartelyweb.jpa.data.Account;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Client;
 import pe.com.foxsoft.ballartelyweb.jpa.data.GeneralParameter;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
 import pe.com.foxsoft.ballartelyweb.spring.service.ClienteService;
+import pe.com.foxsoft.ballartelyweb.spring.service.CuentaService;
 import pe.com.foxsoft.ballartelyweb.spring.service.ParametroGeneralService;
+import pe.com.foxsoft.ballartelyweb.spring.util.Constantes;
 import pe.com.foxsoft.ballartelyweb.spring.util.Propiedades;
 import pe.com.foxsoft.ballartelyweb.spring.util.Utilitarios;
 
@@ -30,6 +32,9 @@ public class ClienteMB {
 
 	@ManagedProperty("#{clienteService}")
 	private ClienteService clienteService;
+	
+	@ManagedProperty("#{cuentaService}")
+	private CuentaService cuentaService;
 
 	@ManagedProperty("#{parametroGeneralService}")
 	private ParametroGeneralService parametroGeneralService;
@@ -41,9 +46,9 @@ public class ClienteMB {
 	private Client objClienteSearch;
 
 	private List<Client> lstClientesMain;
-	private List<SelectItem> lstEstadosGenerales;
-	private List<SelectItem> lstTiposDocGenerales;
-	private List<SelectItem> lstTiposCliGenerales;
+	private List<GeneralParameter> lstEstadosGenerales;
+	private List<GeneralParameter> lstTiposDocGenerales;
+	private List<GeneralParameter> lstTiposCliGenerales;
 	private List<String> lstNumDocClienteBUS;
 	private List<String> lstNomClienteBUS;
 	private boolean validaListaBuscar = true;
@@ -53,12 +58,12 @@ public class ClienteMB {
 	public ClienteMB() {
 		this.objClienteMain = new Client();
 		this.objClienteSearch = new Client();
-		this.lstClientesMain = new ArrayList<Client>();
-		this.lstEstadosGenerales = new ArrayList<SelectItem>();
+		this.lstClientesMain = new ArrayList<>();
+		this.lstEstadosGenerales = new ArrayList<>();
 		this.lstTiposDocGenerales = new ArrayList<>();
 		this.lstTiposCliGenerales = new ArrayList<>();
-		this.lstNumDocClienteBUS = new ArrayList<String>();
-		this.lstNomClienteBUS = new ArrayList<String>();
+		this.lstNumDocClienteBUS = new ArrayList<>();
+		this.lstNomClienteBUS = new ArrayList<>();
 	}
 
 	public void buscarClientes() {
@@ -77,11 +82,12 @@ public class ClienteMB {
 		String sMensaje = "";
 		
 		Client objCliente = new Client();
+		Account objAccount = new Account();
 		try {
-			if (this.objClienteMain.getDocumentType() == null) {
+			if ("".equals(this.objClienteMain.getDocumentType())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe seleccionar un tipo de documento.");
 				return;
-			} 
+			}
 			if ("".equals(this.objClienteMain.getDocumentNumber())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar el número de documento del cliente.");
 				return;
@@ -98,18 +104,19 @@ public class ClienteMB {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar el número de teléfono del cliente.");
 				return;
 			}
-			if (this.objClienteMain.getClientStatus() == null) {
+			if ("".equals(this.objClienteMain.getClientStatus())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe seleccionar un estado.");
 				return;
 			}
-			if (this.objClienteMain.getClientType() == null) {
+			if ("".equals(this.objClienteMain.getClientType())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe seleccionar un tipo de cliente.");
 				return;
-			} 
+			}
 			
 			
 			objCliente.setDocumentType(this.objClienteMain.getDocumentType());
 			objCliente.setDocumentNumber(this.objClienteMain.getDocumentNumber());
+			objCliente.setClientNames(this.objClienteMain.getClientNames());
 			objCliente.setClientAddress(this.objClienteMain.getClientAddress());
 			objCliente.setClientPhoneNumber(this.objClienteMain.getClientPhoneNumber());
 			objCliente.setClientStatus(this.objClienteMain.getClientStatus());
@@ -117,6 +124,12 @@ public class ClienteMB {
 			objCliente.setClientCreationDate(new Date());
 			
 			sMensaje = this.clienteService.agregarCliente(objCliente);
+			
+			objAccount.setAccountType(Constantes.ACCOUNT_TYPE_C);
+			objAccount.setAccountStatus(Constantes.STATUS_ACTIVE);
+			objAccount.setClient(this.clienteService.obtenerCliente(objCliente));
+			objAccount.setAccountCreationDate(new Date());
+			this.cuentaService.agregarCuenta(objAccount);
 			Utilitarios.mensaje("", sMensaje);
 			setLstClientesMain(new ArrayList<Client>());
 			this.canRegTablaPrincipal = getListaPrincipalClientes();
@@ -130,13 +143,13 @@ public class ClienteMB {
 
 	public void openAgregarCliente() {
 		this.objClienteMain = new Client();
-		this.objClienteMain.setDocumentType(new GeneralParameter());
+		this.objClienteMain.setDocumentType("");
 		this.objClienteMain.setDocumentNumber("");
 		this.objClienteMain.setClientNames("");
 		this.objClienteMain.setClientAddress("");
 		this.objClienteMain.setClientPhoneNumber("");
-		this.objClienteMain.setClientType(new GeneralParameter());
-		this.objClienteMain.setClientStatus(new GeneralParameter());
+		this.objClienteMain.setClientType("");
+		this.objClienteMain.setClientStatus("");
 	}
 
 	public void openEditarCliente() {
@@ -158,10 +171,10 @@ public class ClienteMB {
 		String sMensaje = "";
 		
 		try {
-			if (this.objClienteMain.getDocumentType() == null) {
+			if ("".equals(this.objClienteMain.getDocumentType())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe seleccionar un tipo de documento.");
 				return;
-			} 
+			}
 			if ("".equals(this.objClienteMain.getDocumentNumber())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar el número de documento del cliente.");
 				return;
@@ -178,11 +191,11 @@ public class ClienteMB {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar el número de teléfono del cliente.");
 				return;
 			}
-			if (this.objClienteMain.getClientStatus() == null) {
+			if ("".equals(this.objClienteMain.getClientStatus())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe seleccionar un estado.");
 				return;
 			}
-			if (this.objClienteMain.getClientType() == null) {
+			if ("".equals(this.objClienteMain.getClientType())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe seleccionar un tipo de cliente.");
 				return;
 			}
@@ -241,12 +254,7 @@ public class ClienteMB {
 
 	public void obtenerEstadosClientes() {
 		try {
-			this.lstEstadosGenerales = new ArrayList<>();
-			this.lstEstadosGenerales.add(new SelectItem(new GeneralParameter(), "-- Seleccione --"));
-			List<GeneralParameter> lstGeneralParameters = this.parametroGeneralService.obtenerListaParametros(propiedades.getComboEstados());
-			for(GeneralParameter g: lstGeneralParameters) {
-				this.lstEstadosGenerales.add(new SelectItem(g, g.getParamValue()));
-			} 
+			this.lstEstadosGenerales = this.parametroGeneralService.obtenerListaParametros(propiedades.getComboEstados());
 		} catch (BallartelyException e) {
 			String sMensaje = "Error en obtenerEstadosClientes";
 			this.logger.error(e.getMessage(), e);
@@ -256,12 +264,7 @@ public class ClienteMB {
 	
 	public void obtenerTiposDocumentoClientes() {
 		try {
-			this.lstTiposDocGenerales = new ArrayList<>();
-			this.lstTiposDocGenerales.add(new SelectItem(new GeneralParameter(), "-- Seleccione --"));
-			List<GeneralParameter> lstGeneralParameters = this.parametroGeneralService.obtenerListaParametros(propiedades.getComboTiposDocumento());
-			for(GeneralParameter g: lstGeneralParameters) {
-				this.lstTiposDocGenerales.add(new SelectItem(g, g.getParamValue()));
-			} 
+			this.lstTiposDocGenerales = this.parametroGeneralService.obtenerListaParametros(propiedades.getComboTiposDocumento());
 		} catch (BallartelyException e) {
 			String sMensaje = "Error en obtenerTiposDocumentoClientes";
 			this.logger.error(e.getMessage(), e);
@@ -271,12 +274,7 @@ public class ClienteMB {
 	
 	public void obtenerTiposClientes() {
 		try {
-			this.lstTiposCliGenerales = new ArrayList<>();
-			this.lstTiposCliGenerales.add(new SelectItem(new GeneralParameter(), "-- Seleccione --"));
-			List<GeneralParameter> lstGeneralParameters = this.parametroGeneralService.obtenerListaParametros(propiedades.getComboTiposCliente());
-			for(GeneralParameter g: lstGeneralParameters) {
-				this.lstTiposCliGenerales.add(new SelectItem(g, g.getParamValue()));
-			} 
+			this.lstTiposCliGenerales = this.parametroGeneralService.obtenerListaParametros(propiedades.getComboTiposCliente());
 		} catch (BallartelyException e) {
 			String sMensaje = "Error en obtenerTiposClientes";
 			this.logger.error(e.getMessage(), e);
@@ -339,30 +337,30 @@ public class ClienteMB {
 		this.canRegTablaPrincipal = canRegTablaPrincipal;
 	}
 
-	public List<SelectItem> getLstEstadosGenerales() {
+	public List<GeneralParameter> getLstEstadosGenerales() {
 		obtenerEstadosClientes();
 		return this.lstEstadosGenerales;
 	}
 
-	public void setLstEstadosGenerales(List<SelectItem> lstEstadosGenerales) {
+	public void setLstEstadosGenerales(List<GeneralParameter> lstEstadosGenerales) {
 		this.lstEstadosGenerales = lstEstadosGenerales;
 	}
 	
-	public List<SelectItem> getLstTiposDocGenerales() {
+	public List<GeneralParameter> getLstTiposDocGenerales() {
 		obtenerTiposDocumentoClientes();
 		return lstTiposDocGenerales;
 	}
 
-	public void setLstTiposDocGenerales(List<SelectItem> lstTiposDocGenerales) {
+	public void setLstTiposDocGenerales(List<GeneralParameter> lstTiposDocGenerales) {
 		this.lstTiposDocGenerales = lstTiposDocGenerales;
 	}
 
-	public List<SelectItem> getLstTiposCliGenerales() {
+	public List<GeneralParameter> getLstTiposCliGenerales() {
 		obtenerTiposClientes();
 		return lstTiposCliGenerales;
 	}
 
-	public void setLstTiposCliGenerales(List<SelectItem> lstTiposCliGenerales) {
+	public void setLstTiposCliGenerales(List<GeneralParameter> lstTiposCliGenerales) {
 		this.lstTiposCliGenerales = lstTiposCliGenerales;
 	}
 	
@@ -404,6 +402,14 @@ public class ClienteMB {
 
 	public void setClienteService(ClienteService clienteService) {
 		this.clienteService = clienteService;
+	}
+
+	public CuentaService getCuentaService() {
+		return cuentaService;
+	}
+
+	public void setCuentaService(CuentaService cuentaService) {
+		this.cuentaService = cuentaService;
 	}
 
 	public ParametroGeneralService getParametroGeneralService() {

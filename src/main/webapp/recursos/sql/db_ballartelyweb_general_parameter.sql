@@ -35,7 +35,7 @@ CREATE TABLE `general_parameter` (
   `param_status` char(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`param_id`),
   UNIQUE KEY `param_code_UNIQUE` (`param_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -47,4 +47,4 @@ CREATE TABLE `general_parameter` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-26 21:25:16
+-- Dump completed on 2018-04-27 18:02:19

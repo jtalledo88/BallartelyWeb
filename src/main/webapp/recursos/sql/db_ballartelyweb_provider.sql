@@ -32,11 +32,9 @@ CREATE TABLE `provider` (
   `provider_phon_number` varchar(15) NOT NULL,
   `provider_creation_date` datetime DEFAULT NULL,
   `provider_modification_date` datetime DEFAULT NULL,
-  `provider_status` int(11) NOT NULL,
+  `provider_status` varchar(10) NOT NULL,
   PRIMARY KEY (`provider_id`),
-  UNIQUE KEY `provider_ruc_UNIQUE` (`provider_ruc`),
-  KEY `fk_provider_status_idx` (`provider_status`),
-  CONSTRAINT `fk_provider_status` FOREIGN KEY (`provider_status`) REFERENCES `general_parameter` (`param_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  UNIQUE KEY `provider_ruc_UNIQUE` (`provider_ruc`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -49,4 +47,4 @@ CREATE TABLE `provider` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-26 21:25:17
+-- Dump completed on 2018-04-27 18:02:20

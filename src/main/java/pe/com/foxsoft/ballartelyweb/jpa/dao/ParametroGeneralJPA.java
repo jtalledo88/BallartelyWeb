@@ -30,6 +30,21 @@ public class ParametroGeneralJPA {
 		}
 	}
 	
+	public GeneralParameter getGeneralParameterDataBase(EntityManager em, String paramCode) throws BallartelyException {
+		try {
+			TypedQuery<GeneralParameter> queryGeneralParameter = em.createQuery(
+					"select g from GeneralParameter g where g.paramCode = :paramCode and g.paramStatus = :paramStatus", GeneralParameter.class);
+			queryGeneralParameter.setParameter("paramCode", paramCode);
+			queryGeneralParameter.setParameter("paramStatus", "1");
+			
+			return queryGeneralParameter.getSingleResult();
+		} catch (NoResultException nre) {
+			throw new BallartelyException(BallartelyException.NO_RESULT_ERROR, nre.getMessage());
+		} catch (Exception e) {
+			throw new BallartelyException(BallartelyException.GENERAL_ERROR, e.getMessage());
+		}
+	}
+	
 	public List<GeneralParameter> getGeneralParametersDataBase(EntityManager em, GeneralParameter generalParameter) throws BallartelyException {
 		try {
 			TypedQuery<GeneralParameter> queryProductLabel = em.createQuery(

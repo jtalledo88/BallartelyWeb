@@ -3,7 +3,6 @@ package pe.com.foxsoft.ballartelyweb.jpa.data;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 
 /**
@@ -43,26 +42,6 @@ public class GeneralParameter implements Serializable {
 
 	@Column(name="param_value")
 	private String paramValue;
-
-	//bi-directional many-to-one association to Client
-	@OneToMany(mappedBy="clientStatus")
-	private List<Client> clients1;
-
-	//bi-directional many-to-one association to Client
-	@OneToMany(mappedBy="clientType")
-	private List<Client> clients2;
-
-	//bi-directional many-to-one association to Client
-	@OneToMany(mappedBy="documentType")
-	private List<Client> clients3;
-
-	//bi-directional many-to-one association to ProductLabel
-	@OneToMany(mappedBy="productLabelStatus")
-	private List<ProductLabel> productLabels;
-
-	//bi-directional many-to-one association to Provider
-	@OneToMany(mappedBy="generalParameter")
-	private List<Provider> providers;
 
 	public GeneralParameter() {
 	}
@@ -129,116 +108,6 @@ public class GeneralParameter implements Serializable {
 
 	public void setParamValue(String paramValue) {
 		this.paramValue = paramValue;
-	}
-
-	public List<Client> getClients1() {
-		return this.clients1;
-	}
-
-	public void setClients1(List<Client> clients1) {
-		this.clients1 = clients1;
-	}
-
-	public Client addClients1(Client clients1) {
-		getClients1().add(clients1);
-		clients1.setClientStatus(this);
-
-		return clients1;
-	}
-
-	public Client removeClients1(Client clients1) {
-		getClients1().remove(clients1);
-		clients1.setClientStatus(null);
-
-		return clients1;
-	}
-
-	public List<Client> getClients2() {
-		return this.clients2;
-	}
-
-	public void setClients2(List<Client> clients2) {
-		this.clients2 = clients2;
-	}
-
-	public Client addClients2(Client clients2) {
-		getClients2().add(clients2);
-		clients2.setClientType(this);
-
-		return clients2;
-	}
-
-	public Client removeClients2(Client clients2) {
-		getClients2().remove(clients2);
-		clients2.setClientType(null);
-
-		return clients2;
-	}
-
-	public List<Client> getClients3() {
-		return this.clients3;
-	}
-
-	public void setClients3(List<Client> clients3) {
-		this.clients3 = clients3;
-	}
-
-	public Client addClients3(Client clients3) {
-		getClients3().add(clients3);
-		clients3.setDocumentType(this);
-
-		return clients3;
-	}
-
-	public Client removeClients3(Client clients3) {
-		getClients3().remove(clients3);
-		clients3.setDocumentType(null);
-
-		return clients3;
-	}
-
-	public List<ProductLabel> getProductLabels() {
-		return this.productLabels;
-	}
-
-	public void setProductLabels(List<ProductLabel> productLabels) {
-		this.productLabels = productLabels;
-	}
-
-	public ProductLabel addProductLabel(ProductLabel productLabel) {
-		getProductLabels().add(productLabel);
-		productLabel.setProductLabelStatus(this);
-
-		return productLabel;
-	}
-
-	public ProductLabel removeProductLabel(ProductLabel productLabel) {
-		getProductLabels().remove(productLabel);
-		productLabel.setProductLabelStatus(null);
-
-		return productLabel;
-	}
-
-	public List<Provider> getProviders() {
-		return this.providers;
-	}
-
-	public void setProviders(List<Provider> providers) {
-		this.providers = providers;
-	}
-
-	public Provider addProvider(Provider provider) {
-		getProviders().add(provider);
-		provider.setGeneralParameter(this);
-
-		return provider;
-	}
-
-	public Provider removeProvider(Provider provider) {
-		getProviders().remove(provider);
-		provider.setGeneralParameter(null);
-
-		return provider;
 	}
 
 }

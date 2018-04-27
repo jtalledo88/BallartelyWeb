@@ -51,6 +51,11 @@ public class ClienteService {
 	}
 
 	@Transactional(readOnly=true, noRollbackFor=BallartelyException.class)
+	public Client obtenerCliente(Client client) throws BallartelyException {
+		return clienteJPA.getClientByDocNumberDataBase(em, client);
+	}
+	
+	@Transactional(readOnly=true, noRollbackFor=BallartelyException.class)
 	public Client obtenerCliente(int itemClient) throws BallartelyException {
 		return JPAUtil.findEntity(em, Client.class, itemClient);
 	}

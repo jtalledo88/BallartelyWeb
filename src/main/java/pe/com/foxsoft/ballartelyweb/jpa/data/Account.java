@@ -1,6 +1,8 @@
 package pe.com.foxsoft.ballartelyweb.jpa.data;
 
 import java.io.Serializable;
+import java.util.Date;
+
 import javax.persistence.*;
 
 
@@ -18,8 +20,13 @@ public class Account implements Serializable {
 	@Column(name="account_id")
 	private int accountId;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="account_creation_date")
-	private int accountCreationDate;
+	private Date accountCreationDate;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="account_modification_date")
+	private Date accountModificationDate;
 
 	@Column(name="account_status")
 	private String accountStatus;
@@ -43,12 +50,20 @@ public class Account implements Serializable {
 		this.accountId = accountId;
 	}
 
-	public int getAccountCreationDate() {
+	public Date getAccountCreationDate() {
 		return this.accountCreationDate;
 	}
 
-	public void setAccountCreationDate(int accountCreationDate) {
+	public void setAccountCreationDate(Date accountCreationDate) {
 		this.accountCreationDate = accountCreationDate;
+	}
+
+	public Date getAccountModificationDate() {
+		return accountModificationDate;
+	}
+
+	public void setAccountModificationDate(Date accountModificationDate) {
+		this.accountModificationDate = accountModificationDate;
 	}
 
 	public String getAccountStatus() {

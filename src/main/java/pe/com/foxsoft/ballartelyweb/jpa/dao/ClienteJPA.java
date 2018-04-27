@@ -16,17 +16,31 @@ public class ClienteJPA {
 	
 	public List<Client> getClientsDataBase(EntityManager em, Client client) throws BallartelyException {
 		try {
-			TypedQuery<Client> queryProductLabel = em.createQuery(
+			TypedQuery<Client> queryClients = em.createQuery(
 					"select c from Client c join fetch c.clientStatus cs join fetch c.clientType ct join fetch c.documentType dt "
 					+ "where c.clientNames = :clientNames or c.documentNumber =:documentNumber or cs.paramId = :clientStatus or "
 					+ "or ct.paramId =:clientType or dt.paramId =:documentType", Client.class);
-			queryProductLabel.setParameter("clientNames", client.getClientNames());
-			queryProductLabel.setParameter("documentNumber", client.getDocumentNumber());
-			queryProductLabel.setParameter("clientStatus", client.getClientStatus().getParamId());
-			queryProductLabel.setParameter("clientType", client.getClientType().getParamId());
-			queryProductLabel.setParameter("documentType", client.getDocumentType().getParamId());
+			queryClients.setParameter("clientNames", client.getClientNames());
+			queryClients.setParameter("documentNumber", client.getDocumentNumber());
+			queryClients.setParameter("clientStatus", client.getClientStatus());
+			queryClients.setParameter("clientType", client.getClientType());
+			queryClients.setParameter("documentType", client.getDocumentType());
 			
-			return queryProductLabel.getResultList();
+			return queryClients.getResultList();
+		} catch (NoResultException nre) {
+			throw new BallartelyException(BallartelyException.NO_RESULT_ERROR, nre.getMessage());
+		} catch (Exception e) {
+			throw new BallartelyException(BallartelyException.GENERAL_ERROR, e.getMessage());
+		}
+	}
+	
+	public Client getClientByDocNumberDataBase(EntityManager em, Client client) throws BallartelyException {
+		try {
+			TypedQuery<Client> queryClient = em.createQuery(
+					"select c from Client c where c.documentNumber = :documentNumber", Client.class);
+			queryClient.setParameter("documentNumber", client.getDocumentNumber());
+			
+			return queryClient.getSingleResult();
 		} catch (NoResultException nre) {
 			throw new BallartelyException(BallartelyException.NO_RESULT_ERROR, nre.getMessage());
 		} catch (Exception e) {

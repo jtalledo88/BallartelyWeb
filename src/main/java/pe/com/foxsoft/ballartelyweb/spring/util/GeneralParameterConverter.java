@@ -18,13 +18,6 @@ public class GeneralParameterConverter implements Converter{
 	
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
-		try {
-			return parametroGeneralService.obtenerParametroGeneral(Integer.parseInt(value));
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		} catch (BallartelyException e) {
-			e.printStackTrace();
-		}
 		return null;
 	}
 
@@ -32,7 +25,19 @@ public class GeneralParameterConverter implements Converter{
 	public String getAsString(FacesContext context, UIComponent component, Object value) {
 		if(value == null)
 			return null;
-		return String.valueOf(((GeneralParameter)value).getParamId());
+		GeneralParameter generalParameter = null;
+		try {
+			generalParameter = parametroGeneralService.obtenerParametroGeneral((String)value);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (BallartelyException e) {
+			e.printStackTrace();
+		}
+		
+		if(generalParameter == null)
+			return null;
+		
+		return generalParameter.getParamValue();
 	}
 
 	public ParametroGeneralService getParametroGeneralService() {

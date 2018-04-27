@@ -26,24 +26,18 @@ DROP TABLE IF EXISTS `client`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `client` (
   `client_id` int(11) NOT NULL AUTO_INCREMENT,
-  `document_type` int(11) NOT NULL,
+  `document_type` varchar(10) NOT NULL,
   `document_number` varchar(11) NOT NULL,
   `client_names` varchar(450) DEFAULT NULL,
   `client_address` varchar(500) NOT NULL,
   `client_phone_number` varchar(15) NOT NULL,
-  `client_type` int(11) NOT NULL,
+  `client_type` varchar(10) NOT NULL,
   `client_creation_date` datetime DEFAULT NULL,
   `client_modification_date` datetime DEFAULT NULL,
-  `client_status` int(11) NOT NULL,
+  `client_status` varchar(10) NOT NULL,
   PRIMARY KEY (`client_id`),
-  UNIQUE KEY `document_number_UNIQUE` (`document_number`),
-  KEY `fk_client_documenttype_idx` (`document_type`),
-  KEY `fk_client_clienttype_idx` (`client_type`),
-  KEY `fk_client_clientstatus_idx` (`client_status`),
-  CONSTRAINT `fk_client_clientstatus` FOREIGN KEY (`client_status`) REFERENCES `general_parameter` (`param_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_client_clienttype` FOREIGN KEY (`client_type`) REFERENCES `general_parameter` (`param_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_client_documenttype` FOREIGN KEY (`document_type`) REFERENCES `general_parameter` (`param_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  UNIQUE KEY `document_number_UNIQUE` (`document_number`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -55,4 +49,4 @@ CREATE TABLE `client` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-26 21:25:16
+-- Dump completed on 2018-04-27 18:02:19

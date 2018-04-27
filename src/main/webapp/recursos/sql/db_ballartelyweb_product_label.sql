@@ -30,12 +30,10 @@ CREATE TABLE `product_label` (
   `product_label_description` varchar(250) NOT NULL,
   `product_label_creation_date` datetime DEFAULT CURRENT_TIMESTAMP,
   `product_label_modification_date` datetime DEFAULT CURRENT_TIMESTAMP,
-  `product_label_status` int(11) NOT NULL,
+  `product_label_status` varchar(10) NOT NULL,
   PRIMARY KEY (`product_label_id`),
-  UNIQUE KEY `product_label_code_UNIQUE` (`product_label_code`),
-  KEY `fk_productlabel_status_idx` (`product_label_status`),
-  CONSTRAINT `fk_productlabel_status` FOREIGN KEY (`product_label_status`) REFERENCES `general_parameter` (`param_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  UNIQUE KEY `product_label_code_UNIQUE` (`product_label_code`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -47,4 +45,4 @@ CREATE TABLE `product_label` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-26 21:25:17
+-- Dump completed on 2018-04-27 18:02:19

@@ -8,6 +8,7 @@ import pe.com.foxsoft.ballartelyweb.jpa.data.User;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
 import pe.com.foxsoft.ballartelyweb.spring.service.LoginService;
 import pe.com.foxsoft.ballartelyweb.spring.util.Constantes;
+import pe.com.foxsoft.ballartelyweb.spring.util.EncriptacionUtil;
 import pe.com.foxsoft.ballartelyweb.spring.util.Utilitarios;
 
 @ManagedBean
@@ -47,6 +48,7 @@ public class LoginMB {
 			}
 			
 			usuario.setUserName(usuario.getUserName().toUpperCase());
+			usuario.setUserPassword(EncriptacionUtil.encriptar(Constantes.ENCRIPTATION_KEY, usuario.getUserPassword()));
 			usuario = loginService.getUser(usuario);
 			Utilitarios.putObjectInSession(Constantes.SESSION_USUARIO_ATTR, usuario);
 		} catch (BallartelyException e) {

@@ -34,10 +34,8 @@ public class ProductLabel implements Serializable {
 	@Column(name="product_label_modification_date")
 	private Date productLabelModificationDate;
 
-	//bi-directional many-to-one association to GeneralParameter
-	@ManyToOne
-	@JoinColumn(name="product_label_status")
-	private GeneralParameter productLabelStatus;
+	@Column(name="product_label_status")
+	private String productLabelStatus;
 
 	public ProductLabel() {
 	}
@@ -82,11 +80,11 @@ public class ProductLabel implements Serializable {
 		this.productLabelModificationDate = productLabelModificationDate;
 	}
 
-	public GeneralParameter getProductLabelStatus() {
+	public String getProductLabelStatus() {
 		return this.productLabelStatus;
 	}
 
-	public void setProductLabelStatus(GeneralParameter productLabelStatus) {
+	public void setProductLabelStatus(String productLabelStatus) {
 		this.productLabelStatus = productLabelStatus;
 	}
 

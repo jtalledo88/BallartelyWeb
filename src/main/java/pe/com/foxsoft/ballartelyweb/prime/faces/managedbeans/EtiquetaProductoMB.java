@@ -10,7 +10,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 
@@ -41,7 +40,7 @@ public class EtiquetaProductoMB {
 	private ProductLabel objEtiquetaProductoSearch;
 
 	private List<ProductLabel> lstEtiquetaProductosMain;
-	private List<SelectItem> lstEstadosGenerales;
+	private List<GeneralParameter> lstEstadosGenerales;
 	private List<String> lstDescEtiquetaProductoBUS;
 	private List<String> lstCodEtiquetaProductoBUS;
 	private boolean validaListaBuscar = true;
@@ -52,7 +51,7 @@ public class EtiquetaProductoMB {
 		this.objEtiquetaProductoMain = new ProductLabel();
 		this.objEtiquetaProductoSearch = new ProductLabel();
 		this.lstEtiquetaProductosMain = new ArrayList<ProductLabel>();
-		this.lstEstadosGenerales = new ArrayList<SelectItem>();
+		this.lstEstadosGenerales = new ArrayList<GeneralParameter>();
 		this.lstCodEtiquetaProductoBUS = new ArrayList<String>();
 		this.lstDescEtiquetaProductoBUS = new ArrayList<String>();
 	}
@@ -108,7 +107,7 @@ public class EtiquetaProductoMB {
 		this.objEtiquetaProductoMain = new ProductLabel();
 		this.objEtiquetaProductoMain.setProductLabelCode("");
 		this.objEtiquetaProductoMain.setProductLabelDescription("");
-		this.objEtiquetaProductoMain.setProductLabelStatus(new GeneralParameter());
+		this.objEtiquetaProductoMain.setProductLabelStatus("");
 	}
 
 	public void openEditarEtiquetaProducto() {
@@ -197,12 +196,7 @@ public class EtiquetaProductoMB {
 
 	public void obtenerEstadosEtiquetaProductos() {
 		try {
-			this.lstEstadosGenerales = new ArrayList<>();
-			this.lstEstadosGenerales.add(new SelectItem(new GeneralParameter(), "-- Seleccione --"));
-			List<GeneralParameter> lstGeneralParameters = this.parametroGeneralService.obtenerListaParametros(propiedades.getComboEstados());
-			for(GeneralParameter g: lstGeneralParameters) {
-				this.lstEstadosGenerales.add(new SelectItem(g, g.getParamValue()));
-			} 
+			this.lstEstadosGenerales = this.parametroGeneralService.obtenerListaParametros(propiedades.getComboEstados());
 		} catch (BallartelyException e) {
 			String sMensaje = "Error en obtenerEstadosEtiquetaProductos";
 			this.logger.error(e.getMessage(), e);
@@ -265,12 +259,12 @@ public class EtiquetaProductoMB {
 		this.canRegTablaPrincipal = canRegTablaPrincipal;
 	}
 
-	public List<SelectItem> getLstEstadosGenerales() {
+	public List<GeneralParameter> getLstEstadosGenerales() {
 		obtenerEstadosEtiquetaProductos();
 		return this.lstEstadosGenerales;
 	}
 
-	public void setLstEstadosGenerales(List<SelectItem> lstEstadosGenerales) {
+	public void setLstEstadosGenerales(List<GeneralParameter> lstEstadosGenerales) {
 		this.lstEstadosGenerales = lstEstadosGenerales;
 	}
 	

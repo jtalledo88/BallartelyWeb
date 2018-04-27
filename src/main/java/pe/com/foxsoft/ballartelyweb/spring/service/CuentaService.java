@@ -1,0 +1,55 @@
+package pe.com.foxsoft.ballartelyweb.spring.service;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import pe.com.foxsoft.ballartelyweb.jpa.data.Account;
+import pe.com.foxsoft.ballartelyweb.jpa.util.JPAUtil;
+import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
+
+@Component
+public class CuentaService {
+	
+	
+	private EntityManager em;
+	
+	public EntityManager getEm() {
+		return em;
+	}
+	
+	@PersistenceContext
+	public void setEm(EntityManager em) {
+		this.em = em;
+	}
+
+	@Transactional(readOnly=false, rollbackFor=Throwable.class)
+	public String agregarCuenta(Account account) throws BallartelyException {
+		return JPAUtil.persistEntity(em, account);
+	}
+
+	@Transactional(readOnly=true, noRollbackFor=BallartelyException.class)
+	public Account obtenerCuenta(int itemAccount) throws BallartelyException {
+		return JPAUtil.findEntity(em, Account.class, itemAccount);
+	}
+
+	@Transactional(readOnly=false, rollbackFor=Throwable.class)
+	public String editarCuenta(Account account) throws BallartelyException {
+		return JPAUtil.mergeEntity(em, account);
+	}
+
+	@Transactional(readOnly=false, rollbackFor=Throwable.class)
+	public String eliminarCuenta(Account account) throws BallartelyException {
+		return JPAUtil.removeEntity(em, account);
+	}
+
+	@Transactional(readOnly=true, noRollbackFor=BallartelyException.class)
+	public List<Account> getListaCuentas() throws BallartelyException {
+		return JPAUtil.executeQueryList(em, Account.class, JPAUtil.NAMED_QUERY_ALL_ACCOUNT);
+	}
+
+}

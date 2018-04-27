@@ -59,6 +59,11 @@ public class ParametroGeneralService {
 	public GeneralParameter obtenerParametroGeneral(Integer itemGeneralParameter) throws BallartelyException {
 		return JPAUtil.findEntity(em, GeneralParameter.class, itemGeneralParameter);
 	}
+	
+	@Transactional(readOnly=true, noRollbackFor=BallartelyException.class)
+	public GeneralParameter obtenerParametroGeneral(String codeGeneralParameter) throws BallartelyException {
+		return parametroGeneralJPA.getGeneralParameterDataBase(em, codeGeneralParameter);
+	}
 
 	@Transactional(readOnly=false, rollbackFor=Throwable.class)
 	public String editarParametroGeneral(GeneralParameter generalParameter) throws BallartelyException {

@@ -27,13 +27,13 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_name` varchar(10) NOT NULL,
-  `user_password` varchar(8) NOT NULL,
+  `user_password` varchar(100) NOT NULL,
   `user_complete_names` varchar(450) NOT NULL,
-  `user_creation_date` datetime DEFAULT CURRENT_TIMESTAMP,
-  `user_modification_date` datetime DEFAULT CURRENT_TIMESTAMP,
+  `user_creation_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `user_modification_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_name_UNIQUE` (`user_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -45,4 +45,4 @@ CREATE TABLE `user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-26 21:25:17
+-- Dump completed on 2018-04-27 18:02:19

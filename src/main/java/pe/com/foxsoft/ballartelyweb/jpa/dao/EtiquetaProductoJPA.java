@@ -21,7 +21,7 @@ public class EtiquetaProductoJPA {
 					+ "or p.productLabelDescription like :productLabelDescription or ps.paramId =:productLabelStatus", ProductLabel.class);
 			queryProductLabel.setParameter("productLabelCode", productLabel.getProductLabelCode());
 			queryProductLabel.setParameter("productLabelDescription", productLabel.getProductLabelDescription());
-			queryProductLabel.setParameter("productLabelStatus", productLabel.getProductLabelStatus().getParamId());
+			queryProductLabel.setParameter("productLabelStatus", productLabel.getProductLabelStatus());
 			
 			return queryProductLabel.getResultList();
 		} catch (NoResultException nre) {

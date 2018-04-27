@@ -28,14 +28,16 @@
 						<div class="mitad">
 							<div class="completo">
 								<div class="tercio">
-									<h:outputLabel for="cboTipoDoc" value="Tipo Documeto:" />
+									<h:outputLabel for="cboTipoDoc" value="Tipo Documento:" />
 								</div>
 								<div class="dostercios">
 									<div class="combo">
 										<p:selectOneMenu id="cboTipoDoc"
 											value="#{clienteMB.objClienteSearch.documentType}">
-											<f:selectItems value="#{clienteMB.lstTiposDocGenerales}" />
-											<f:converter binding="#{generalParameterConverter}" />
+											<f:selectItem itemLabel="-- Todos --" itemValue=""/>
+											<f:selectItems value="#{clienteMB.lstTiposDocGenerales}" 
+												var="tipoDocGeneral" itemLabel="#{tipoDocGeneral.paramValue}"
+												itemValue="#{tipoDocGeneral.paramCode}"/>
 										</p:selectOneMenu>
 									</div>
 									<div class="tooltip">
@@ -76,8 +78,10 @@
 									<div class="combo">
 										<p:selectOneMenu id="cboTipoCli"
 											value="#{clienteMB.objClienteSearch.clientType}">
-											<f:selectItems value="#{clienteMB.lstTiposCliGenerales}" />
-											<f:converter binding="#{generalParameterConverter}" />
+											<f:selectItem itemLabel="-- Todos -- " itemValue=""/>
+											<f:selectItems value="#{clienteMB.lstTiposCliGenerales}" 
+												var="tipoCliGeneral" itemLabel="#{tipoCliGeneral.paramValue}"
+												itemValue="#{tipoCliGeneral.paramCode}"/>
 										</p:selectOneMenu>
 									</div>
 									<div class="tooltip">
@@ -119,8 +123,10 @@
 									<div class="combo">
 										<p:selectOneMenu id="cboEstado"
 											value="#{clienteMB.objClienteSearch.clientStatus}">
-											<f:selectItems value="#{clienteMB.lstEstadosGenerales}" />
-											<f:converter binding="#{generalParameterConverter}" />
+											<f:selectItem itemLabel="-- Todos --" itemValue=""/>
+											<f:selectItems value="#{clienteMB.lstEstadosGenerales}"
+												var="estadoGeneral" itemLabel="#{estadoGeneral.paramValue}"
+												itemValue="#{estadoGeneral.paramCode}"/>
 										</p:selectOneMenu>
 									</div>
 									<div class="tooltip">
@@ -146,7 +152,7 @@
 			<p:separator />
 
 			<div class="opcionesTabla" style="text-align: left;">
-				<p:commandButton value="Agregar Etiqueta Producto"
+				<p:commandButton value="Agregar Cliente"
 					icon="ui-icon-plus"
 					actionListener="#{clienteMB.openAgregarCliente}"
 					oncomplete="PF('dlgAgregarCliente').show()"
@@ -223,19 +229,19 @@
 						<f:facet name="header">
 							<h:outputText value="Tipo Documento" />
 						</f:facet>
-						<h:outputText value="#{cliente.documentType.paramValue}" />
+						<h:outputText value="#{cliente.documentType}" converter="#{generalParameterConverter}" />
 					</p:column>
 					<p:column styleClass="oficina">
 						<f:facet name="header">
 							<h:outputText value="Número Documento" />
 						</f:facet>
-						<h:outputText value="#{cliente.clientCode}" />
+						<h:outputText value="#{cliente.documentNumber}" />
 					</p:column>
 					<p:column styleClass="oficina">
 						<f:facet name="header">
 							<h:outputText value="Tipo Cliente" />
 						</f:facet>
-						<h:outputText value="#{cliente.clientType.paramValue}" />
+						<h:outputText value="#{cliente.clientType}" converter="#{generalParameterConverter}" />
 					</p:column>
 					<p:column styleClass="oficina">
 						<f:facet name="header">
@@ -259,7 +265,7 @@
 						<f:facet name="header">
 							<h:outputText value="Estado" />
 						</f:facet>
-						<h:outputText value="#{cliente.clientStatus.paramValue}" />
+						<h:outputText value="#{cliente.clientStatus}" converter="#{generalParameterConverter}" />
 					</p:column>
 					<p:column styleClass="fecha">
 						<f:facet name="header">
@@ -314,10 +320,10 @@
 									<div class="combo">
 										<p:selectOneMenu id="cboTipoDoc"
 											value="#{clienteMB.objClienteMain.documentType}">
+											<f:selectItem itemLabel="-- Seleccione --"/>
 											<f:selectItems value="#{clienteMB.lstTiposDocGenerales}"
-												var="tipoDocNew" />
-											<f:converter binding="#{generalParameterConverter}"
-												for="tipoDocNew" />
+												var="tipoDocGeneral" itemLabel="#{tipoDocGeneral.paramValue}"
+												itemValue="#{tipoDocGeneral.paramCode}"/>
 										</p:selectOneMenu>
 									</div>
 									<div class="tooltip">
@@ -350,6 +356,26 @@
 							</div>
 							<div class="completo">
 								<div class="tercio">
+									<h:outputLabel for="txtNumTelefonoNuevo"
+										value="Número de Teléfono:" />
+									<h:outputLabel value="*" style="Color:red" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtNumTelefonoNuevo"
+											value="#{clienteMB.objClienteMain.clientPhoneNumber}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgNumTelefonoNuevo"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgNumTelefonoNuevo"
+											value="Número de teléfono del cliente" />
+									</div>
+								</div>
+								<p:message for="txtNumTelefonoNuevo" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
 									<h:outputLabel for="cboEstado" value="Estado:" />
 									<h:outputLabel value="*" style="Color:red" />
 								</div>
@@ -357,16 +383,16 @@
 									<div class="combo">
 										<p:selectOneMenu id="cboEstado"
 											value="#{clienteMB.objClienteMain.clientStatus}">
+											<f:selectItem itemLabel="-- Seleccione --" itemValue=""/>
 											<f:selectItems value="#{clienteMB.lstEstadosGenerales}"
-												var="generalParameterNew" />
-											<f:converter binding="#{generalParameterConverter}"
-												for="generalParameterNew" />
+												var="estadoGeneral" itemLabel="#{estadoGeneral.paramValue}"
+												itemValue="#{estadoGeneral.paramCode}"/>
 										</p:selectOneMenu>
 									</div>
 									<div class="tooltip">
 										<h:graphicImage id="imgEstado"
 											url="../../recursos/imagenes/help.png"></h:graphicImage>
-										<p:tooltip for="imgEstado" value="Estado de la etiqueta" />
+										<p:tooltip for="imgEstado" value="Estado del cliente" />
 									</div>
 								</div>
 								<p:message for="cboEstado" />
@@ -375,45 +401,64 @@
 						<div class="mitad">
 							<div class="completo">
 								<div class="tercio">
-									<h:outputLabel for="txtCodEtiquetaNuevo" value="C&#243;digo" />
+									<h:outputLabel for="txtNumDocNuevo" value="Número Documento" />
 									<h:outputLabel value="*" style="Color:red" />
 								</div>
 								<div class="dostercios">
 									<div class="input">
-										<p:inputText id="txtCodEtiquetaNuevo"
-											value="#{clienteMB.objClienteMain.clientCode}" />
+										<p:inputText id="txtNumDocNuevo"
+											value="#{clienteMB.objClienteMain.documentNumber}" />
 									</div>
 									<div class="tooltip">
-										<h:graphicImage id="imgCodEtiqueta"
+										<h:graphicImage id="imgNumDoc"
 											url="../../recursos/imagenes/help.png"></h:graphicImage>
-										<p:tooltip for="imgCodEtiqueta"
-											value="C&#243;digo de etiqueta" />
+										<p:tooltip for="imgNumDoc"
+											value="Número de documento del cliente" />
 									</div>
 								</div>
-								<p:message for="txtCodEtiquetaNuevo" />
+								<p:message for="txtNumDocNuevo" />
 							</div>
 							<div class="completo">
 								<div class="tercio">
-									<h:outputLabel for="cboEstado" value="Estado:" />
+									<h:outputLabel for="txtDireccionNuevo" value="Dirección:" />
+									<h:outputLabel value="*" style="Color:red" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtDireccionNuevo"
+											value="#{clienteMB.objClienteMain.clientAddress}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgDireccion"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgDireccion"
+											value="Dirección del cliente" />
+									</div>
+								</div>
+								<p:message for="txtDireccionNuevo" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cboTipoCliNuevo" value="Tipo Cliente:" />
 									<h:outputLabel value="*" style="Color:red" />
 								</div>
 								<div class="dostercios">
 									<div class="combo">
-										<p:selectOneMenu id="cboEstado"
-											value="#{clienteMB.objClienteMain.clientStatus}">
-											<f:selectItems value="#{clienteMB.lstEstadosGenerales}"
-												var="generalParameterNew" />
-											<f:converter binding="#{generalParameterConverter}"
-												for="generalParameterNew" />
+										<p:selectOneMenu id="cboTipoCliNuevo"
+											value="#{clienteMB.objClienteMain.clientType}">
+											<f:selectItem itemLabel="-- Seleccione -- " itemValue=""/>
+											<f:selectItems value="#{clienteMB.lstTiposCliGenerales}"
+												var="tipoCliGeneral" itemLabel="#{tipoCliGeneral.paramValue}"
+												itemValue="#{tipoCliGeneral.paramCode}"/>
 										</p:selectOneMenu>
 									</div>
 									<div class="tooltip">
-										<h:graphicImage id="imgEstado"
+										<h:graphicImage id="imgTipoCliNuevo"
 											url="../../recursos/imagenes/help.png"></h:graphicImage>
-										<p:tooltip for="imgEstado" value="Estado de la etiqueta" />
+										<p:tooltip for="imgTipoCliNuevo" value="Tipo de cliente" />
 									</div>
 								</div>
-								<p:message for="cboEstado" />
+								<p:message for="cboTipoCliNuevo" />
 							</div>
 						</div>
 
@@ -431,59 +476,80 @@
 
 		<!-- ******************************************** EDITAR PRODUCTO ****************************************** -->
 
-		<p:dialog header="Editar Etiqueta Producto"
+		<p:dialog header="Editar Cliente"
 			widgetVar="dlgEditarCliente" modal="true" width="930" position="top">
 
 			<p:growl life="3000" showDetail="true" id="msjEditarCliente"
 				autoUpdate="true" />
 
-			<h1>Editar Etiqueta Producto</h1>
+			<h1>Editar Cliente</h1>
 			<h:form id="wEditCli">
 				<p:accordionPanel id="pEditCli">
-					<p:tab title="Datos de la etiqueta">
+					<p:tab title="Datos del cliente">
 						<div class="filas">
 							<div class="mitad">
 								<div class="completo">
 									<div class="tercio">
-										<h:outputLabel for="txtClienteEditar" value="Descripción:" />
+										<h:outputLabel for="cboTipoDocEditar" value="Tipo Documento:" />
 										<h:outputLabel value="*" style="Color:red" />
 									</div>
 									<div class="dostercios">
-										<div class="input">
-											<p:inputText id="txtClienteEditar"
-												value="#{clienteMB.objClienteMain.clientDescription}" />
+										<div class="combo">
+											<p:selectOneMenu id="cboTipoDocEditar"
+												value="#{clienteMB.objClienteMain.documentType}">
+												<f:selectItem itemLabel="-- Seleccione -- " itemValue=""/>
+												<f:selectItems value="#{clienteMB.lstTiposDocGenerales}"
+													var="tipoDocGeneral" itemLabel="#{tipoDocGeneral.paramValue}"
+													itemValue="#{tipoDocGeneral.paramCode}"/>
+											</p:selectOneMenu>
 										</div>
 										<div class="tooltip">
-											<h:graphicImage id="imgClienteEditar"
+											<h:graphicImage id="imgTipoDocEditar"
 												url="../../recursos/imagenes/help.png"></h:graphicImage>
-											<p:tooltip for="imgClienteEditar"
-												value="Descripción de la etiqueta" />
+											<p:tooltip for="imgTipoDocEditar" value="Tipo Documento" />
 										</div>
 									</div>
-									<p:message for="txtClienteEditar" />
+									<p:message for="cboTipoDocEditar" />
 								</div>
-
 								<div class="completo">
 									<div class="tercio">
-										<h:outputLabel for="txtCodEtiquetaEditar" value="C&#243;digo:" />
+										<h:outputLabel for="txtNomClienteEditar" value="Nombre o Razón Social:" />
 										<h:outputLabel value="*" style="Color:red" />
 									</div>
 									<div class="dostercios">
 										<div class="input">
-											<p:inputText id="txtCodEtiquetaEditar"
-												value="#{clienteMB.objClienteMain.clientCode}" />
+											<p:inputText id="txtNomClienteEditar"
+												value="#{clienteMB.objClienteMain.clientNames}" />
 										</div>
 										<div class="tooltip">
-											<h:graphicImage id="imgCodEtiquetaEditar"
+											<h:graphicImage id="imgNomClienteEditar"
 												url="../../recursos/imagenes/help.png"></h:graphicImage>
-											<p:tooltip for="imgCodEtiquetaEditar"
-												value="C&#243;digo de etiqueta" />
+											<p:tooltip for="imgNomClienteEditar"
+												value="Nombre o Razón Social del cliente" />
 										</div>
 									</div>
-									<p:message for="txtCodEtiquetaEditar" />
+									<p:message for="txtNomClienteEditar" />
 								</div>
-							</div>
-							<div class="mitad">
+								<div class="completo">
+									<div class="tercio">
+										<h:outputLabel for="txtNumTelefonoEditar"
+											value="Número de Teléfono:" />
+										<h:outputLabel value="*" style="Color:red" />
+									</div>
+									<div class="dostercios">
+										<div class="input">
+											<p:inputText id="txtNumTelefonoEditar"
+												value="#{clienteMB.objClienteMain.clientPhoneNumber}" />
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgNumTelefonoEditar"
+												url="../../recursos/imagenes/help.png"></h:graphicImage>
+											<p:tooltip for="imgNumTelefonoEditar"
+												value="Número de teléfono del cliente" />
+										</div>
+									</div>
+									<p:message for="txtNumTelefonoEditar" />
+								</div>
 								<div class="completo">
 									<div class="tercio">
 										<h:outputLabel for="cboEstadoEditar" value="Estado:" />
@@ -493,8 +559,10 @@
 										<div class="combo">
 											<p:selectOneMenu id="cboEstadoEditar"
 												value="#{clienteMB.objClienteMain.clientStatus}">
-												<f:selectItems value="#{clienteMB.lstEstadosGenerales}" />
-												<f:converter binding="#{generalParameterConverter}" />
+												<f:selectItem itemLabel="-- Seleccione --" itemValue=""/>
+												<f:selectItems value="#{clienteMB.lstEstadosGenerales}"
+													var="estadoGeneral" itemLabel="#{estadoGeneral.paramValue}"
+													itemValue="#{estadoGeneral.paramCode}"/>
 											</p:selectOneMenu>
 										</div>
 										<div class="tooltip">
@@ -505,7 +573,71 @@
 										</div>
 									</div>
 									<p:message for="cboEstadoEditar" />
+								</div>	
+							</div>
+							<div class="mitad">
+								<div class="completo">
+									<div class="tercio">
+										<h:outputLabel for="txtNumDocEditar" value="Número Documento:" />
+										<h:outputLabel value="*" style="Color:red" />
+									</div>
+									<div class="dostercios">
+										<div class="input">
+											<p:inputText id="txtNumDocEditar"
+												value="#{clienteMB.objClienteMain.documentNumber}" />
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgNumDocEditar"
+												url="../../recursos/imagenes/help.png"></h:graphicImage>
+											<p:tooltip for="imgNumDocEditar"
+												value="Número de documento del cliente" />
+										</div>
+									</div>
+									<p:message for="txtNumDocEditar" />
 								</div>
+								<div class="completo">
+									<div class="tercio">
+										<h:outputLabel for="txtDireccionEditar" value="Dirección:" />
+										<h:outputLabel value="*" style="Color:red" />
+									</div>
+									<div class="dostercios">
+										<div class="input">
+											<p:inputText id="txtDireccionEditar"
+												value="#{clienteMB.objClienteMain.clientAddress}" />
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgDireccion"
+												url="../../recursos/imagenes/help.png"></h:graphicImage>
+											<p:tooltip for="imgDireccion"
+												value="Dirección del cliente" />
+										</div>
+									</div>
+									<p:message for="txtDireccionEditar" />
+								</div>
+								<div class="completo">
+									<div class="tercio">
+										<h:outputLabel for="cboTipoCliEditar" value="Tipo Cliente:" />
+										<h:outputLabel value="*" style="Color:red" />
+									</div>
+									<div class="dostercios">
+										<div class="combo">
+											<p:selectOneMenu id="cboTipoCliEditar"
+												value="#{clienteMB.objClienteMain.clientType}">
+												<f:selectItem itemLabel="-- Seleccione -- " itemValue=""/>
+												<f:selectItems value="#{clienteMB.lstTiposCliGenerales}"
+													var="tipoCliGeneral" itemLabel="#{tipoCliGeneral.paramValue}"
+													itemValue="#{tipoCliGeneral.paramCode}"/>
+											</p:selectOneMenu>
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgTipoCliEditar"
+												url="../../recursos/imagenes/help.png"></h:graphicImage>
+											<p:tooltip for="imgTipoCliEditar" value="Tipo de cliente" />
+										</div>
+									</div>
+									<p:message for="cboTipoCliEditar" />
+								</div>
+								
 							</div>
 						</div>
 						<div class="boton">

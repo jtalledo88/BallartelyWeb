@@ -37,27 +37,21 @@ public class Client implements Serializable {
 	@Column(name="client_phone_number")
 	private String clientPhoneNumber;
 
+	@Column(name="client_status")
+	private String clientStatus;
+
+	@Column(name="client_type")
+	private String clientType;
+
 	@Column(name="document_number")
 	private String documentNumber;
+
+	@Column(name="document_type")
+	private String documentType;
 
 	//bi-directional many-to-one association to Account
 	@OneToMany(mappedBy="client")
 	private List<Account> accounts;
-
-	//bi-directional many-to-one association to GeneralParameter
-	@ManyToOne
-	@JoinColumn(name="client_status")
-	private GeneralParameter clientStatus;
-
-	//bi-directional many-to-one association to GeneralParameter
-	@ManyToOne
-	@JoinColumn(name="client_type")
-	private GeneralParameter clientType;
-
-	//bi-directional many-to-one association to GeneralParameter
-	@ManyToOne
-	@JoinColumn(name="document_type")
-	private GeneralParameter documentType;
 
 	public Client() {
 	}
@@ -110,12 +104,36 @@ public class Client implements Serializable {
 		this.clientPhoneNumber = clientPhoneNumber;
 	}
 
+	public String getClientStatus() {
+		return this.clientStatus;
+	}
+
+	public void setClientStatus(String clientStatus) {
+		this.clientStatus = clientStatus;
+	}
+
+	public String getClientType() {
+		return this.clientType;
+	}
+
+	public void setClientType(String clientType) {
+		this.clientType = clientType;
+	}
+
 	public String getDocumentNumber() {
 		return this.documentNumber;
 	}
 
 	public void setDocumentNumber(String documentNumber) {
 		this.documentNumber = documentNumber;
+	}
+
+	public String getDocumentType() {
+		return this.documentType;
+	}
+
+	public void setDocumentType(String documentType) {
+		this.documentType = documentType;
 	}
 
 	public List<Account> getAccounts() {
@@ -140,27 +158,4 @@ public class Client implements Serializable {
 		return account;
 	}
 
-	public GeneralParameter getClientStatus() {
-		return this.clientStatus;
-	}
-
-	public void setClientStatus(GeneralParameter clientStatus) {
-		this.clientStatus = clientStatus;
-	}
-
-	public GeneralParameter getClientType() {
-		return this.clientType;
-	}
-
-	public void setClientType(GeneralParameter clientType) {
-		this.clientType = clientType;
-	}
-
-	public GeneralParameter getDocumentType() {
-		return this.documentType;
-	}
-
-	public void setDocumentType(GeneralParameter documentType) {
-		this.documentType = documentType;
-	}
 }

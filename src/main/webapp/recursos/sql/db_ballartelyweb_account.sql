@@ -26,15 +26,16 @@ DROP TABLE IF EXISTS `account`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `account` (
   `account_id` int(20) unsigned zerofill NOT NULL AUTO_INCREMENT,
-  `account_creation_date` int(20) NOT NULL,
-  `account_owner` int(11) DEFAULT NULL,
-  `account_status` char(1) NOT NULL,
   `account_type` char(1) NOT NULL,
+  `account_owner` int(11) DEFAULT NULL,
+  `account_creation_date` datetime DEFAULT NULL,
+  `account_modification_date` datetime DEFAULT NULL,
+  `account_status` char(1) NOT NULL,
   PRIMARY KEY (`account_id`),
   UNIQUE KEY `account_number_UNIQUE` (`account_creation_date`),
   KEY `fk_account_client_idx` (`account_owner`),
   CONSTRAINT `fk_account_client` FOREIGN KEY (`account_owner`) REFERENCES `client` (`client_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -46,4 +47,4 @@ CREATE TABLE `account` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-26 21:25:16
+-- Dump completed on 2018-04-27 18:02:19
