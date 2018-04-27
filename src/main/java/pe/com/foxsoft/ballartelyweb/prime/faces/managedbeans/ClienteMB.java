@@ -44,7 +44,7 @@ public class ClienteMB {
 	private List<SelectItem> lstEstadosGenerales;
 	private List<SelectItem> lstTiposDocGenerales;
 	private List<SelectItem> lstTiposCliGenerales;
-	private List<String> lstRazSocClienteBUS;
+	private List<String> lstNumDocClienteBUS;
 	private List<String> lstNomClienteBUS;
 	private boolean validaListaBuscar = true;
 	private int canRegTablaPrincipal;
@@ -57,7 +57,7 @@ public class ClienteMB {
 		this.lstEstadosGenerales = new ArrayList<SelectItem>();
 		this.lstTiposDocGenerales = new ArrayList<>();
 		this.lstTiposCliGenerales = new ArrayList<>();
-		this.lstRazSocClienteBUS = new ArrayList<String>();
+		this.lstNumDocClienteBUS = new ArrayList<String>();
 		this.lstNomClienteBUS = new ArrayList<String>();
 	}
 
@@ -86,7 +86,7 @@ public class ClienteMB {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar el número de documento del cliente.");
 				return;
 			}
-			if ("".equals(this.objClienteMain.getClientNames()) && "".equals(this.objClienteMain.getClientSocialReason())) {
+			if ("".equals(this.objClienteMain.getClientNames())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar el nombre o razón social del cliente.");
 				return;
 			}
@@ -133,7 +133,6 @@ public class ClienteMB {
 		this.objClienteMain.setDocumentType(new GeneralParameter());
 		this.objClienteMain.setDocumentNumber("");
 		this.objClienteMain.setClientNames("");
-		this.objClienteMain.setClientSocialReason("");
 		this.objClienteMain.setClientAddress("");
 		this.objClienteMain.setClientPhoneNumber("");
 		this.objClienteMain.setClientType(new GeneralParameter());
@@ -167,7 +166,7 @@ public class ClienteMB {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar el número de documento del cliente.");
 				return;
 			}
-			if ("".equals(this.objClienteMain.getClientNames()) && "".equals(this.objClienteMain.getClientSocialReason())) {
+			if ("".equals(this.objClienteMain.getClientNames())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar el nombre o razón social del cliente.");
 				return;
 			}
@@ -228,8 +227,8 @@ public class ClienteMB {
 				if (c.getClientNames() != null) {
 					this.lstNomClienteBUS.add(c.getClientNames());
 				}
-				if (c.getClientSocialReason() != null) {
-					this.lstRazSocClienteBUS.add(c.getClientSocialReason());
+				if (c.getDocumentNumber() != null) {
+					this.lstNumDocClienteBUS.add(c.getDocumentNumber());
 				}
 			}
 		} catch (BallartelyException e) {
@@ -295,9 +294,9 @@ public class ClienteMB {
 		return results;
 	}
 
-	public List<String> completeRazSoc(String query) {
+	public List<String> completeNumDoc(String query) {
 		List<String> results = new ArrayList<String>();
-		for (String s : this.lstRazSocClienteBUS) {
+		for (String s : this.lstNumDocClienteBUS) {
 			if (Utilitarios.compararCadenas(s, query.trim())) {
 				results.add(s);
 			}
@@ -375,12 +374,12 @@ public class ClienteMB {
 		this.flagConfirmEliClient = flagConfirmEliClient;
 	}
 
-	public List<String> getLstRazSocClienteBUS() {
-		return lstRazSocClienteBUS;
+	public List<String> getLstNumDocClienteBUS() {
+		return lstNumDocClienteBUS;
 	}
 
-	public void setLstRazSocClienteBUS(List<String> lstRazSocClienteBUS) {
-		this.lstRazSocClienteBUS = lstRazSocClienteBUS;
+	public void setLstNumDocClienteBUS(List<String> lstNumDocClienteBUS) {
+		this.lstNumDocClienteBUS = lstNumDocClienteBUS;
 	}
 
 	public List<String> getLstNomClienteBUS() {

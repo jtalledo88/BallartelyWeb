@@ -60,6 +60,10 @@ public class GeneralParameter implements Serializable {
 	@OneToMany(mappedBy="productLabelStatus")
 	private List<ProductLabel> productLabels;
 
+	//bi-directional many-to-one association to Provider
+	@OneToMany(mappedBy="generalParameter")
+	private List<Provider> providers;
+
 	public GeneralParameter() {
 	}
 
@@ -213,6 +217,28 @@ public class GeneralParameter implements Serializable {
 		productLabel.setProductLabelStatus(null);
 
 		return productLabel;
+	}
+
+	public List<Provider> getProviders() {
+		return this.providers;
+	}
+
+	public void setProviders(List<Provider> providers) {
+		this.providers = providers;
+	}
+
+	public Provider addProvider(Provider provider) {
+		getProviders().add(provider);
+		provider.setGeneralParameter(this);
+
+		return provider;
+	}
+
+	public Provider removeProvider(Provider provider) {
+		getProviders().remove(provider);
+		provider.setGeneralParameter(null);
+
+		return provider;
 	}
 
 }

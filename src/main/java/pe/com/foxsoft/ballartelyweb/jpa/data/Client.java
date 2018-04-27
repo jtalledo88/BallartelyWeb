@@ -2,10 +2,8 @@ package pe.com.foxsoft.ballartelyweb.jpa.data;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
-import pe.com.foxsoft.ballartelyweb.jpa.util.JPAUtil;
-
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -13,7 +11,7 @@ import java.util.Date;
  * 
  */
 @Entity
-@NamedQuery(name=JPAUtil.NAMED_QUERY_ALL_CLIENT, query="SELECT c FROM Client c join fetch c.clientStatus join fetch c.clientType join fetch c.documentType")
+@NamedQuery(name="Client.findAll", query="SELECT c FROM Client c")
 public class Client implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -39,11 +37,12 @@ public class Client implements Serializable {
 	@Column(name="client_phone_number")
 	private String clientPhoneNumber;
 
-	@Column(name="client_social_reason")
-	private String clientSocialReason;
-
 	@Column(name="document_number")
 	private String documentNumber;
+
+	//bi-directional many-to-one association to Account
+	@OneToMany(mappedBy="client")
+	private List<Account> accounts;
 
 	//bi-directional many-to-one association to GeneralParameter
 	@ManyToOne
@@ -111,20 +110,34 @@ public class Client implements Serializable {
 		this.clientPhoneNumber = clientPhoneNumber;
 	}
 
-	public String getClientSocialReason() {
-		return this.clientSocialReason;
-	}
-
-	public void setClientSocialReason(String clientSocialReason) {
-		this.clientSocialReason = clientSocialReason;
-	}
-
 	public String getDocumentNumber() {
 		return this.documentNumber;
 	}
 
 	public void setDocumentNumber(String documentNumber) {
 		this.documentNumber = documentNumber;
+	}
+
+	public List<Account> getAccounts() {
+		return this.accounts;
+	}
+
+	public void setAccounts(List<Account> accounts) {
+		this.accounts = accounts;
+	}
+
+	public Account addAccount(Account account) {
+		getAccounts().add(account);
+		account.setClient(this);
+
+		return account;
+	}
+
+	public Account removeAccount(Account account) {
+		getAccounts().remove(account);
+		account.setClient(null);
+
+		return account;
 	}
 
 	public GeneralParameter getClientStatus() {
@@ -150,5 +163,4 @@ public class Client implements Serializable {
 	public void setDocumentType(GeneralParameter documentType) {
 		this.documentType = documentType;
 	}
-
 }

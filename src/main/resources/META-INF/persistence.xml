@@ -4,10 +4,12 @@
 	version="2.0">
 	<!-- Will be referenced in Spring Context File -->
 	<persistence-unit name="jpa-persistence" transaction-type="RESOURCE_LOCAL">
+		<class>pe.com.foxsoft.ballartelyweb.jpa.data.Account</class>
+		<class>pe.com.foxsoft.ballartelyweb.jpa.data.Client</class>
 		<class>pe.com.foxsoft.ballartelyweb.jpa.data.GeneralParameter</class>
 		<class>pe.com.foxsoft.ballartelyweb.jpa.data.ProductLabel</class>
+		<class>pe.com.foxsoft.ballartelyweb.jpa.data.Provider</class>
 		<class>pe.com.foxsoft.ballartelyweb.jpa.data.User</class>
-		<class>pe.com.foxsoft.ballartelyweb.jpa.data.Client</class>
 		
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/db_ballartelyweb" />

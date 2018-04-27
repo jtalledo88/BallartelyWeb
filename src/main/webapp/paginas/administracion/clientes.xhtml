@@ -6,45 +6,110 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
 	template="../../plantillas/defecto.xhtml">
-	<ui:define name="titulo">Administrar Etiqueta Productos</ui:define>
+	<ui:define name="titulo">Administrar Clientes</ui:define>
 	<ui:define name="contenido">
-	
-		<script type="text/javascript">
-			<!--
 
-			
+		<script type="text/javascript">
+		<!--
 			-->
 		</script>
-	
-	
-		<h1>Administrar Etiqueta Productos</h1>
-		<h:form id="wLisEtiqProd">
+
+
+		<h1>Administrar Clientes</h1>
+		<h:form id="wLisClient">
 			<!-- <p:panel header="Criterios de b&#250;squeda" toggleable="true"> -->
-			
-			<p:growl life="3000" showDetail="true" id="msjLisEtiqProd" autoUpdate="true"/>
-			
+
+			<p:growl life="3000" showDetail="true" id="msjLisClient"
+				autoUpdate="true" />
+
 			<p:accordionPanel>
 				<p:tab title="Criterios de b&#250;squeda">
 					<div class="filas">
 						<div class="mitad">
 							<div class="completo">
 								<div class="tercio">
-									<h:outputLabel for="txtDescEtiquetaProducto"
-										value="Descripción:" />
+									<h:outputLabel for="cboTipoDoc" value="Tipo Documeto:" />
+								</div>
+								<div class="dostercios">
+									<div class="combo">
+										<p:selectOneMenu id="cboTipoDoc"
+											value="#{clienteMB.objClienteSearch.documentType}">
+											<f:selectItems value="#{clienteMB.lstTiposDocGenerales}" />
+											<f:converter binding="#{generalParameterConverter}" />
+										</p:selectOneMenu>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgTipoDoc"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgTipoDoc"
+											value="Tipo de documento del cliente" />
+									</div>
+								</div>
+								<p:message for="cboTipoDoc" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtNomCliente"
+										value="Nombre o Razón Social" />
 								</div>
 								<div class="dostercios">
 									<div class="input">
-										<p:autoComplete id="txtDescEtiquetaProducto" maxResults="10"
-										                    value="#{etiquetaProductoMB.objEtiquetaProductoSearch.productLabelDescription}"
-										                    completeMethod="#{etiquetaProductoMB.completeDesc}" autocomplete="false" ajax="false"/>
+										<p:autoComplete id="txtNomCliente" maxResults="10"
+											value="#{clienteMB.objClienteSearch.clientNames}"
+											completeMethod="#{clienteMB.completeNom}"
+											autocomplete="false" ajax="false" />
 									</div>
 									<div class="tooltip">
-										<h:graphicImage id="imgDescEtiquetaProducto"
+										<h:graphicImage id="imgNomCliente"
 											url="../../recursos/imagenes/help.png"></h:graphicImage>
-										<p:tooltip for="imgDescEtiquetaProducto" value="Nombre Etiqueta" />
+										<p:tooltip for="imgNomCliente"
+											value="Nombre o Razón Social del cliente" />
 									</div>
 								</div>
-								<p:message for="txtDescEtiquetaProducto" />
+								<p:message for="txtNomCliente" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cboTipoCli" value="Tipo Cliente:" />
+								</div>
+								<div class="dostercios">
+									<div class="combo">
+										<p:selectOneMenu id="cboTipoCli"
+											value="#{clienteMB.objClienteSearch.clientType}">
+											<f:selectItems value="#{clienteMB.lstTiposCliGenerales}" />
+											<f:converter binding="#{generalParameterConverter}" />
+										</p:selectOneMenu>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgTipoCli"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgTipoCli" value="Tipo de cliente" />
+									</div>
+								</div>
+								<p:message for="cboTipoCli" />
+							</div>
+						</div>
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio" style="width: 20%">
+									<h:outputLabel for="txtNumDoc" value="Número Documento:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:autoComplete id="txtNumDoc" maxResults="10"
+											value="#{clienteMB.objClienteSearch.documentNumber}"
+											completeMethod="#{clienteMB.completeNumDoc}"
+											autocomplete="false" ajax="false" />
+
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgNumDoc"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgNumDoc"
+											value="Número de documento del cliente" />
+									</div>
+								</div>
+								<p:message for="txtNumDoc" />
 							</div>
 							<div class="completo">
 								<div class="tercio">
@@ -52,9 +117,250 @@
 								</div>
 								<div class="dostercios">
 									<div class="combo">
-										<p:selectOneMenu id="cboEstado" value="#{etiquetaProductoMB.objEtiquetaProductoSearch.productLabelStatus}">
-												<f:selectItems value="#{etiquetaProductoMB.lstEstadosGenerales}"/>
-												<f:converter binding="#{generalParameterConverter}"/>
+										<p:selectOneMenu id="cboEstado"
+											value="#{clienteMB.objClienteSearch.clientStatus}">
+											<f:selectItems value="#{clienteMB.lstEstadosGenerales}" />
+											<f:converter binding="#{generalParameterConverter}" />
+										</p:selectOneMenu>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgEstado"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgEstado" value="Estado del cliente" />
+									</div>
+								</div>
+								<p:message for="cboEstado" />
+							</div>
+						</div>
+					</div>
+					<div class="boton">
+						<p:commandButton value="Buscar" icon="ui-icon-search"
+							actionListener="#{clienteMB.buscarClientes}"
+							update=":wLisClient:tblClientes" />
+					</div>
+					<div style="clear: both;"></div>
+					<!-- </p:panel> -->
+				</p:tab>
+			</p:accordionPanel>
+			<h2>Resultados</h2>
+			<p:separator />
+
+			<div class="opcionesTabla" style="text-align: left;">
+				<p:commandButton value="Agregar Etiqueta Producto"
+					icon="ui-icon-plus"
+					actionListener="#{clienteMB.openAgregarCliente}"
+					oncomplete="PF('dlgAgregarCliente').show()"
+					update=":iddlgAgregarCliente" />
+				<div style="clear: both;"></div>
+			</div>
+
+			<div class="scrollTabla">
+				<p:dataTable paginator="true" paginatorPosition="top" rows="10"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+					style="width: 100%; margin-bottom:20px;" var="cliente"
+					value="#{clienteMB.lstClientesMain}" id="tblClientes"
+					emptyMessage="No se encontraron registros">
+					<f:facet name="{Exporters}">
+						<h:commandLink>
+							<p:graphicImage url="../../recursos/imagenes/excel.png"
+								width="24" />
+							<p:dataExporter type="xls" target="tblClientes"
+								fileName="Clientes" />
+						</h:commandLink>
+
+						<h:commandLink>
+							<p:graphicImage url="../../recursos/imagenes/pdf.png" width="24" />
+							<p:dataExporter type="pdf" target="tblClientes"
+								fileName="Clientes" />
+						</h:commandLink>
+
+						<h:commandLink>
+							<p:graphicImage url="../../recursos/imagenes/csv.png" width="24" />
+							<p:dataExporter type="csv" target="tblClientes"
+								fileName="Clientes" />
+						</h:commandLink>
+
+						<h:commandLink>
+							<p:graphicImage url="../../recursos/imagenes/xml.png" width="24" />
+							<p:dataExporter type="xml" target="tblClientes"
+								fileName="Clientes" />
+						</h:commandLink>
+					</f:facet>
+
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Item" />
+						</f:facet>
+						<h:outputText value="#{cliente.clientId}" />
+					</p:column>
+					<p:column styleClass="oficina" exportable="false">
+						<f:facet name="header">
+							<h:outputText value="Editar" title="Editar" />
+						</f:facet>
+						<p:commandLink value="Editar"
+							onclick="PF('dlgEditarCliente').show()"
+							action="#{clienteMB.openEditarCliente}"
+							update=":wEditCli:pEditCli">
+							<f:param name="itemCliente" value="#{cliente.clientId}"
+								id="itemCliente" />
+						</p:commandLink>
+					</p:column>
+
+					<p:column styleClass="eliminar" exportable="false">
+						<f:facet name="header">
+							<h:outputText value="Eliminar" />
+						</f:facet>
+						<p:commandLink value="Eliminar"
+							action="#{clienteMB.visibleConfirmElimCliente}"
+							update="@form :confirmEliminarCliente">
+							<f:setPropertyActionListener value="#{cliente}"
+								target="#{clienteMB.objClienteMain}" />
+							<h:outputText value="#{cliente.clientId}" />
+						</p:commandLink>
+					</p:column>
+
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Tipo Documento" />
+						</f:facet>
+						<h:outputText value="#{cliente.documentType.paramValue}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Número Documento" />
+						</f:facet>
+						<h:outputText value="#{cliente.clientCode}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Tipo Cliente" />
+						</f:facet>
+						<h:outputText value="#{cliente.clientType.paramValue}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Nombre / Razón Social" />
+						</f:facet>
+						<h:outputText value="#{cliente.clientNames}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Dirección" />
+						</f:facet>
+						<h:outputText value="#{cliente.clientAddress}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Número Telefono" />
+						</f:facet>
+						<h:outputText value="#{cliente.clientPhoneNumber}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Estado" />
+						</f:facet>
+						<h:outputText value="#{cliente.clientStatus.paramValue}" />
+					</p:column>
+					<p:column styleClass="fecha">
+						<f:facet name="header">
+							<h:outputText value="Fecha Registro" />
+						</f:facet>
+						<h:outputText value="#{cliente.clientCreationDate}">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+						</h:outputText>
+					</p:column>
+					<p:column styleClass="fecha">
+						<f:facet name="header">
+							<h:outputText value="Fecha de Act." />
+						</f:facet>
+						<h:outputText value="#{cliente.clientModificationDate}">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+						</h:outputText>
+					</p:column>
+					<f:facet name="footer">  
+          			Total registros: <h:outputText
+							value="#{clienteMB.canRegTablaPrincipal}" />
+					</f:facet>
+				</p:dataTable>
+			</div>
+			<!-- <div class="opcionesTabla" style="text-align: left;">
+				<p:commandButton value="Exportar"
+					action="exportar/productos.jsp" icon="ui-icon-disk"
+					target="_blank" ajax="false" />
+			<div style="clear: both;"></div>
+			</div> -->
+		</h:form>
+
+		<!-- ******************************************* PRODUCTOS ************************************************ -->
+
+		<p:dialog header="Agregar Cliente" widgetVar="dlgAgregarCliente"
+			modal="true" width="930" position="top" id="iddlgAgregarCliente">
+
+			<p:growl life="3000" showDetail="true" id="msjAgregarCliente"
+				autoUpdate="true" />
+
+			<h1>Agregar Cliente</h1>
+			<h:form id="wAgregarCli">
+				<p:panel header="Datos del cliente" toggleable="false"
+					id="pAgregarCli">
+					<div class="filas">
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cboTipoDoc" value="Tipo Documento:" />
+									<h:outputLabel value="*" style="Color:red" />
+								</div>
+								<div class="dostercios">
+									<div class="combo">
+										<p:selectOneMenu id="cboTipoDoc"
+											value="#{clienteMB.objClienteMain.documentType}">
+											<f:selectItems value="#{clienteMB.lstTiposDocGenerales}"
+												var="tipoDocNew" />
+											<f:converter binding="#{generalParameterConverter}"
+												for="tipoDocNew" />
+										</p:selectOneMenu>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgTipoDoc"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgTipoDoc" value="Tipo Documento" />
+									</div>
+								</div>
+								<p:message for="cboTipoDoc" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtNomClienteNuevo"
+										value="Nombre o Razón Social:" />
+									<h:outputLabel value="*" style="Color:red" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtNomClienteNuevo"
+											value="#{clienteMB.objClienteMain.clientNames}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgNomClienteNuevo"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgNomClienteNuevo"
+											value="Nombre o Razón Social del cliente" />
+									</div>
+								</div>
+								<p:message for="txtNomClienteNuevo" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cboEstado" value="Estado:" />
+									<h:outputLabel value="*" style="Color:red" />
+								</div>
+								<div class="dostercios">
+									<div class="combo">
+										<p:selectOneMenu id="cboEstado"
+											value="#{clienteMB.objClienteMain.clientStatus}">
+											<f:selectItems value="#{clienteMB.lstEstadosGenerales}"
+												var="generalParameterNew" />
+											<f:converter binding="#{generalParameterConverter}"
+												for="generalParameterNew" />
 										</p:selectOneMenu>
 									</div>
 									<div class="tooltip">
@@ -68,215 +374,53 @@
 						</div>
 						<div class="mitad">
 							<div class="completo">
-								<div class="tercio" style="width: 20%">
-									<h:outputLabel for="txtCodigo" value="C&#243;digo:" />
-								</div>
-								<div class="dostercios">
-									<div class="input">
-										<p:autoComplete id="txtCodigo" maxResults="10"
-										                    value="#{etiquetaProductoMB.objEtiquetaProductoSearch.productLabelCode}"
-										                    completeMethod="#{etiquetaProductoMB.completeCod}" autocomplete="false" ajax="false"/>
-										
-									</div>
-									<div class="tooltip">
-										<h:graphicImage id="imgCodigo"
-											url="../../recursos/imagenes/help.png"></h:graphicImage>
-										<p:tooltip for="imgCodigo" value="C&#243;digo de etiqueta" />
-									</div>
-								</div>
-								<p:message for="txtCodigo" />
-							</div>
-						</div>
-					</div>
-					<div class="boton">
-						<p:commandButton value="Buscar" icon="ui-icon-search" actionListener="#{etiquetaProductoMB.buscarEtiquetaProductos}" 
-						update=":wLisEtiqProd:tblEtiquetaProductos"/>
-					</div>
-					<div style="clear: both;"></div>
-					<!-- </p:panel> -->
-				</p:tab>
-			</p:accordionPanel>
-			<h2>Resultados</h2>
-			<p:separator />
-
-			<div class="opcionesTabla" style="text-align: left;">
-				<p:commandButton value="Agregar Etiqueta Producto" icon="ui-icon-plus" actionListener="#{etiquetaProductoMB.openAgregarEtiquetaProducto}"
-					 oncomplete="PF('dlgAgregarEtiquetaProducto').show()" update=":iddlgAgregarEtiquetaProducto"/>
-					<div style="clear: both;"></div>
-			</div>
-
-			<div class="scrollTabla">
-				<p:dataTable paginator="true" paginatorPosition="top" rows="10"
-					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
-					style="width: 100%; margin-bottom:20px;" var="etiquetaProducto" value="#{etiquetaProductoMB.lstEtiquetaProductosMain}" id="tblEtiquetaProductos" emptyMessage="No se encontraron registros">
-					<f:facet name="{Exporters}">
-			           <h:commandLink>
-			               <p:graphicImage url="../../recursos/imagenes/excel.png" width="24"/>
-			               <p:dataExporter type="xls" target="tblEtiquetaProductos" fileName="EtiquetaProductos"/>
-			           </h:commandLink>
-			
-			           <h:commandLink>
-			               <p:graphicImage url="../../recursos/imagenes/pdf.png" width="24"/>
-			               <p:dataExporter type="pdf" target="tblEtiquetaProductos" fileName="EtiquetaProductos"/>
-			           </h:commandLink>
-			
-			           <h:commandLink>
-			               <p:graphicImage url="../../recursos/imagenes/csv.png" width="24"/>
-			               <p:dataExporter type="csv" target="tblEtiquetaProductos" fileName="EtiquetaProductos" />
-			           </h:commandLink>
-			
-			           <h:commandLink>
-			               <p:graphicImage url="../../recursos/imagenes/xml.png" width="24"/>
-			               <p:dataExporter type="xml" target="tblEtiquetaProductos" fileName="EtiquetaProductos" />
-			           </h:commandLink>
-			       </f:facet>
-					
-					<p:column styleClass="oficina">
-						<f:facet name="header">
-							<h:outputText value="Item" />
-						</f:facet>
-						<h:outputText value="#{etiquetaProducto.productLabelId}" />
-					</p:column>
-					<p:column styleClass="oficina" exportable="false">
-						<f:facet name="header">
-							<h:outputText value="Editar" title="Editar" />
-						</f:facet>
-						<p:commandLink value="Editar" onclick="PF('dlgEditarEtiquetaProducto').show()" action="#{etiquetaProductoMB.openEditarEtiquetaProducto}" 
-								update=":wEditEtiqProd:pEditEtiqProd">
-							<f:param name="itemEtiquetaProducto" value="#{etiquetaProducto.productLabelId}" id="itemEtiquetaProducto" />
-						</p:commandLink>
-					</p:column>
-					
-					<p:column styleClass="eliminar" exportable="false">
-							<f:facet name="header">
-								<h:outputText value="Eliminar" />
-							</f:facet>
-						<p:commandLink value="Eliminar"
-							action="#{etiquetaProductoMB.visibleConfirmElimEtiquetaProducto}"
-							update="@form :confirmEliminarEtiquetaProducto">
-							<f:setPropertyActionListener value="#{etiquetaProducto}"
-								target="#{etiquetaProductoMB.objEtiquetaProductoMain}" />
-							<h:outputText value="#{etiquetaProducto.productLabelId}" />
-						</p:commandLink>
-					</p:column>
-					
-					<p:column styleClass="oficina">
-						<f:facet name="header">
-							<h:outputText value="C&#243;digo" />
-						</f:facet>
-						<h:outputText value="#{etiquetaProducto.productLabelCode}" />
-					</p:column>
-					<p:column styleClass="oficina">
-						<f:facet name="header">
-							<h:outputText value="Descripción" />
-						</f:facet>
-						<h:outputText value="#{etiquetaProducto.productLabelDescription}" />
-					</p:column>
-					<p:column styleClass="oficina">
-						<f:facet name="header">
-							<h:outputText value="Estado" />
-						</f:facet>
-						<h:outputText value="#{etiquetaProducto.productLabelStatus.paramDescription}" />
-					</p:column>
-					<p:column styleClass="fecha">
-						<f:facet name="header">
-							<h:outputText value="Fecha Registro" />
-						</f:facet>
-						<h:outputText value="#{etiquetaProducto.productLabelCreationDate}" >
-							<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
-						</h:outputText>
-					</p:column>
-					<p:column styleClass="fecha">
-						<f:facet name="header">
-							<h:outputText value="Fecha de Act." />
-						</f:facet>
-						<h:outputText value="#{etiquetaProducto.productLabelModificationDate}" >
-						 	<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
-						</h:outputText>
-					</p:column>
-					<f:facet name="footer">  
-          			Total registros: <h:outputText value="#{etiquetaProductoMB.canRegTablaPrincipal}"/>    
-        		</f:facet>
-				</p:dataTable>
-			</div>
-			<!-- <div class="opcionesTabla" style="text-align: left;">
-				<p:commandButton value="Exportar"
-					action="exportar/productos.jsp" icon="ui-icon-disk"
-					target="_blank" ajax="false" />
-			<div style="clear: both;"></div>
-			</div> -->
-		</h:form>
-
-		<!-- ******************************************* PRODUCTOS ************************************************ -->
-
-		<p:dialog header="Agregar Etiqueta Producto" widgetVar="dlgAgregarEtiquetaProducto"
-			modal="true" width="930" position="top" id="iddlgAgregarEtiquetaProducto">
-			
-			<p:growl life="3000" showDetail="true" id="msjAgregarEtiquetaProducto" autoUpdate="true"/>
-			
-			<h1>Agregar Etiqueta Producto</h1>
-			<h:form id="wAgregarEtiqProd">
-				<p:panel header="Datos de la etiqueta" toggleable="false" id="pAgregarEtiqProd">
-					<div class="filas">
-						<div class="mitad">
-							<div class="completo">
 								<div class="tercio">
-									<h:outputLabel for="txtEtiquetaProductoNuevo" value="Descripción:" /><h:outputLabel value="*" style="Color:red"/>
+									<h:outputLabel for="txtCodEtiquetaNuevo" value="C&#243;digo" />
+									<h:outputLabel value="*" style="Color:red" />
 								</div>
 								<div class="dostercios">
 									<div class="input">
-										<p:inputText id="txtEtiquetaProductoNuevo" value="#{etiquetaProductoMB.objEtiquetaProductoMain.productLabelDescription}"/>
-									</div>
-									<div class="tooltip">
-										<h:graphicImage id="imgEtiquetaProducto"
-											url="../../recursos/imagenes/help.png"></h:graphicImage>
-										<p:tooltip for="imgEtiquetaProducto" value="Descripción de la etiqueta" />
-									</div>
-								</div>
-								<p:message for="txtEtiquetaProductoNuevo" />
-							</div>
-							<div class="completo">
-							<div class="tercio">
-								<h:outputLabel for="cboEstado" value="Estado:" /><h:outputLabel value="*" style="Color:red"/>
-							</div>
-							<div class="dostercios">
-								<div class="combo">
-									<p:selectOneMenu id="cboEstado" value="#{etiquetaProductoMB.objEtiquetaProductoMain.productLabelStatus}">
-										<f:selectItems value="#{etiquetaProductoMB.lstEstadosGenerales}" var="generalParameterNew"/>
-										<f:converter binding="#{generalParameterConverter}" for="generalParameterNew"/>
-									</p:selectOneMenu>
-								</div>
-								<div class="tooltip">
-									<h:graphicImage id="imgEstado"
-										url="../../recursos/imagenes/help.png"></h:graphicImage>
-									<p:tooltip for="imgEstado" value="Estado de la etiqueta" />
-								</div>
-							</div>
-							<p:message for="cboEstado" />
-						</div>
-						</div>
-						<div class="mitad">
-							<div class="completo">
-								<div class="tercio">
-									<h:outputLabel for="txtCodEtiquetaNuevo" value="C&#243;digo" /><h:outputLabel value="*" style="Color:red"/>
-								</div>
-								<div class="dostercios">
-									<div class="input">
-										<p:inputText id="txtCodEtiquetaNuevo" value="#{etiquetaProductoMB.objEtiquetaProductoMain.productLabelCode}" />
+										<p:inputText id="txtCodEtiquetaNuevo"
+											value="#{clienteMB.objClienteMain.clientCode}" />
 									</div>
 									<div class="tooltip">
 										<h:graphicImage id="imgCodEtiqueta"
 											url="../../recursos/imagenes/help.png"></h:graphicImage>
-										<p:tooltip for="imgCodEtiqueta" value="C&#243;digo de etiqueta" />
+										<p:tooltip for="imgCodEtiqueta"
+											value="C&#243;digo de etiqueta" />
 									</div>
 								</div>
 								<p:message for="txtCodEtiquetaNuevo" />
 							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cboEstado" value="Estado:" />
+									<h:outputLabel value="*" style="Color:red" />
+								</div>
+								<div class="dostercios">
+									<div class="combo">
+										<p:selectOneMenu id="cboEstado"
+											value="#{clienteMB.objClienteMain.clientStatus}">
+											<f:selectItems value="#{clienteMB.lstEstadosGenerales}"
+												var="generalParameterNew" />
+											<f:converter binding="#{generalParameterConverter}"
+												for="generalParameterNew" />
+										</p:selectOneMenu>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgEstado"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgEstado" value="Estado de la etiqueta" />
+									</div>
+								</div>
+								<p:message for="cboEstado" />
+							</div>
 						</div>
-						
+
 					</div>
 					<div class="boton">
-						<p:commandButton value="Agregar" icon="ui-icon-disk" onclick="PF('confirmationAgregarEtiquetaProducto').show()"/>
+						<p:commandButton value="Agregar" icon="ui-icon-disk"
+							onclick="PF('confirmationAgregarCliente').show()" />
 					</div>
 					<div style="clear: both;"></div>
 				</p:panel>
@@ -284,50 +428,56 @@
 				<div style="clear: both;"></div>
 			</h:form>
 		</p:dialog>
-	
+
 		<!-- ******************************************** EDITAR PRODUCTO ****************************************** -->
 
-		<p:dialog header="Editar Etiqueta Producto" widgetVar="dlgEditarEtiquetaProducto"
-			modal="true" width="930" position="top">
-			
-			<p:growl life="3000" showDetail="true" id="msjEditarEtiquetaProducto" autoUpdate="true"/>
-			
+		<p:dialog header="Editar Etiqueta Producto"
+			widgetVar="dlgEditarCliente" modal="true" width="930" position="top">
+
+			<p:growl life="3000" showDetail="true" id="msjEditarCliente"
+				autoUpdate="true" />
+
 			<h1>Editar Etiqueta Producto</h1>
-			<h:form id="wEditEtiqProd">
-				<p:accordionPanel id="pEditEtiqProd">
+			<h:form id="wEditCli">
+				<p:accordionPanel id="pEditCli">
 					<p:tab title="Datos de la etiqueta">
 						<div class="filas">
 							<div class="mitad">
 								<div class="completo">
 									<div class="tercio">
-										<h:outputLabel for="txtEtiquetaProductoEditar" value="Descripción:" /><h:outputLabel value="*" style="Color:red"/>
+										<h:outputLabel for="txtClienteEditar" value="Descripción:" />
+										<h:outputLabel value="*" style="Color:red" />
 									</div>
 									<div class="dostercios">
 										<div class="input">
-											<p:inputText id="txtEtiquetaProductoEditar" value="#{etiquetaProductoMB.objEtiquetaProductoMain.productLabelDescription}"/>
+											<p:inputText id="txtClienteEditar"
+												value="#{clienteMB.objClienteMain.clientDescription}" />
 										</div>
 										<div class="tooltip">
-											<h:graphicImage id="imgEtiquetaProductoEditar"
+											<h:graphicImage id="imgClienteEditar"
 												url="../../recursos/imagenes/help.png"></h:graphicImage>
-											<p:tooltip for="imgEtiquetaProductoEditar" value="Descripción de la etiqueta" />
+											<p:tooltip for="imgClienteEditar"
+												value="Descripción de la etiqueta" />
 										</div>
 									</div>
-									<p:message for="txtEtiquetaProductoEditar" />
+									<p:message for="txtClienteEditar" />
 								</div>
-								
+
 								<div class="completo">
 									<div class="tercio">
-										<h:outputLabel for="txtCodEtiquetaEditar"
-											value="C&#243;digo:" /><h:outputLabel value="*" style="Color:red"/>
+										<h:outputLabel for="txtCodEtiquetaEditar" value="C&#243;digo:" />
+										<h:outputLabel value="*" style="Color:red" />
 									</div>
 									<div class="dostercios">
 										<div class="input">
-											<p:inputText id="txtCodEtiquetaEditar" value="#{etiquetaProductoMB.objEtiquetaProductoMain.productLabelCode}"/>
+											<p:inputText id="txtCodEtiquetaEditar"
+												value="#{clienteMB.objClienteMain.clientCode}" />
 										</div>
 										<div class="tooltip">
 											<h:graphicImage id="imgCodEtiquetaEditar"
 												url="../../recursos/imagenes/help.png"></h:graphicImage>
-											<p:tooltip for="imgCodEtiquetaEditar" value="C&#243;digo de etiqueta" />
+											<p:tooltip for="imgCodEtiquetaEditar"
+												value="C&#243;digo de etiqueta" />
 										</div>
 									</div>
 									<p:message for="txtCodEtiquetaEditar" />
@@ -336,19 +486,22 @@
 							<div class="mitad">
 								<div class="completo">
 									<div class="tercio">
-										<h:outputLabel for="cboEstadoEditar" value="Estado:" /><h:outputLabel value="*" style="Color:red"/>
+										<h:outputLabel for="cboEstadoEditar" value="Estado:" />
+										<h:outputLabel value="*" style="Color:red" />
 									</div>
 									<div class="dostercios">
 										<div class="combo">
-											<p:selectOneMenu id="cboEstadoEditar" value="#{etiquetaProductoMB.objEtiquetaProductoMain.productLabelStatus}">
-												<f:selectItems value="#{etiquetaProductoMB.lstEstadosGenerales}"/>
-												<f:converter binding="#{generalParameterConverter}"/>
+											<p:selectOneMenu id="cboEstadoEditar"
+												value="#{clienteMB.objClienteMain.clientStatus}">
+												<f:selectItems value="#{clienteMB.lstEstadosGenerales}" />
+												<f:converter binding="#{generalParameterConverter}" />
 											</p:selectOneMenu>
 										</div>
 										<div class="tooltip">
 											<h:graphicImage id="imgEstadoEditar"
 												url="../../recursos/imagenes/help.png"></h:graphicImage>
-											<p:tooltip for="imgEstadoEditar" value="Estado de la etiqueta" />
+											<p:tooltip for="imgEstadoEditar"
+												value="Estado de la etiqueta" />
 										</div>
 									</div>
 									<p:message for="cboEstadoEditar" />
@@ -356,61 +509,65 @@
 							</div>
 						</div>
 						<div class="boton">
-							<p:commandButton value="Guardar" icon="ui-icon-disk" onclick="PF('confirmationEditarEtiquetaProducto').show()" />
+							<p:commandButton value="Guardar" icon="ui-icon-disk"
+								onclick="PF('confirmationEditarCliente').show()" />
 						</div>
 					</p:tab>
 				</p:accordionPanel>
 
 			</h:form>
 		</p:dialog>
-		
-		
-		<p:confirmDialog 
-		   message="¿Está seguro de agregar el registro?"
-		   width="300" showEffect="explode" hideEffect="explode"
-		   header="Mensaje de Confirmación" severity="alert"
-		   widgetVar="confirmationAgregarEtiquetaProducto" modal="true"> 
-		   <h:form>
-		    <p:commandButton value="Si"
-		     actionListener="#{etiquetaProductoMB.agregarEtiquetaProducto}" update=":msjAgregarEtiquetaProducto,:wLisEtiqProd:tblEtiquetaProductos"
-		     oncomplete="PF('confirmationAgregarEtiquetaProducto').hide()" />
-		    <p:commandButton value="No"
-		     onclick="PF('confirmationAgregarEtiquetaProducto').hide()" type="button" />
-		   </h:form>
-		 </p:confirmDialog>
-		 
-		 
-		 <p:confirmDialog 
-		   message="¿Está seguro de editar los datos?"
-		   width="300" showEffect="explode" hideEffect="explode"
-		   header="Mensaje de Confirmación" severity="alert"
-		   widgetVar="confirmationEditarEtiquetaProducto" modal="true"> 
-		   <h:form>
-		    <p:commandButton value="Si" ajax="true"
-		     actionListener="#{etiquetaProductoMB.editarEtiquetaProducto}" update=":msjEditarEtiquetaProducto,:wLisEtiqProd:tblEtiquetaProductos"
-		     oncomplete="PF('confirmationEditarEtiquetaProducto').hide()" />
-		    <p:commandButton value="No"
-		     onclick="PF('confirmationEditarEtiquetaProducto').hide()" type="button" />
-		   </h:form>
-		 </p:confirmDialog>
-		 
-		 
-		 <p:confirmDialog  
-		   message="¿Está usted seguro que desea eliminar el registro?"
-		   width="300" showEffect="explode" hideEffect="explode"
-		   header="Mensaje de Confirmación" severity="alert"
-		   widgetVar="confirmationEliminarEtiquetaProducto" modal="true" id="confirmEliminarEtiquetaProducto" visible="#{etiquetaProductoMB.flagConfirmEliEtiqProd}"> 
-		   <h:form>
-		    <p:commandButton value="Si" ajax="false"
-		     actionListener="#{etiquetaProductoMB.eliminarEtiquetaProducto}" update="msjLisEtiqProd,:wLisEtiqProd:tblEtiquetaProductos"
-		     oncomplete="PF('confirmationEliminarEtiquetaProducto').hide()" />
-		    <p:commandButton value="No"
-		     onclick="PF('confirmationEliminarEtiquetaProducto').hide()" type="button" />
-		   </h:form>
-		 </p:confirmDialog>
-		 
-		
-		
+
+
+		<p:confirmDialog message="¿Está seguro de agregar el registro?"
+			width="300" showEffect="explode" hideEffect="explode"
+			header="Mensaje de Confirmación" severity="alert"
+			widgetVar="confirmationAgregarCliente" modal="true">
+			<h:form>
+				<p:commandButton value="Si"
+					actionListener="#{clienteMB.agregarCliente}"
+					update=":msjAgregarCliente,:wLisClient:tblClientes"
+					oncomplete="PF('confirmationAgregarCliente').hide()" />
+				<p:commandButton value="No"
+					onclick="PF('confirmationAgregarCliente').hide()" type="button" />
+			</h:form>
+		</p:confirmDialog>
+
+
+		<p:confirmDialog message="¿Está seguro de editar los datos?"
+			width="300" showEffect="explode" hideEffect="explode"
+			header="Mensaje de Confirmación" severity="alert"
+			widgetVar="confirmationEditarCliente" modal="true">
+			<h:form>
+				<p:commandButton value="Si" ajax="true"
+					actionListener="#{clienteMB.editarCliente}"
+					update=":msjEditarCliente,:wLisClient:tblClientes"
+					oncomplete="PF('confirmationEditarCliente').hide()" />
+				<p:commandButton value="No"
+					onclick="PF('confirmationEditarCliente').hide()" type="button" />
+			</h:form>
+		</p:confirmDialog>
+
+
+		<p:confirmDialog
+			message="¿Está usted seguro que desea eliminar el registro?"
+			width="300" showEffect="explode" hideEffect="explode"
+			header="Mensaje de Confirmación" severity="alert"
+			widgetVar="confirmationEliminarCliente" modal="true"
+			id="confirmEliminarCliente"
+			visible="#{clienteMB.flagConfirmEliClient}">
+			<h:form>
+				<p:commandButton value="Si" ajax="false"
+					actionListener="#{clienteMB.eliminarCliente}"
+					update="msjLisClient,:wLisClient:tblClientes"
+					oncomplete="PF('confirmationEliminarCliente').hide()" />
+				<p:commandButton value="No"
+					onclick="PF('confirmationEliminarCliente').hide()" type="button" />
+			</h:form>
+		</p:confirmDialog>
+
+
+
 	</ui:define>
 
 </ui:composition>

@@ -18,11 +18,9 @@ public class ClienteJPA {
 		try {
 			TypedQuery<Client> queryProductLabel = em.createQuery(
 					"select c from Client c join fetch c.clientStatus cs join fetch c.clientType ct join fetch c.documentType dt "
-					+ "where c.clientNames = :clientNames or c.clientSocialReason like :clientSocialReason "
-					+ "or c.documentNumber =:documentNumber or cs.paramId = :clientStatus or "
+					+ "where c.clientNames = :clientNames or c.documentNumber =:documentNumber or cs.paramId = :clientStatus or "
 					+ "or ct.paramId =:clientType or dt.paramId =:documentType", Client.class);
 			queryProductLabel.setParameter("clientNames", client.getClientNames());
-			queryProductLabel.setParameter("clientSocialReason", client.getClientSocialReason());
 			queryProductLabel.setParameter("documentNumber", client.getDocumentNumber());
 			queryProductLabel.setParameter("clientStatus", client.getClientStatus().getParamId());
 			queryProductLabel.setParameter("clientType", client.getClientType().getParamId());
