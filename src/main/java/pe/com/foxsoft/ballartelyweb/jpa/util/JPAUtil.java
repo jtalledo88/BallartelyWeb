@@ -15,6 +15,7 @@ public class JPAUtil {
 	public static final String NAMED_QUERY_ALL_GENERAL_PARAMETER = "GeneralParameter.findAll";
 	public static final String NAMED_QUERY_ALL_CLIENT = "Client.findAll";
 	public static final String NAMED_QUERY_ALL_ACCOUNT = "Account.findAll";
+	public static final String NAMED_QUERY_ALL_PROVIDER = "Provider.findAll";
 	
 	public static <T> List<T> executeQueryList(EntityManager em, Class<T> clasz, String namedQuery) throws BallartelyException {
 		try {

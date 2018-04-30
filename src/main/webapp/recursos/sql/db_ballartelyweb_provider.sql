@@ -29,13 +29,13 @@ CREATE TABLE `provider` (
   `provider_ruc` varchar(11) NOT NULL,
   `provider_social_reason` varchar(450) NOT NULL,
   `provider_address` varchar(500) NOT NULL,
-  `provider_phon_number` varchar(15) NOT NULL,
+  `provider_phone_number` varchar(15) NOT NULL,
   `provider_creation_date` datetime DEFAULT NULL,
   `provider_modification_date` datetime DEFAULT NULL,
   `provider_status` varchar(10) NOT NULL,
   PRIMARY KEY (`provider_id`),
   UNIQUE KEY `provider_ruc_UNIQUE` (`provider_ruc`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -47,4 +47,4 @@ CREATE TABLE `provider` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-27 18:02:20
+-- Dump completed on 2018-04-30 18:17:14

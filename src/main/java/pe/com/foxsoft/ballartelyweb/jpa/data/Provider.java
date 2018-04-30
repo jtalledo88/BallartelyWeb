@@ -2,6 +2,9 @@ package pe.com.foxsoft.ballartelyweb.jpa.data;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import pe.com.foxsoft.ballartelyweb.jpa.util.JPAUtil;
+
 import java.util.Date;
 
 
@@ -10,7 +13,7 @@ import java.util.Date;
  * 
  */
 @Entity
-@NamedQuery(name="Provider.findAll", query="SELECT p FROM Provider p")
+@NamedQuery(name=JPAUtil.NAMED_QUERY_ALL_PROVIDER, query="SELECT p FROM Provider p")
 public class Provider implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -30,8 +33,8 @@ public class Provider implements Serializable {
 	@Column(name="provider_modification_date")
 	private Date providerModificationDate;
 
-	@Column(name="provider_phon_number")
-	private String providerPhonNumber;
+	@Column(name="provider_phone_number")
+	private String providerPhoneNumber;
 
 	@Column(name="provider_ruc")
 	private String providerRuc;
@@ -77,12 +80,12 @@ public class Provider implements Serializable {
 		this.providerModificationDate = providerModificationDate;
 	}
 
-	public String getProviderPhonNumber() {
-		return this.providerPhonNumber;
+	public String getProviderPhoneNumber() {
+		return this.providerPhoneNumber;
 	}
 
-	public void setProviderPhonNumber(String providerPhonNumber) {
-		this.providerPhonNumber = providerPhonNumber;
+	public void setProviderPhoneNumber(String providerPhoneNumber) {
+		this.providerPhoneNumber = providerPhoneNumber;
 	}
 
 	public String getProviderRuc() {
