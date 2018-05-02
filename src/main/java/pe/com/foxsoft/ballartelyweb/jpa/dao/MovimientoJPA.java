@@ -18,7 +18,7 @@ public class MovimientoJPA {
 	public List<Account> getAccountsByOwnerDataBase(EntityManager em, Account account) throws BallartelyException {
 		try {
 			TypedQuery<Account> queryUser = em.createQuery(
-					"select a from Account a join fetch a.client c where (a.accountType = '" + Constantes.ACCOUNT_TYPE_C + 
+					"select m from M a join fetch a.client c where (a.accountType = '" + Constantes.ACCOUNT_TYPE_C + 
 					"' and c.clientId = :clientId) or (a.accountType = '" + Constantes.ACCOUNT_TYPE_P +"' and c.clientId is null) "
 							+ "and a.accountStatus = :accountStatus", Account.class);
 			queryUser.setParameter("clientId", account.getClient().getClientId());
