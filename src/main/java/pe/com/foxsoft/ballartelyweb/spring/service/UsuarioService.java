@@ -7,18 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import pe.com.foxsoft.ballartelyweb.jpa.dao.LoginJPA;
+import pe.com.foxsoft.ballartelyweb.jpa.dao.UsuarioJPA;
 import pe.com.foxsoft.ballartelyweb.jpa.data.User;
+import pe.com.foxsoft.ballartelyweb.jpa.util.JPAUtil;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
 
 @Component
-public class LoginService {
+public class UsuarioService {
 	
 	
 	private EntityManager em;
 	
 	@Autowired
-	private LoginJPA loginJPA;
+	private UsuarioJPA usuarioJPA;
 	
 	public EntityManager getEm() {
 		return em;
@@ -29,17 +30,22 @@ public class LoginService {
 		this.em = em;
 	}
 
-	public LoginJPA getLoginJPA() {
-		return loginJPA;
+	public UsuarioJPA getUsuarioJPA() {
+		return usuarioJPA;
 	}
 	
-	public void setLoginJPA(LoginJPA loginJPA) {
-		this.loginJPA = loginJPA;
+	public void setUsuarioJPA(UsuarioJPA UsuarioJPA) {
+		this.usuarioJPA = UsuarioJPA;
 	}
 
 	@Transactional(readOnly=true)
 	public User getUser(User user) throws BallartelyException {
-		return loginJPA.getUserDataBase(em, user);
+		return usuarioJPA.getUserDataBase(em, user);
+	}
+	
+	@Transactional(readOnly=false, rollbackFor=Throwable.class)
+	public String editarUsuario(User user) throws BallartelyException {
+		return JPAUtil.mergeEntity(em, user);
 	}
 
 }

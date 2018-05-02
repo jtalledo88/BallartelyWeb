@@ -9,6 +9,7 @@ public class Constantes {
 	public static final String ENCRIPTATION_KEY = "92AE31A79FEEB2A3";
 	public static final String ENCRYPT = "E";
 	public static final String ACCOUNT_TYPE_C = "C";
+	public static final String ACCOUNT_TYPE_P = "P";
 	public static final String STATUS_ACTIVE = "a";
 
 }

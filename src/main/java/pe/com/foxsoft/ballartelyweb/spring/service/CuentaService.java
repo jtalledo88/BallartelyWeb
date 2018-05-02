@@ -5,9 +5,11 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import pe.com.foxsoft.ballartelyweb.jpa.dao.CuentaJPA;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Account;
 import pe.com.foxsoft.ballartelyweb.jpa.util.JPAUtil;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
@@ -18,6 +20,9 @@ public class CuentaService {
 	
 	private EntityManager em;
 	
+	@Autowired
+	private CuentaJPA cuentaJPA;
+	
 	public EntityManager getEm() {
 		return em;
 	}
@@ -25,6 +30,14 @@ public class CuentaService {
 	@PersistenceContext
 	public void setEm(EntityManager em) {
 		this.em = em;
+	}
+
+	public CuentaJPA getCuentaJPA() {
+		return cuentaJPA;
+	}
+
+	public void setCuentaJPA(CuentaJPA cuentaJPA) {
+		this.cuentaJPA = cuentaJPA;
 	}
 
 	@Transactional(readOnly=false, rollbackFor=Throwable.class)
@@ -35,6 +48,11 @@ public class CuentaService {
 	@Transactional(readOnly=true, noRollbackFor=BallartelyException.class)
 	public Account obtenerCuenta(int itemAccount) throws BallartelyException {
 		return JPAUtil.findEntity(em, Account.class, itemAccount);
+	}
+	
+	@Transactional(readOnly=true, noRollbackFor=BallartelyException.class)
+	public List<Account> obtenerCuentas(Account account) throws BallartelyException {
+		return cuentaJPA.getAccountsByOwnerDataBase(em, account);
 	}
 
 	@Transactional(readOnly=false, rollbackFor=Throwable.class)

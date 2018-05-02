@@ -10,7 +10,7 @@ import pe.com.foxsoft.ballartelyweb.jpa.data.User;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
 
 @Component
-public class LoginJPA {
+public class UsuarioJPA {
 	
 	public User getUserDataBase(EntityManager em, User user) throws BallartelyException {
 		try {
