@@ -634,3 +634,11 @@ padding: 0px !important;
 .ui-dt-c{
   width: 100%!important
 }*/
+
+.calendarEvents {
+	height: 55%;
+	overflow: auto;
+}
+.classRed {
+	background-color: red;
+}

@@ -16,6 +16,7 @@
 	<!-- Scan for all of Spring components such as Spring Service -->
 	<context:component-scan base-package="pe.com.foxsoft.ballartelyweb.spring.service"></context:component-scan>
 	<context:component-scan base-package="pe.com.foxsoft.ballartelyweb.spring.util"></context:component-scan>
+	<context:component-scan base-package="pe.com.foxsoft.ballartelyweb.spring.converter"></context:component-scan>
 	<context:component-scan base-package="pe.com.foxsoft.ballartelyweb.jpa.dao"></context:component-scan>
 	
 	<!-- Necessary to get the entity manager injected into the factory bean -->

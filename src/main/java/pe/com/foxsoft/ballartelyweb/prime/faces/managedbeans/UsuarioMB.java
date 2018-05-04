@@ -9,6 +9,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
 import org.apache.log4j.Logger;
+import org.primefaces.model.ScheduleModel;
 
 import pe.com.foxsoft.ballartelyweb.jpa.data.Account;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Client;
@@ -16,6 +17,7 @@ import pe.com.foxsoft.ballartelyweb.jpa.data.User;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
 import pe.com.foxsoft.ballartelyweb.spring.service.CuentaService;
 import pe.com.foxsoft.ballartelyweb.spring.service.UsuarioService;
+import pe.com.foxsoft.ballartelyweb.spring.util.CalendarioModel;
 import pe.com.foxsoft.ballartelyweb.spring.util.Constantes;
 import pe.com.foxsoft.ballartelyweb.spring.util.EncriptacionUtil;
 import pe.com.foxsoft.ballartelyweb.spring.util.Utilitarios;
@@ -36,11 +38,14 @@ public class UsuarioMB {
 	private List<Account> lstCuentaPrincipal;
 	private double saldoCuentaTotal = 10.05;
 	
+	private ScheduleModel calendarioEventos;
+	
 	public UsuarioMB() {
 		if(Utilitarios.getObjectInSession(Constantes.SESSION_USUARIO_ATTR) != null) {
 			usuario = (User)Utilitarios.getObjectInSession(Constantes.SESSION_USUARIO_ATTR);
 		}
 		lstCuentaPrincipal = new ArrayList<>();
+		calendarioEventos = new CalendarioModel();
 	}
 
 	public String logIn() {
@@ -149,5 +154,15 @@ public class UsuarioMB {
 	public void setSaldoCuentaTotal(double saldoCuentaTotal) {
 		this.saldoCuentaTotal = saldoCuentaTotal;
 	}
+
+	public ScheduleModel getCalendarioEventos() {
+		return calendarioEventos;
+	}
+
+	public void setCalendarioEventos(ScheduleModel calendarioEventos) {
+		this.calendarioEventos = calendarioEventos;
+	}
+	
+	
 	
 }

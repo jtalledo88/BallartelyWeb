@@ -1,4 +1,4 @@
-package pe.com.foxsoft.ballartelyweb.spring.util;
+package pe.com.foxsoft.ballartelyweb.spring.converter;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -37,7 +37,7 @@ public class GeneralParameterConverter implements Converter{
 		if(generalParameter == null)
 			return null;
 		
-		return generalParameter.getParamValue();
+		return String.valueOf(generalParameter.getParamValue());
 	}
 
 	public ParametroGeneralService getParametroGeneralService() {

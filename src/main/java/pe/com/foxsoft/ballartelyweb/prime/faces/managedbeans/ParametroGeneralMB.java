@@ -45,6 +45,7 @@ public class ParametroGeneralMB {
 
 	public ParametroGeneralMB() {
 		this.objParametroGeneralMain = new GeneralParameter();
+		this.objParametroGeneralSearch = new GeneralParameter();
 		this.lstParametrosGeneralesMain = new ArrayList<GeneralParameter>();
 		this.lstCodParametroGeneralBUS = new ArrayList<String>();
 		this.lstDescParametroGeneralBUS = new ArrayList<String>();
