@@ -34,11 +34,21 @@ CREATE TABLE `client` (
   `client_type` varchar(10) NOT NULL,
   `client_creation_date` datetime DEFAULT NULL,
   `client_modification_date` datetime DEFAULT NULL,
-  `client_status` varchar(10) NOT NULL,
+  `client_status` char(1) NOT NULL,
   PRIMARY KEY (`client_id`),
   UNIQUE KEY `document_number_UNIQUE` (`document_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `client`
+--
+
+LOCK TABLES `client` WRITE;
+/*!40000 ALTER TABLE `client` DISABLE KEYS */;
+INSERT INTO `client` (`client_id`, `document_type`, `document_number`, `client_names`, `client_address`, `client_phone_number`, `client_type`, `client_creation_date`, `client_modification_date`, `client_status`) VALUES (1,'RUC','10460117530','POLLERIA TALLEDO','CALLE LAS ARREPENTIDAS S/N','988899665','P','2018-05-09 13:52:02',NULL,'1');
+/*!40000 ALTER TABLE `client` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -49,4 +59,4 @@ CREATE TABLE `client` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-27 18:02:19
+-- Dump completed on 2018-05-15 22:43:39

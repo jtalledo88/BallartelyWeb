@@ -18,25 +18,42 @@ USE `db_ballartelyweb`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `provider`
+-- Table structure for table `movements`
 --
 
-DROP TABLE IF EXISTS `provider`;
+DROP TABLE IF EXISTS `movements`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `provider` (
-  `provider_id` int(11) NOT NULL AUTO_INCREMENT,
-  `provider_ruc` varchar(11) NOT NULL,
-  `provider_social_reason` varchar(450) NOT NULL,
-  `provider_address` varchar(500) NOT NULL,
-  `provider_phone_number` varchar(15) NOT NULL,
-  `provider_creation_date` datetime DEFAULT NULL,
-  `provider_modification_date` datetime DEFAULT NULL,
-  `provider_status` varchar(10) NOT NULL,
-  PRIMARY KEY (`provider_id`),
-  UNIQUE KEY `provider_ruc_UNIQUE` (`provider_ruc`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+CREATE TABLE `movements` (
+  `movement_id` int(50) unsigned zerofill NOT NULL AUTO_INCREMENT,
+  `movement_date` date NOT NULL,
+  `movement_type` varchar(45) NOT NULL,
+  `payment_documentnumber` varchar(25) NOT NULL,
+  `product_label_id` int(11) NOT NULL,
+  `account_id` int(20) unsigned NOT NULL,
+  `provider_id` int(20) DEFAULT NULL,
+  `movement_quantity` int(11) NOT NULL,
+  `movement_amount` decimal(10,2) NOT NULL,
+  `movement_observation` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`movement_id`),
+  UNIQUE KEY `payment_documentnumber_UNIQUE` (`payment_documentnumber`),
+  KEY `fk_product_label_id_idx` (`product_label_id`),
+  KEY `fk_provider_id_idx` (`provider_id`),
+  KEY `fk_account_id_idx` (`account_id`),
+  CONSTRAINT `fk_account_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`account_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_product_label_id` FOREIGN KEY (`product_label_id`) REFERENCES `product_label` (`product_label_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_provider_id` FOREIGN KEY (`provider_id`) REFERENCES `provider` (`provider_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `movements`
+--
+
+LOCK TABLES `movements` WRITE;
+/*!40000 ALTER TABLE `movements` DISABLE KEYS */;
+/*!40000 ALTER TABLE `movements` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -47,4 +64,4 @@ CREATE TABLE `provider` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-30 18:17:14
+-- Dump completed on 2018-05-15 22:43:39

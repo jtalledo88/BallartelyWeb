@@ -35,8 +35,18 @@ CREATE TABLE `general_parameter` (
   `param_status` char(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`param_id`),
   UNIQUE KEY `param_code_UNIQUE` (`param_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `general_parameter`
+--
+
+LOCK TABLES `general_parameter` WRITE;
+/*!40000 ALTER TABLE `general_parameter` DISABLE KEYS */;
+INSERT INTO `general_parameter` (`param_id`, `param_type`, `param_code`, `param_description`, `param_value`, `param_creation_date`, `param_modification_date`, `param_status`) VALUES (1,'STATUS','A','ESTADO ACTIVO','ACTIVO','2018-05-09 13:47:45',NULL,'1'),(2,'STATUS','I','ESTADO INACTIVO','INACTIVO','2018-05-09 13:48:00',NULL,'1'),(3,'DOCTYPE','DNI','DOCUMENTO NACIONAL DE IDENTIDAD','D.N.I','2018-05-09 13:48:39',NULL,'1'),(4,'DOCTYPE','RUC','REGISTRO ÚNICO CALIFICADO','R.U.C','2018-05-09 13:49:18',NULL,'1'),(5,'CLIENTTYPE','M','CLIENTE MOROSO','MOROSO','2018-05-09 13:49:52',NULL,'1'),(6,'CLIENTTYPE','N','CLIENTE NORMAL','NORMAL','2018-05-09 13:50:11',NULL,'1'),(7,'CLIENTTYPE','P','CLIENTE PREFERENCIAL','PREFERENCIAL','2018-05-09 13:50:26',NULL,'1'),(8,'GENERIC','IGV','Impuesto general a las ventas','0.18','2018-05-15 19:19:23',NULL,'1');
+/*!40000 ALTER TABLE `general_parameter` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -47,4 +57,4 @@ CREATE TABLE `general_parameter` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-27 18:02:19
+-- Dump completed on 2018-05-15 22:43:39

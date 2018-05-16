@@ -35,8 +35,18 @@ CREATE TABLE `account` (
   UNIQUE KEY `account_number_UNIQUE` (`account_creation_date`),
   KEY `fk_account_client_idx` (`account_owner`),
   CONSTRAINT `fk_account_client` FOREIGN KEY (`account_owner`) REFERENCES `client` (`client_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `account`
+--
+
+LOCK TABLES `account` WRITE;
+/*!40000 ALTER TABLE `account` DISABLE KEYS */;
+INSERT INTO `account` (`account_id`, `account_type`, `account_owner`, `account_creation_date`, `account_modification_date`, `account_status`) VALUES (00000000000000000001,'C',1,'2018-05-09 13:52:02',NULL,'a'),(00000000000000000002,'P',NULL,'2018-05-09 14:08:17',NULL,'a');
+/*!40000 ALTER TABLE `account` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -47,4 +57,4 @@ CREATE TABLE `account` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-27 18:02:19
+-- Dump completed on 2018-05-15 22:43:38

@@ -18,23 +18,35 @@ USE `db_ballartelyweb`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `user`
+-- Table structure for table `provider`
 --
 
-DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS `provider`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `user` (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_name` varchar(10) NOT NULL,
-  `user_password` varchar(100) NOT NULL,
-  `user_complete_names` varchar(450) NOT NULL,
-  `user_creation_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `user_modification_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`user_id`),
-  UNIQUE KEY `user_name_UNIQUE` (`user_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+CREATE TABLE `provider` (
+  `provider_id` int(11) NOT NULL AUTO_INCREMENT,
+  `provider_ruc` varchar(11) NOT NULL,
+  `provider_social_reason` varchar(450) NOT NULL,
+  `provider_address` varchar(500) NOT NULL,
+  `provider_phone_number` varchar(15) NOT NULL,
+  `provider_creation_date` datetime DEFAULT NULL,
+  `provider_modification_date` datetime DEFAULT NULL,
+  `provider_status` char(1) NOT NULL,
+  PRIMARY KEY (`provider_id`),
+  UNIQUE KEY `provider_ruc_UNIQUE` (`provider_ruc`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `provider`
+--
+
+LOCK TABLES `provider` WRITE;
+/*!40000 ALTER TABLE `provider` DISABLE KEYS */;
+INSERT INTO `provider` (`provider_id`, `provider_ruc`, `provider_social_reason`, `provider_address`, `provider_phone_number`, `provider_creation_date`, `provider_modification_date`, `provider_status`) VALUES (1,'17545587896','POLLOS LOS AVESTRUCES','AV SURICHAY 234','2455887','2018-05-09 13:52:55',NULL,'1');
+/*!40000 ALTER TABLE `provider` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -45,4 +57,4 @@ CREATE TABLE `user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-27 18:02:19
+-- Dump completed on 2018-05-15 22:43:38
