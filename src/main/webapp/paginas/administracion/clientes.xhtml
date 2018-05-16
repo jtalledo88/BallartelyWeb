@@ -123,10 +123,9 @@
 									<div class="combo">
 										<p:selectOneMenu id="cboEstado"
 											value="#{clienteMB.objClienteSearch.clientStatus}">
-											<f:selectItem itemLabel="-- Todos --" itemValue=""/>
-											<f:selectItems value="#{clienteMB.lstEstadosGenerales}"
-												var="estadoGeneral" itemLabel="#{estadoGeneral.paramValue}"
-												itemValue="#{estadoGeneral.paramCode}"/>
+											<f:selectItem itemLabel="-- Todos --" itemValue="" />
+											<f:selectItem itemLabel="Activo" itemValue="1" />
+											<f:selectItem itemLabel="Inactivo" itemValue="0" />
 										</p:selectOneMenu>
 									</div>
 									<div class="tooltip">
@@ -265,7 +264,7 @@
 						<f:facet name="header">
 							<h:outputText value="Estado" />
 						</f:facet>
-						<h:outputText value="#{cliente.clientStatus}" converter="#{generalParameterConverter}" />
+						<h:outputText value="#{cliente.clientStatus}" converter="#{statusConverter}" />
 					</p:column>
 					<p:column styleClass="fecha">
 						<f:facet name="header">
@@ -383,10 +382,9 @@
 									<div class="combo">
 										<p:selectOneMenu id="cboEstado"
 											value="#{clienteMB.objClienteMain.clientStatus}">
-											<f:selectItem itemLabel="-- Seleccione --" itemValue=""/>
-											<f:selectItems value="#{clienteMB.lstEstadosGenerales}"
-												var="estadoGeneral" itemLabel="#{estadoGeneral.paramValue}"
-												itemValue="#{estadoGeneral.paramCode}"/>
+											<f:selectItem itemLabel="-- Seleccione --" itemValue="" />
+											<f:selectItem itemLabel="Activo" itemValue="1" />
+											<f:selectItem itemLabel="Inactivo" itemValue="0" />
 										</p:selectOneMenu>
 									</div>
 									<div class="tooltip">
@@ -559,10 +557,9 @@
 										<div class="combo">
 											<p:selectOneMenu id="cboEstadoEditar"
 												value="#{clienteMB.objClienteMain.clientStatus}">
-												<f:selectItem itemLabel="-- Seleccione --" itemValue=""/>
-												<f:selectItems value="#{clienteMB.lstEstadosGenerales}"
-													var="estadoGeneral" itemLabel="#{estadoGeneral.paramValue}"
-													itemValue="#{estadoGeneral.paramCode}"/>
+												<f:selectItem itemLabel="-- Seleccione --" itemValue="" />
+												<f:selectItem itemLabel="Activo" itemValue="1" />
+												<f:selectItem itemLabel="Inactivo" itemValue="0" />
 											</p:selectOneMenu>
 										</div>
 										<div class="tooltip">

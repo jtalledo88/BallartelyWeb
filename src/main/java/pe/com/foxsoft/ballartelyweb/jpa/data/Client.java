@@ -50,7 +50,7 @@ public class Client implements Serializable {
 	private String documentType;
 
 	//bi-directional many-to-one association to Account
-	@OneToMany(mappedBy="client")
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
 	private List<Account> accounts;
 
 	public Client() {

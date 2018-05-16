@@ -2,10 +2,8 @@ package pe.com.foxsoft.ballartelyweb.jpa.data;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
-import pe.com.foxsoft.ballartelyweb.jpa.util.JPAUtil;
-
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -13,7 +11,7 @@ import java.util.Date;
  * 
  */
 @Entity
-@NamedQuery(name=JPAUtil.NAMED_QUERY_ALL_PROVIDER, query="SELECT p FROM Provider p")
+@NamedQuery(name="Provider.findAll", query="SELECT p FROM Provider p")
 public class Provider implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -44,6 +42,14 @@ public class Provider implements Serializable {
 
 	@Column(name="provider_status")
 	private String providerStatus;
+
+	//bi-directional many-to-one association to Movement
+	@OneToMany(mappedBy="provider", fetch=FetchType.EAGER)
+	private List<Movement> movements;
+
+	//bi-directional many-to-one association to ShippingHead
+	@OneToMany(mappedBy="provider", fetch=FetchType.EAGER)
+	private List<ShippingHead> shippingHeads;
 
 	public Provider() {
 	}
@@ -110,6 +116,50 @@ public class Provider implements Serializable {
 
 	public void setProviderStatus(String providerStatus) {
 		this.providerStatus = providerStatus;
+	}
+
+	public List<Movement> getMovements() {
+		return this.movements;
+	}
+
+	public void setMovements(List<Movement> movements) {
+		this.movements = movements;
+	}
+
+	public Movement addMovement(Movement movement) {
+		getMovements().add(movement);
+		movement.setProvider(this);
+
+		return movement;
+	}
+
+	public Movement removeMovement(Movement movement) {
+		getMovements().remove(movement);
+		movement.setProvider(null);
+
+		return movement;
+	}
+
+	public List<ShippingHead> getShippingHeads() {
+		return this.shippingHeads;
+	}
+
+	public void setShippingHeads(List<ShippingHead> shippingHeads) {
+		this.shippingHeads = shippingHeads;
+	}
+
+	public ShippingHead addShippingHead(ShippingHead shippingHead) {
+		getShippingHeads().add(shippingHead);
+		shippingHead.setProvider(this);
+
+		return shippingHead;
+	}
+
+	public ShippingHead removeShippingHead(ShippingHead shippingHead) {
+		getShippingHeads().remove(shippingHead);
+		shippingHead.setProvider(null);
+
+		return shippingHead;
 	}
 
 }

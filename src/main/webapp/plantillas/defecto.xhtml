@@ -10,6 +10,8 @@
 <h:head>
 	<title><ui:insert name="titulo">titulo defecto</ui:insert></title>
 	<link rel="stylesheet" href="../../recursos/css/estilos.css"></link>
+	<script name="jquery/jquery.js" library="primefaces"></script>
+	<script type="text/javascript" src="../../recursos/js/funciones.js"></script>
 </h:head>
 
 <h:body>
@@ -32,6 +34,8 @@
 					<p:splitButton value="Salir" style="width: 65px;" 
 						onclick="PF('confirmationCerrarSesion').show()" icon="ui-icon-unlocked">
 				        <p:menuitem value="Cambiar contraseña" icon="ui-icon-arrowrefresh-1-w" />
+				        <p:menuitem value="Datos Usuario"
+											url="../../paginas/administracion/usuarios.xhtml" icon="ui-icon-arrowrefresh-1-w"/>
 				        <p:separator />
 				        <p:menuitem value="Ir a Inicio" url="../../paginas/inicio/bienvenido.xhtml" icon="ui-icon-extlink" />
 				    </p:splitButton>

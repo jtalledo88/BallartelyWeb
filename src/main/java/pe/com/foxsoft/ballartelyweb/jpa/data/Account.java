@@ -1,9 +1,9 @@
 package pe.com.foxsoft.ballartelyweb.jpa.data;
 
 import java.io.Serializable;
-import java.util.Date;
-
 import javax.persistence.*;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -23,7 +23,7 @@ public class Account implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="account_creation_date")
 	private Date accountCreationDate;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="account_modification_date")
 	private Date accountModificationDate;
@@ -38,6 +38,10 @@ public class Account implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="account_owner")
 	private Client client;
+
+	//bi-directional many-to-one association to Movement
+	@OneToMany(mappedBy="account", fetch=FetchType.EAGER)
+	private List<Movement> movements;
 
 	public Account() {
 	}
@@ -59,7 +63,7 @@ public class Account implements Serializable {
 	}
 
 	public Date getAccountModificationDate() {
-		return accountModificationDate;
+		return this.accountModificationDate;
 	}
 
 	public void setAccountModificationDate(Date accountModificationDate) {
@@ -88,6 +92,28 @@ public class Account implements Serializable {
 
 	public void setClient(Client client) {
 		this.client = client;
+	}
+
+	public List<Movement> getMovements() {
+		return this.movements;
+	}
+
+	public void setMovements(List<Movement> movements) {
+		this.movements = movements;
+	}
+
+	public Movement addMovement(Movement movement) {
+		getMovements().add(movement);
+		movement.setAccount(this);
+
+		return movement;
+	}
+
+	public Movement removeMovement(Movement movement) {
+		getMovements().remove(movement);
+		movement.setAccount(null);
+
+		return movement;
 	}
 
 }

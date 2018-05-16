@@ -10,6 +10,6 @@ public class Constantes {
 	public static final String ENCRYPT = "E";
 	public static final String ACCOUNT_TYPE_C = "C";
 	public static final String ACCOUNT_TYPE_P = "P";
-	public static final String STATUS_ACTIVE = "a";
+	public static final String STATUS_ACTIVE = "1";
 
 }

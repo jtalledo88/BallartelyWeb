@@ -3,6 +3,7 @@ package pe.com.foxsoft.ballartelyweb.jpa.data;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -36,6 +37,14 @@ public class ProductLabel implements Serializable {
 
 	@Column(name="product_label_status")
 	private String productLabelStatus;
+
+	//bi-directional many-to-one association to Movement
+	@OneToMany(mappedBy="productLabel", fetch=FetchType.EAGER)
+	private List<Movement> movements;
+
+	//bi-directional many-to-one association to ShippingDetail
+	@OneToMany(mappedBy="productLabel", fetch=FetchType.EAGER)
+	private List<ShippingDetail> shippingDetails;
 
 	public ProductLabel() {
 	}
@@ -87,5 +96,68 @@ public class ProductLabel implements Serializable {
 	public void setProductLabelStatus(String productLabelStatus) {
 		this.productLabelStatus = productLabelStatus;
 	}
+
+	public List<Movement> getMovements() {
+		return this.movements;
+	}
+
+	public void setMovements(List<Movement> movements) {
+		this.movements = movements;
+	}
+
+	public Movement addMovement(Movement movement) {
+		getMovements().add(movement);
+		movement.setProductLabel(this);
+
+		return movement;
+	}
+
+	public Movement removeMovement(Movement movement) {
+		getMovements().remove(movement);
+		movement.setProductLabel(null);
+
+		return movement;
+	}
+
+	public List<ShippingDetail> getShippingDetails() {
+		return this.shippingDetails;
+	}
+
+	public void setShippingDetails(List<ShippingDetail> shippingDetails) {
+		this.shippingDetails = shippingDetails;
+	}
+
+	public ShippingDetail addShippingDetail(ShippingDetail shippingDetail) {
+		getShippingDetails().add(shippingDetail);
+		shippingDetail.setProductLabel(this);
+
+		return shippingDetail;
+	}
+
+	public ShippingDetail removeShippingDetail(ShippingDetail shippingDetail) {
+		getShippingDetails().remove(shippingDetail);
+		shippingDetail.setProductLabel(null);
+
+		return shippingDetail;
+	}
+	
+	@Override
+    public int hashCode() {
+        int hash = 0;
+        hash += productLabelId;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof ProductLabel)) {
+            return false;
+        }
+        ProductLabel other = (ProductLabel) object;
+        if (this.productLabelId != other.productLabelId) {
+            return false;
+        }
+        return true;
+    }
 
 }

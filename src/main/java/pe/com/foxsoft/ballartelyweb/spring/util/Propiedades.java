@@ -20,6 +20,9 @@ public class Propiedades {
 	@Value("${ballartelyweb.combo.clienttype}")
 	private String comboTiposCliente;
 	
+	@Value("${ballartelyweb.uniquecode.igv}")
+	private String uniqueCodeIGV;
+	
 	public String getTiposParametro() {
 		return tiposParametro;
 	}
@@ -51,6 +54,13 @@ public class Propiedades {
 	public void setComboTiposCliente(String comboTiposCliente) {
 		this.comboTiposCliente = comboTiposCliente;
 	}
-	
+
+	public String getUniqueCodeIGV() {
+		return uniqueCodeIGV;
+	}
+
+	public void setUniqueCodeIGV(String uniqueCodeIGV) {
+		this.uniqueCodeIGV = uniqueCodeIGV;
+	}
 	
 }

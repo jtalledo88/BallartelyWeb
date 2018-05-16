@@ -98,7 +98,7 @@
 									<div class="combo">
 										<p:selectOneMenu id="cboEstado"
 											value="#{parametroGeneralMB.objParametroGeneralSearch.paramStatus}">
-											<f:selectItem itemLabel="Todos" itemValue="" />
+											<f:selectItem itemLabel="-- Todos --" itemValue="" />
 											<f:selectItem itemLabel="Activo" itemValue="1" />
 											<f:selectItem itemLabel="Inactivo" itemValue="0" />
 										</p:selectOneMenu>
@@ -226,10 +226,7 @@
 						<f:facet name="header">
 							<h:outputText value="Estado" />
 						</f:facet>
-						<h:outputText value="ACTIVO"
-							rendered="#{parametroGeneral.paramStatus == '1'}" />
-						<h:outputText value="INACTIVO"
-							rendered="#{parametroGeneral.paramStatus == '0'}" />
+						<h:outputText value="#{parametroGeneral.paramStatus}" converter="#{statusConverter}" />
 					</p:column>
 					<p:column styleClass="fecha">
 						<f:facet name="header">
