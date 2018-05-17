@@ -135,7 +135,7 @@
 					id="tblItemCompra" editable="true" widgetVar="tblItemCompra"
 					emptyMessage="Agregar Items a la compra">
 					
-					<p:ajax event="rowEdit" listener="#{compraMB.editarItem}" oncomplete="onRowEdit()"/>
+					<p:ajax event="rowEdit" listener="#{compraMB.editarItem}" oncomplete="onRowEdit()" />
 					<p:ajax event="rowEditCancel" listener="#{compraMB.eliminarItem}" oncomplete="onRowEdit()" />
 					
 					<p:column styleClass="oficina">
@@ -184,11 +184,11 @@
 						<p:cellEditor>
 		                	<f:facet name="output">
 		                		<h:outputText value="#{itemCompra.shippingUnitPrice}">
-		                			<f:convertNumber maxFractionDigits="2" minFractionDigits="2" maxIntegerDigits="8"/>
+		                			<f:convertNumber maxFractionDigits="2" minFractionDigits="2" maxIntegerDigits="8" />
 		                		</h:outputText>
 		                	</f:facet>
 		                  	<f:facet name="input">
-		                  		<p:inputNumber value="#{itemCompra.shippingUnitPrice}" />
+		                  		<p:inputNumber value="#{itemCompra.shippingUnitPrice}" minValue="0" maxlength="10"/>
 							</f:facet>
 		              	</p:cellEditor>
 					</p:column>
@@ -213,17 +213,13 @@
 					<f:facet name="footer">  
        					<div align="right">
     						<h:outputText value="Precio Bruto: "/>
-	       					<p:inputNumber value="#{compraMB.totalCompraBruto}" disabled="true" size="5" id="inbTotCompBruto">
-	       						 
-	       					</p:inputNumber>
+	       					<p:inputNumber value="#{compraMB.totalCompraBruto}" disabled="true" size="5" id="inbTotCompBruto" />
 	       					<div style="clear: both;"></div>
 	       					<h:outputText value="IGV: "/>
 	       					<p:inputNumber value="#{compraMB.igvGeneral}" symbol="%" disabled="true" size="5"/>
 	       					<div style="clear: both;"></div>
 	       					<h:outputText value="Precio Neto: "/>
-	       					<p:inputNumber value="#{compraMB.totalCompraNeto}" disabled="true" size="5" id="inbTotCompNeto">
-	       						 
-	       					</p:inputNumber>
+	       					<p:inputNumber value="#{compraMB.totalCompraNeto}" disabled="true" size="5" id="inbTotCompNeto" />
        				</div>
 					</f:facet>
 				</p:dataTable>

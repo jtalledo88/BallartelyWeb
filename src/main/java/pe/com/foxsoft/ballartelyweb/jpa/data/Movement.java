@@ -45,11 +45,6 @@ public class Movement implements Serializable {
 	@JoinColumn(name="account_id")
 	private Account account;
 
-	//bi-directional many-to-one association to ProductLabel
-	@ManyToOne
-	@JoinColumn(name="product_label_id")
-	private ProductLabel productLabel;
-
 	//bi-directional many-to-one association to Provider
 	@ManyToOne
 	@JoinColumn(name="provider_id")
@@ -120,14 +115,6 @@ public class Movement implements Serializable {
 
 	public void setAccount(Account account) {
 		this.account = account;
-	}
-
-	public ProductLabel getProductLabel() {
-		return this.productLabel;
-	}
-
-	public void setProductLabel(ProductLabel productLabel) {
-		this.productLabel = productLabel;
 	}
 
 	public Provider getProvider() {

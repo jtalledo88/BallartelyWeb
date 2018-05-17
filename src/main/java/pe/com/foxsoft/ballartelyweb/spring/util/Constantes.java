@@ -11,5 +11,7 @@ public class Constantes {
 	public static final String ACCOUNT_TYPE_C = "C";
 	public static final String ACCOUNT_TYPE_P = "P";
 	public static final String STATUS_ACTIVE = "1";
+	public static final String MOVEMENT_OBSERVATION_SHIPPING = "Registro de compra.";
+	public static final String MOVEMENT_TYPE_SHIPPING = "COMPRA";
 
 }

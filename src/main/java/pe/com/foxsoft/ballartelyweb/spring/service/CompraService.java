@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import pe.com.foxsoft.ballartelyweb.jpa.dao.ShippingJPA;
+import pe.com.foxsoft.ballartelyweb.jpa.data.Movement;
 import pe.com.foxsoft.ballartelyweb.jpa.data.ShippingDetail;
 import pe.com.foxsoft.ballartelyweb.jpa.data.ShippingHead;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
@@ -41,8 +42,8 @@ public class CompraService {
 	}
 
 	@Transactional(readOnly=false, rollbackFor=BallartelyException.class)
-	public String insertarCompra(ShippingHead shippinghead, List<ShippingDetail> lstShippingDetails) throws BallartelyException {
-		return shippingJPA.insertShippingDataBase(em, shippinghead, lstShippingDetails);
+	public String insertarCompra(ShippingHead shippinghead, List<ShippingDetail> lstShippingDetails, Movement movement) throws BallartelyException {
+		return shippingJPA.insertShippingDataBase(em, shippinghead, lstShippingDetails, movement);
 	}
 
 }

@@ -51,6 +51,11 @@ public class CuentaService {
 	}
 	
 	@Transactional(readOnly=true, noRollbackFor=BallartelyException.class)
+	public Account obtenerCuentaPrincipal() throws BallartelyException {
+		return cuentaJPA.getAccountPrincipalDataBase(em);
+	}
+	
+	@Transactional(readOnly=true, noRollbackFor=BallartelyException.class)
 	public List<Account> obtenerCuentas(Account account) throws BallartelyException {
 		return cuentaJPA.getAccountsByOwnerDataBase(em, account);
 	}

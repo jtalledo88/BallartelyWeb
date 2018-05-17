@@ -1,6 +1,8 @@
 package pe.com.foxsoft.ballartelyweb.spring.util;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Timestamp;
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -13,6 +15,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+
+import org.apache.commons.io.FileUtils;
 
 import pe.com.foxsoft.ballartelyweb.spring.domain.TipoParametro;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
@@ -141,6 +145,16 @@ public class Utilitarios {
 
 			return lstValores;
 		} catch (Exception e) {
+			throw new BallartelyException(BallartelyException.GENERAL_ERROR, e.getMessage());
+		}
+	}
+
+	public static void guardarArchivo(String directorio, String archivo, InputStream data) throws BallartelyException {
+		try {
+			File parent = new File(directorio);
+			File file = new File(parent, archivo);
+			FileUtils.copyInputStreamToFile(data, file);
+		} catch (IOException e) {
 			throw new BallartelyException(BallartelyException.GENERAL_ERROR, e.getMessage());
 		}
 	}

@@ -23,6 +23,9 @@ public class Propiedades {
 	@Value("${ballartelyweb.uniquecode.igv}")
 	private String uniqueCodeIGV;
 	
+	@Value("${ballartelyweb.uniquecode.upload}")
+	private String uniqueCodeUpload;
+	
 	public String getTiposParametro() {
 		return tiposParametro;
 	}
@@ -61,6 +64,14 @@ public class Propiedades {
 
 	public void setUniqueCodeIGV(String uniqueCodeIGV) {
 		this.uniqueCodeIGV = uniqueCodeIGV;
+	}
+
+	public String getUniqueCodeUpload() {
+		return uniqueCodeUpload;
+	}
+
+	public void setUniqueCodeUpload(String uniqueCodeUpload) {
+		this.uniqueCodeUpload = uniqueCodeUpload;
 	}
 	
 }

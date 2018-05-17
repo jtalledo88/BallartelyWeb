@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.FacesException;
@@ -16,6 +17,7 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.RowEditEvent;
 
 import pe.com.foxsoft.ballartelyweb.jpa.data.GeneralParameter;
+import pe.com.foxsoft.ballartelyweb.jpa.data.Movement;
 import pe.com.foxsoft.ballartelyweb.jpa.data.ProductLabel;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Provider;
 import pe.com.foxsoft.ballartelyweb.jpa.data.ShippingDetail;
@@ -27,6 +29,7 @@ import pe.com.foxsoft.ballartelyweb.spring.service.CuentaService;
 import pe.com.foxsoft.ballartelyweb.spring.service.EtiquetaProductoService;
 import pe.com.foxsoft.ballartelyweb.spring.service.ParametroGeneralService;
 import pe.com.foxsoft.ballartelyweb.spring.service.ProveedorService;
+import pe.com.foxsoft.ballartelyweb.spring.util.Constantes;
 import pe.com.foxsoft.ballartelyweb.spring.util.Propiedades;
 import pe.com.foxsoft.ballartelyweb.spring.util.Utilitarios;
 
@@ -91,9 +94,48 @@ public class CompraMB {
 		String sMensaje = "";
 		
 		try {
+			if(objShippingHeadMain.getProvider() == null) {
+				Utilitarios.mensajeError("Campos Obligatorios", "Debe ingresar el proveedor.");
+				return;
+			}
+			if("".equals(objShippingHeadMain.getPaymentDocumentNumber())) {
+				Utilitarios.mensajeError("Campos Obligatorios", "Debe ingresar el número de comprobante de pago.");
+				return;
+			}
+			if(isComprobantePago == null) {
+				Utilitarios.mensajeError("Campos Obligatorios", "Debe subir un archivo.");
+				return;
+			}
+			if(lstItemsCompraMain.size() == 0) {
+				Utilitarios.mensajeError("Campos Obligatorios", "Debe seleccionar items para la compra.");
+				return;
+			}
+			if(totalCompraBruto.compareTo(BigDecimal.ZERO) <= 0) {
+				Utilitarios.mensajeError("Campos Obligatorios", "Debe ingresar un saldo para la compra mayor a 0.");
+				return;
+			}
 			
-		
-		} catch (Exception e) {
+			objShippingHeadMain.setShippingCreationDate(new Date());
+			objShippingHeadMain.setShippingStatus(Constantes.STATUS_ACTIVE);
+			
+			for(ShippingDetail detail: lstItemsCompraMain) {
+				detail.setShippingCreationDate(new Date());
+			}
+			
+			Movement movement = new Movement();
+			movement.setAccount(cuentaService.obtenerCuentaPrincipal());
+			movement.setMovementAmount(objShippingHeadMain.getShippingTotalAmount());
+			movement.setMovementDate(new Date());
+			movement.setMovementObservation(Constantes.MOVEMENT_OBSERVATION_SHIPPING);
+			movement.setMovementQuantity(objShippingHeadMain.getShippingTotalQuantity());
+			movement.setMovementType(Constantes.MOVEMENT_TYPE_SHIPPING);
+			movement.setPaymentDocumentnumber(objShippingHeadMain.getPaymentDocumentNumber());
+			movement.setProvider(objShippingHeadMain.getProvider());
+			
+			sMensaje = compraService.insertarCompra(objShippingHeadMain, lstItemsCompraMain, movement);
+			Utilitarios.guardarArchivo(propiedades.getUniqueCodeUpload(), objShippingHeadMain.getShippingPaymentFile(), isComprobantePago);
+			Utilitarios.mensaje("", sMensaje);
+		} catch (BallartelyException e) {
 			sMensaje = "Error en agregarCliente";
 			this.logger.error(e.getMessage());
 			throw new FacesException(sMensaje, e);
@@ -102,6 +144,7 @@ public class CompraMB {
 
 	public void editarItem(RowEditEvent event) {
 		ShippingDetail detNew = (ShippingDetail)event.getObject();
+		
 		totalCompraBruto = new BigDecimal(0);
 		totalCompraNeto = new BigDecimal(0);
 		int totalCantidadCompra = 0;

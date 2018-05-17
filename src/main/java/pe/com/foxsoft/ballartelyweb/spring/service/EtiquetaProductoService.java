@@ -47,7 +47,7 @@ public class EtiquetaProductoService {
 
 	@Transactional(readOnly=false, rollbackFor=Throwable.class)
 	public String agregarEtiquetaProducto(ProductLabel productLabel) throws BallartelyException {
-		return JPAUtil.persistEntity(em, productLabel);
+		return etiquetaProductoJPA.persistProductLabelDataBase(em, productLabel);
 	}
 
 	@Transactional(readOnly=true, noRollbackFor=BallartelyException.class)

@@ -18,38 +18,29 @@ USE `db_ballartelyweb`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `movements`
+-- Table structure for table `product_stock`
 --
 
-DROP TABLE IF EXISTS `movements`;
+DROP TABLE IF EXISTS `product_stock`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `movements` (
-  `movement_id` int(50) unsigned zerofill NOT NULL AUTO_INCREMENT,
-  `movement_date` date NOT NULL,
-  `movement_type` varchar(45) NOT NULL,
-  `payment_documentnumber` varchar(25) NOT NULL,
-  `account_id` int(20) unsigned NOT NULL,
-  `provider_id` int(20) DEFAULT NULL,
-  `movement_quantity` int(11) NOT NULL,
-  `movement_amount` decimal(10,2) NOT NULL,
-  `movement_observation` varchar(500) DEFAULT NULL,
-  PRIMARY KEY (`movement_id`),
-  UNIQUE KEY `payment_documentnumber_UNIQUE` (`payment_documentnumber`),
-  KEY `fk_provider_id_idx` (`provider_id`),
-  KEY `fk_account_id_idx` (`account_id`),
-  CONSTRAINT `fk_account_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`account_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_provider_id` FOREIGN KEY (`provider_id`) REFERENCES `provider` (`provider_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+CREATE TABLE `product_stock` (
+  `product_label_id` int(11) NOT NULL,
+  `product_stock_cant` int(11) DEFAULT '0',
+  `product_stock_modification_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`product_label_id`),
+  CONSTRAINT `fk_product_label_id` FOREIGN KEY (`product_label_id`) REFERENCES `product_label` (`product_label_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `movements`
+-- Dumping data for table `product_stock`
 --
 
-LOCK TABLES `movements` WRITE;
-/*!40000 ALTER TABLE `movements` DISABLE KEYS */;
-/*!40000 ALTER TABLE `movements` ENABLE KEYS */;
+LOCK TABLES `product_stock` WRITE;
+/*!40000 ALTER TABLE `product_stock` DISABLE KEYS */;
+INSERT INTO `product_stock` (`product_label_id`, `product_stock_cant`, `product_stock_modification_date`) VALUES (1,0,NULL),(2,0,NULL),(3,0,NULL);
+/*!40000 ALTER TABLE `product_stock` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -61,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-16 22:56:22
+-- Dump completed on 2018-05-16 22:56:21

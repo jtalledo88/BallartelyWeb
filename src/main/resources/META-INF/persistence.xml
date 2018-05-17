@@ -7,13 +7,14 @@
 		<class>pe.com.foxsoft.ballartelyweb.jpa.data.Account</class>
 		<class>pe.com.foxsoft.ballartelyweb.jpa.data.Client</class>
 		<class>pe.com.foxsoft.ballartelyweb.jpa.data.GeneralParameter</class>
-		<class>pe.com.foxsoft.ballartelyweb.jpa.data.ProductLabel</class>
-		<class>pe.com.foxsoft.ballartelyweb.jpa.data.Provider</class>
-		<class>pe.com.foxsoft.ballartelyweb.jpa.data.User</class>
 		<class>pe.com.foxsoft.ballartelyweb.jpa.data.Movement</class>
+		<class>pe.com.foxsoft.ballartelyweb.jpa.data.ProductLabel</class>
+		<class>pe.com.foxsoft.ballartelyweb.jpa.data.ProductStock</class>
+		<class>pe.com.foxsoft.ballartelyweb.jpa.data.Provider</class>
 		<class>pe.com.foxsoft.ballartelyweb.jpa.data.ShippingDetail</class>
 		<class>pe.com.foxsoft.ballartelyweb.jpa.data.ShippingDetailPK</class>
 		<class>pe.com.foxsoft.ballartelyweb.jpa.data.ShippingHead</class>
+		<class>pe.com.foxsoft.ballartelyweb.jpa.data.User</class>
 		
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/db_ballartelyweb" />
