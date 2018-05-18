@@ -38,10 +38,6 @@ public class ProductLabel implements Serializable {
 	@Column(name="product_label_status")
 	private String productLabelStatus;
 
-	//bi-directional one-to-one association to ProductStock
-	@OneToOne(mappedBy="productLabel")
-	private ProductStock productStock;
-
 	//bi-directional many-to-one association to ShippingDetail
 	@OneToMany(mappedBy="productLabel", fetch=FetchType.EAGER)
 	private List<ShippingDetail> shippingDetails;
@@ -97,14 +93,6 @@ public class ProductLabel implements Serializable {
 		this.productLabelStatus = productLabelStatus;
 	}
 
-	public ProductStock getProductStock() {
-		return this.productStock;
-	}
-
-	public void setProductStock(ProductStock productStock) {
-		this.productStock = productStock;
-	}
-
 	public List<ShippingDetail> getShippingDetails() {
 		return this.shippingDetails;
 	}
@@ -126,7 +114,7 @@ public class ProductLabel implements Serializable {
 
 		return shippingDetail;
 	}
-
+	
 	@Override
     public int hashCode() {
         int hash = 0;
@@ -145,4 +133,5 @@ public class ProductLabel implements Serializable {
         }
         return true;
     }
+
 }

@@ -16,8 +16,10 @@ import java.util.Date;
 public class ShippingDetail implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
-	private ShippingDetailPK id;
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="shipping_detail_id")
+	private int shippingDetailId;
 
 	@Column(name="shipping_amout")
 	private BigDecimal shippingAmout;
@@ -30,8 +32,8 @@ public class ShippingDetail implements Serializable {
 	@Column(name="shipping_modification_date")
 	private Date shippingModificationDate;
 
-	@Column(name="shipping_quantity")
-	private int shippingQuantity;
+	@Column(name="shipping_quantity_benefit")
+	private int shippingQuantityBenefit;
 
 	@Column(name="shipping_unit_price")
 	private BigDecimal shippingUnitPrice;
@@ -49,12 +51,12 @@ public class ShippingDetail implements Serializable {
 	public ShippingDetail() {
 	}
 
-	public ShippingDetailPK getId() {
-		return this.id;
+	public int getShippingDetailId() {
+		return this.shippingDetailId;
 	}
 
-	public void setId(ShippingDetailPK id) {
-		this.id = id;
+	public void setShippingDetailId(int shippingDetailId) {
+		this.shippingDetailId = shippingDetailId;
 	}
 
 	public BigDecimal getShippingAmout() {
@@ -81,12 +83,12 @@ public class ShippingDetail implements Serializable {
 		this.shippingModificationDate = shippingModificationDate;
 	}
 
-	public int getShippingQuantity() {
-		return this.shippingQuantity;
+	public int getShippingQuantityBenefit() {
+		return this.shippingQuantityBenefit;
 	}
 
-	public void setShippingQuantity(int shippingQuantity) {
-		this.shippingQuantity = shippingQuantity;
+	public void setShippingQuantityBenefit(int shippingQuantityBenefit) {
+		this.shippingQuantityBenefit = shippingQuantityBenefit;
 	}
 
 	public BigDecimal getShippingUnitPrice() {

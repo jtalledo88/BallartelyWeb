@@ -28,17 +28,17 @@ CREATE TABLE `shipping_detail` (
   `shipping_detail_id` int(11) NOT NULL AUTO_INCREMENT,
   `shipping_head_id` int(11) NOT NULL,
   `product_label_id` int(11) NOT NULL,
-  `shipping_quantity` int(11) NOT NULL,
+  `shipping_quantity_benefit` int(11) NOT NULL,
   `shipping_unit_price` decimal(10,2) NOT NULL,
   `shipping_amout` decimal(10,2) NOT NULL,
   `shipping_creation_date` datetime NOT NULL,
   `shipping_modification_date` datetime DEFAULT NULL,
-  PRIMARY KEY (`shipping_detail_id`,`shipping_head_id`),
+  PRIMARY KEY (`shipping_detail_id`),
   KEY `fk_shipping_head_id_idx` (`shipping_head_id`),
   KEY `fk_sd_product_label_id_idx` (`product_label_id`),
   CONSTRAINT `fk_sd_product_label_id` FOREIGN KEY (`product_label_id`) REFERENCES `product_label` (`product_label_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_shipping_head_id` FOREIGN KEY (`shipping_head_id`) REFERENCES `shipping_head` (`shipping_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -47,6 +47,7 @@ CREATE TABLE `shipping_detail` (
 
 LOCK TABLES `shipping_detail` WRITE;
 /*!40000 ALTER TABLE `shipping_detail` DISABLE KEYS */;
+INSERT INTO `shipping_detail` (`shipping_detail_id`, `shipping_head_id`, `product_label_id`, `shipping_quantity_benefit`, `shipping_unit_price`, `shipping_amout`, `shipping_creation_date`, `shipping_modification_date`) VALUES (3,4,1,30,10.00,300.00,'2018-05-17 18:25:26',NULL),(4,4,1,20,15.00,300.00,'2018-05-17 18:25:26',NULL),(5,5,2,20,15.00,300.00,'2018-05-17 19:25:09',NULL),(6,5,1,20,10.00,200.00,'2018-05-17 19:25:09',NULL),(7,6,1,15,10.00,150.00,'2018-05-17 19:33:34',NULL),(8,6,2,2,15.00,30.00,'2018-05-17 19:33:34',NULL);
 /*!40000 ALTER TABLE `shipping_detail` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -59,4 +60,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-16 22:56:21
+-- Dump completed on 2018-05-17 19:37:49

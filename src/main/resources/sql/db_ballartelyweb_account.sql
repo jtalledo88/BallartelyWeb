@@ -44,7 +44,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` (`account_id`, `account_type`, `account_owner`, `account_creation_date`, `account_modification_date`, `account_status`) VALUES (00000000000000000001,'C',1,'2018-05-09 13:52:02',NULL,'a'),(00000000000000000002,'P',NULL,'2018-05-09 14:08:17',NULL,'a');
+INSERT INTO `account` (`account_id`, `account_type`, `account_owner`, `account_creation_date`, `account_modification_date`, `account_status`) VALUES (00000000000000000001,'C',1,'2018-05-09 13:52:02',NULL,'1'),(00000000000000000002,'P',NULL,'2018-05-09 14:08:17',NULL,'1');
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -57,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-16 22:56:20
+-- Dump completed on 2018-05-17 19:37:49

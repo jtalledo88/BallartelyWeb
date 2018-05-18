@@ -56,7 +56,6 @@ public class EtiquetaProductoJPA {
 			ProductStock productStock = new ProductStock();
 			productStock.setProductLabelId(productLabelId);
 			productLabel.setProductLabelId(productLabelId);
-			productStock.setProductLabel(productLabel);
 			productStock.setProductStockCant(0);
 			
 			JPAUtil.persistEntity(em, productStock);

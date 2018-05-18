@@ -27,18 +27,21 @@ DROP TABLE IF EXISTS `shipping_head`;
 CREATE TABLE `shipping_head` (
   `shipping_id` int(11) NOT NULL AUTO_INCREMENT,
   `provider_id` int(11) NOT NULL,
-  `shipping_total_quantity` int(11) NOT NULL,
+  `shipping_total_quantity_live` int(11) NOT NULL,
+  `shipping_total_weight_live` decimal(10,2) NOT NULL,
+  `shipping_total_quantity_dead` int(11) DEFAULT NULL,
+  `shipping_total_weight_dead` decimal(10,2) DEFAULT NULL,
   `shipping_total_amount` decimal(10,2) NOT NULL,
   `payment_document_number` varchar(25) NOT NULL,
   `shipping_payment_file` varchar(500) NOT NULL,
   `shipping_creation_date` datetime NOT NULL,
   `shipping_modification_date` datetime DEFAULT NULL,
-  `shipping_status` char(1) NOT NULL,
+  `shipping_status` char(3) NOT NULL,
   PRIMARY KEY (`shipping_id`),
   UNIQUE KEY `payment_document_number_unq_sh` (`payment_document_number`),
   KEY `fk_sh_provider_id_idx` (`provider_id`),
   CONSTRAINT `fk_sh_provider_id` FOREIGN KEY (`provider_id`) REFERENCES `provider` (`provider_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -47,6 +50,7 @@ CREATE TABLE `shipping_head` (
 
 LOCK TABLES `shipping_head` WRITE;
 /*!40000 ALTER TABLE `shipping_head` DISABLE KEYS */;
+INSERT INTO `shipping_head` (`shipping_id`, `provider_id`, `shipping_total_quantity_live`, `shipping_total_weight_live`, `shipping_total_quantity_dead`, `shipping_total_weight_dead`, `shipping_total_amount`, `payment_document_number`, `shipping_payment_file`, `shipping_creation_date`, `shipping_modification_date`, `shipping_status`) VALUES (4,1,50,128.00,2,4.00,708.00,'10258987210','FIL712.JPG','2018-05-17 18:25:26',NULL,'FR2'),(5,1,40,112.00,0,NULL,590.00,'102578967512','FIL712.JPG','2018-05-17 19:25:09',NULL,'FR1'),(6,1,20,45.00,0,NULL,212.40,'102578967515','FIL712.JPG','2018-05-17 19:33:34',NULL,'FCO');
 /*!40000 ALTER TABLE `shipping_head` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -59,4 +63,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-16 22:56:21
+-- Dump completed on 2018-05-17 19:37:49

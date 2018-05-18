@@ -13,5 +13,7 @@ public class Constantes {
 	public static final String STATUS_ACTIVE = "1";
 	public static final String MOVEMENT_OBSERVATION_SHIPPING = "Registro de compra.";
 	public static final String MOVEMENT_TYPE_SHIPPING = "COMPRA";
+	public static final String STATUS_PRODUCT_COLD = "FR";
+	public static final String STATUS_PRODUCT_FRESH = "FCO";
 
 }

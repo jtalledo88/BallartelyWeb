@@ -11,6 +11,7 @@ import javax.faces.FacesException;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 import org.primefaces.event.FileUploadEvent;
@@ -21,7 +22,6 @@ import pe.com.foxsoft.ballartelyweb.jpa.data.Movement;
 import pe.com.foxsoft.ballartelyweb.jpa.data.ProductLabel;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Provider;
 import pe.com.foxsoft.ballartelyweb.jpa.data.ShippingDetail;
-import pe.com.foxsoft.ballartelyweb.jpa.data.ShippingDetailPK;
 import pe.com.foxsoft.ballartelyweb.jpa.data.ShippingHead;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
 import pe.com.foxsoft.ballartelyweb.spring.service.CompraService;
@@ -68,9 +68,9 @@ public class CompraMB {
 	private BigDecimal totalCompraBruto;
 	private BigDecimal igvGeneral;
 	private BigDecimal totalCompraNeto;
+	private int shippingTotalQuantityLive;
 	
-	private boolean validaListaBuscar = true;
-	private boolean flagConfirmEliClient = false;
+	private boolean flagMuertos;
 
 	public CompraMB() {
 		this.objShippingHeadMain = new ShippingHead();
@@ -80,12 +80,14 @@ public class CompraMB {
 	}
 
 	public void agregarItemCompra() {
+		if(this.shippingTotalQuantityLive >= this.objShippingHeadMain.getShippingTotalQuantityLive()) {
+			Utilitarios.mensajeError("Campos Obligatorios", "Cantidad beneciada total igual a la cantidad total viva.");
+			return;
+		}
 		ShippingDetail detail = new ShippingDetail();
-		ShippingDetailPK pk = new ShippingDetailPK();
-		pk.setShippingDetailId(lstItemsCompraMain.size() + 1);
-		detail.setId(pk);
+		detail.setShippingDetailId(lstItemsCompraMain.size() + 1);
 		detail.setShippingAmout(new BigDecimal(0));
-		detail.setShippingQuantity(0);
+		detail.setShippingQuantityBenefit(0);
 		detail.setShippingUnitPrice(new BigDecimal(0));
 		lstItemsCompraMain.add(detail);
 	}
@@ -116,7 +118,7 @@ public class CompraMB {
 			}
 			
 			objShippingHeadMain.setShippingCreationDate(new Date());
-			objShippingHeadMain.setShippingStatus(Constantes.STATUS_ACTIVE);
+			objShippingHeadMain.setShippingStatus(Constantes.STATUS_PRODUCT_FRESH);
 			
 			for(ShippingDetail detail: lstItemsCompraMain) {
 				detail.setShippingCreationDate(new Date());
@@ -127,13 +129,16 @@ public class CompraMB {
 			movement.setMovementAmount(objShippingHeadMain.getShippingTotalAmount());
 			movement.setMovementDate(new Date());
 			movement.setMovementObservation(Constantes.MOVEMENT_OBSERVATION_SHIPPING);
-			movement.setMovementQuantity(objShippingHeadMain.getShippingTotalQuantity());
+			movement.setMovementQuantity(objShippingHeadMain.getShippingTotalQuantityLive());
 			movement.setMovementType(Constantes.MOVEMENT_TYPE_SHIPPING);
 			movement.setPaymentDocumentnumber(objShippingHeadMain.getPaymentDocumentNumber());
 			movement.setProvider(objShippingHeadMain.getProvider());
 			
 			sMensaje = compraService.insertarCompra(objShippingHeadMain, lstItemsCompraMain, movement);
-			Utilitarios.guardarArchivo(propiedades.getUniqueCodeUpload(), objShippingHeadMain.getShippingPaymentFile(), isComprobantePago);
+			GeneralParameter generalParameterUpload = this.parametroGeneralService.obtenerParametroGeneral(propiedades.getUniqueCodeUpload());
+			Utilitarios.guardarArchivo(generalParameterUpload.getParamValue(), objShippingHeadMain.getShippingPaymentFile(), isComprobantePago);
+			this.objShippingHeadMain = new ShippingHead();
+			this.lstItemsCompraMain = new ArrayList<>();
 			Utilitarios.mensaje("", sMensaje);
 		} catch (BallartelyException e) {
 			sMensaje = "Error en agregarCliente";
@@ -145,43 +150,64 @@ public class CompraMB {
 	public void editarItem(RowEditEvent event) {
 		ShippingDetail detNew = (ShippingDetail)event.getObject();
 		
-		totalCompraBruto = new BigDecimal(0);
-		totalCompraNeto = new BigDecimal(0);
+		if(detNew.getShippingQuantityBenefit() == 0) {
+			Utilitarios.mensajeError("Campos Obligatorios", "Debe ingresar una cantidad beneficiada mayor a 0.");
+			FacesContext.getCurrentInstance().validationFailed();
+			return;
+		}
+		if(detNew.getShippingUnitPrice().compareTo(BigDecimal.ZERO) == 0) {
+			Utilitarios.mensajeError("Campos Obligatorios", "Debe ingresar un precio unitario mayor a 0.");
+			FacesContext.getCurrentInstance().validationFailed();
+			return;
+		}
+		
+		if((detNew.getShippingQuantityBenefit() + shippingTotalQuantityLive) > this.objShippingHeadMain.getShippingTotalQuantityLive()) {
+			Utilitarios.mensajeError("Campos Obligatorios", "Debe ingresar una cantidad beneficiada menor a la cantidad total viva.");
+			FacesContext.getCurrentInstance().validationFailed();
+			return;
+		}
+		
+		this.totalCompraBruto = new BigDecimal(0);
+		this.totalCompraNeto = new BigDecimal(0);
+		this.shippingTotalQuantityLive = 0;
 		int totalCantidadCompra = 0;
 		for(int i=0; i<lstItemsCompraMain.size(); i++) {
 			ShippingDetail detOld = lstItemsCompraMain.get(i);
-			if(detNew.getId().getShippingDetailId() == detOld.getId().getShippingDetailId()) {
+			if(detNew.getShippingDetailId() == detOld.getShippingDetailId()) {
 				detOld.setProductLabel(detNew.getProductLabel());
-				detOld.setShippingAmout(detNew.getShippingUnitPrice().multiply(new BigDecimal(detNew.getShippingQuantity())));
-				detOld.setShippingQuantity(detNew.getShippingQuantity());
+				detOld.setShippingAmout(detNew.getShippingUnitPrice().multiply(new BigDecimal(detNew.getShippingQuantityBenefit())));
+				detOld.setShippingQuantityBenefit(detNew.getShippingQuantityBenefit());
 				detOld.setShippingUnitPrice(detNew.getShippingUnitPrice());
 			}
 			totalCompraBruto = totalCompraBruto.add(detOld.getShippingAmout());
-			totalCantidadCompra += detOld.getShippingQuantity();
+			totalCantidadCompra += detOld.getShippingQuantityBenefit();
+			this.shippingTotalQuantityLive += detOld.getShippingQuantityBenefit();
 		}
 		
 		totalCompraNeto = totalCompraBruto.add(totalCompraBruto.multiply(igvGeneral));
 		
-		objShippingHeadMain.setShippingTotalQuantity(totalCantidadCompra);
+		objShippingHeadMain.setShippingTotalQuantityLive(totalCantidadCompra);
 		objShippingHeadMain.setShippingTotalAmount(totalCompraNeto);
 	}
 	
 	public void eliminarItem(RowEditEvent event) {
 		ShippingDetail detRemove = (ShippingDetail)event.getObject();
-		lstItemsCompraMain.remove(detRemove);
-		totalCompraBruto = new BigDecimal(0);
-		totalCompraNeto = new BigDecimal(0);
+		this.lstItemsCompraMain.remove(detRemove);
+		this.totalCompraBruto = new BigDecimal(0);
+		this.totalCompraNeto = new BigDecimal(0);
+		this.shippingTotalQuantityLive = 0;
 		int totalCantidadCompra = 0;
 		for(int i=0; i<lstItemsCompraMain.size(); i++) {
 			ShippingDetail detOld = lstItemsCompraMain.get(i);
-			totalCompraBruto = totalCompraBruto.add(detOld.getShippingAmout());
-			totalCantidadCompra += detOld.getShippingQuantity();
+			this.totalCompraBruto = totalCompraBruto.add(detOld.getShippingAmout());
+			totalCantidadCompra += detOld.getShippingQuantityBenefit();
+			this.shippingTotalQuantityLive += detOld.getShippingQuantityBenefit();
 		}
 		
-		totalCompraNeto = totalCompraBruto.add(totalCompraBruto.multiply(igvGeneral));
+		this.totalCompraNeto = totalCompraBruto.add(totalCompraBruto.multiply(igvGeneral));
 		
-		objShippingHeadMain.setShippingTotalQuantity(totalCantidadCompra);
-		objShippingHeadMain.setShippingTotalAmount(totalCompraNeto);
+		this.objShippingHeadMain.setShippingTotalQuantityLive(totalCantidadCompra);
+		this.objShippingHeadMain.setShippingTotalAmount(totalCompraNeto);
     }
 
 	public List<Provider> completeProvider(String query) {
@@ -209,23 +235,6 @@ public class CompraMB {
 			throw new FacesException(sMensaje, e);
 		}
     }
-	
-	public void visibleConfirmElimCliente() {
-		this.flagConfirmEliClient = true;
-	}
-
-	public void eliminarCliente() {
-		String sMensaje = "";
-		try {
-			
-		} catch (Exception e) {
-			sMensaje = "Error en eliminarCliente";
-			this.logger.error(e.getMessage());
-			throw new FacesException(sMensaje, e);
-		}
-		this.flagConfirmEliClient = false;
-	}
-	
 
 	private void obtenerEtiquetasProducto() {
 		try {
@@ -340,14 +349,6 @@ public class CompraMB {
 		this.lstProveedores = lstProveedores;
 	}
 
-	public boolean isValidaListaBuscar() {
-		return validaListaBuscar;
-	}
-
-	public void setValidaListaBuscar(boolean validaListaBuscar) {
-		this.validaListaBuscar = validaListaBuscar;
-	}
-
 	public BigDecimal getTotalCompraBruto() {
 		return totalCompraBruto;
 	}
@@ -372,21 +373,29 @@ public class CompraMB {
 	public void setTotalCompraNeto(BigDecimal totalCompraNeto) {
 		this.totalCompraNeto = totalCompraNeto;
 	}
-
-	public boolean isFlagConfirmEliClient() {
-		return flagConfirmEliClient;
-	}
-
-	public void setFlagConfirmEliClient(boolean flagConfirmEliClient) {
-		this.flagConfirmEliClient = flagConfirmEliClient;
-	}
-
+	
 	public InputStream getIsComprobantePago() {
 		return isComprobantePago;
 	}
 
 	public void setIsComprobantePago(InputStream isComprobantePago) {
 		this.isComprobantePago = isComprobantePago;
+	}
+
+	public boolean isFlagMuertos() {
+		return flagMuertos;
+	}
+
+	public void setFlagMuertos(boolean flagMuertos) {
+		this.flagMuertos = flagMuertos;
+	}
+
+	public int getShippingTotalQuantityLive() {
+		return shippingTotalQuantityLive;
+	}
+
+	public void setShippingTotalQuantityLive(int shippingTotalQuantityLive) {
+		this.shippingTotalQuantityLive = shippingTotalQuantityLive;
 	}
 	
 }

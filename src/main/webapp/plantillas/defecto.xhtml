@@ -79,7 +79,7 @@
 		header="Mensaje de Confirmación" severity="alert"
 		widgetVar="confirmationCerrarSesion" modal="true">
 		<h:form>
-			<p:commandButton value="Si" action="#{loginMB.logOut}"
+			<p:commandButton value="Si" action="#{usuarioMB.logOut}"
 				ajax="false"/>
 			<p:commandButton value="No"
 				onclick="PF('confirmationCerrarSesion').hide()" type="button" />

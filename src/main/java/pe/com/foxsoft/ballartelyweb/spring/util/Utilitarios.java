@@ -3,6 +3,7 @@ package pe.com.foxsoft.ballartelyweb.spring.util;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.Timestamp;
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -150,12 +151,25 @@ public class Utilitarios {
 	}
 
 	public static void guardarArchivo(String directorio, String archivo, InputStream data) throws BallartelyException {
+		OutputStream out = null;
 		try {
 			File parent = new File(directorio);
 			File file = new File(parent, archivo);
+			out = FileUtils.openOutputStream(file);
 			FileUtils.copyInputStreamToFile(data, file);
+			
 		} catch (IOException e) {
 			throw new BallartelyException(BallartelyException.GENERAL_ERROR, e.getMessage());
+		}finally {
+			if(out != null) {
+				try {
+					out.flush();
+					out.close();
+				} catch (IOException e) {
+					
+				}
+				
+			}
 		}
 	}
 }

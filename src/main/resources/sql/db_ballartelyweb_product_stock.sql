@@ -28,8 +28,7 @@ CREATE TABLE `product_stock` (
   `product_label_id` int(11) NOT NULL,
   `product_stock_cant` int(11) DEFAULT '0',
   `product_stock_modification_date` datetime DEFAULT NULL,
-  PRIMARY KEY (`product_label_id`),
-  CONSTRAINT `fk_product_label_id` FOREIGN KEY (`product_label_id`) REFERENCES `product_label` (`product_label_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  PRIMARY KEY (`product_label_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -39,7 +38,7 @@ CREATE TABLE `product_stock` (
 
 LOCK TABLES `product_stock` WRITE;
 /*!40000 ALTER TABLE `product_stock` DISABLE KEYS */;
-INSERT INTO `product_stock` (`product_label_id`, `product_stock_cant`, `product_stock_modification_date`) VALUES (1,0,NULL),(2,0,NULL),(3,0,NULL);
+INSERT INTO `product_stock` (`product_label_id`, `product_stock_cant`, `product_stock_modification_date`) VALUES (1,85,'2018-05-17 19:33:51'),(2,22,'2018-05-17 19:33:54'),(3,0,NULL);
 /*!40000 ALTER TABLE `product_stock` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-16 22:56:21
+-- Dump completed on 2018-05-17 19:37:49

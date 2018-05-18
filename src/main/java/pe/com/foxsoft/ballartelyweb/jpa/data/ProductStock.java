@@ -16,7 +16,6 @@ public class ProductStock implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="product_label_id")
 	private int productLabelId;
 
@@ -26,11 +25,6 @@ public class ProductStock implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="product_stock_modification_date")
 	private Date productStockModificationDate;
-
-	//bi-directional one-to-one association to ProductLabel
-	@OneToOne
-	@JoinColumn(name="product_label_id")
-	private ProductLabel productLabel;
 
 	public ProductStock() {
 	}
@@ -57,14 +51,6 @@ public class ProductStock implements Serializable {
 
 	public void setProductStockModificationDate(Date productStockModificationDate) {
 		this.productStockModificationDate = productStockModificationDate;
-	}
-
-	public ProductLabel getProductLabel() {
-		return this.productLabel;
-	}
-
-	public void setProductLabel(ProductLabel productLabel) {
-		this.productLabel = productLabel;
 	}
 
 }

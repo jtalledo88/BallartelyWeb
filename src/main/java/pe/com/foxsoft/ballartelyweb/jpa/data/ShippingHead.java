@@ -42,8 +42,17 @@ public class ShippingHead implements Serializable {
 	@Column(name="shipping_total_amount")
 	private BigDecimal shippingTotalAmount;
 
-	@Column(name="shipping_total_quantity")
-	private int shippingTotalQuantity;
+	@Column(name="shipping_total_quantity_dead")
+	private int shippingTotalQuantityDead;
+
+	@Column(name="shipping_total_quantity_live")
+	private int shippingTotalQuantityLive;
+
+	@Column(name="shipping_total_weight_dead")
+	private BigDecimal shippingTotalWeightDead;
+
+	@Column(name="shipping_total_weight_live")
+	private BigDecimal shippingTotalWeightLive;
 
 	//bi-directional many-to-one association to ShippingDetail
 	@OneToMany(mappedBy="shippingHead", fetch=FetchType.EAGER)
@@ -113,12 +122,36 @@ public class ShippingHead implements Serializable {
 		this.shippingTotalAmount = shippingTotalAmount;
 	}
 
-	public int getShippingTotalQuantity() {
-		return this.shippingTotalQuantity;
+	public int getShippingTotalQuantityDead() {
+		return this.shippingTotalQuantityDead;
 	}
 
-	public void setShippingTotalQuantity(int shippingTotalQuantity) {
-		this.shippingTotalQuantity = shippingTotalQuantity;
+	public void setShippingTotalQuantityDead(int shippingTotalQuantityDead) {
+		this.shippingTotalQuantityDead = shippingTotalQuantityDead;
+	}
+
+	public int getShippingTotalQuantityLive() {
+		return this.shippingTotalQuantityLive;
+	}
+
+	public void setShippingTotalQuantityLive(int shippingTotalQuantityLive) {
+		this.shippingTotalQuantityLive = shippingTotalQuantityLive;
+	}
+
+	public BigDecimal getShippingTotalWeightDead() {
+		return this.shippingTotalWeightDead;
+	}
+
+	public void setShippingTotalWeightDead(BigDecimal shippingTotalWeightDead) {
+		this.shippingTotalWeightDead = shippingTotalWeightDead;
+	}
+
+	public BigDecimal getShippingTotalWeightLive() {
+		return this.shippingTotalWeightLive;
+	}
+
+	public void setShippingTotalWeightLive(BigDecimal shippingTotalWeightLive) {
+		this.shippingTotalWeightLive = shippingTotalWeightLive;
 	}
 
 	public List<ShippingDetail> getShippingDetails() {

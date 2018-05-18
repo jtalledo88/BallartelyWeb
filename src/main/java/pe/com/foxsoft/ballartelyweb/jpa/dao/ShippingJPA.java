@@ -1,5 +1,6 @@
 package pe.com.foxsoft.ballartelyweb.jpa.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -20,36 +21,59 @@ import pe.com.foxsoft.ballartelyweb.spring.util.Constantes;
 public class ShippingJPA {
 	
 	public String insertShippingDataBase(EntityManager em, ShippingHead shippinghead, List<ShippingDetail> lstShippingDetails, Movement movement) throws BallartelyException {
-		try {
-			em.getTransaction().begin();
+		try {		
+			List<ShippingHead> lstShippingExisting = getShippingsExistingDataBase(em);
+			for(int i=0; i<lstShippingExisting.size(); i++) {
+				ShippingHead head = lstShippingExisting.get(i);
+				head.setShippingModificationDate(new Date());
+				head.setShippingStatus(Constantes.STATUS_PRODUCT_COLD + (i+1));
+				JPAUtil.persistEntity(em, head);
+			}
 			
 			JPAUtil.persistEntity(em, shippinghead);
 			int shippingId = getShippingIdDataBase(em, shippinghead.getPaymentDocumentNumber());
 			
 			for(ShippingDetail detail: lstShippingDetails) {
-				detail.getId().setShippingHeadId(shippingId);
+				if(detail.getShippingQuantityBenefit() == 0) {
+					continue;
+				}
+				detail.setShippingDetailId(0);
+				shippinghead.setShippingId(shippingId);
+				detail.setShippingHead(shippinghead);
 				JPAUtil.persistEntity(em, detail);
 				ProductStock productStock = JPAUtil.findEntity(em, ProductStock.class, detail.getProductLabel().getProductLabelId());
-				productStock.setProductStockCant(productStock.getProductStockCant() + detail.getShippingQuantity());
+				productStock.setProductStockCant(productStock.getProductStockCant() + detail.getShippingQuantityBenefit());
+				productStock.setProductStockModificationDate(new Date());
 				JPAUtil.mergeEntity(em, productStock);
 			}
 			
 			JPAUtil.persistEntity(em, movement);
-			em.getTransaction().commit();
 			return Constantes.MESSAGE_PERSIST_SUCCESS;
 		} catch (Exception e) {
-			em.getTransaction().rollback();
 			throw new BallartelyException(BallartelyException.GENERAL_ERROR, e.getMessage());
 		}
 	}
 
-	private int getShippingIdDataBase(EntityManager em, String paymentDocumentNumber) throws BallartelyException{
+	public int getShippingIdDataBase(EntityManager em, String paymentDocumentNumber) throws BallartelyException{
 		try {
 			TypedQuery<Integer> queryShippingId = em.createQuery(
 					"select s.shippingId from ShippingHead s where s.paymentDocumentNumber = :paymentDocumentNumber", Integer.class);
 			queryShippingId.setParameter("paymentDocumentNumber", paymentDocumentNumber);
 				
 			return queryShippingId.getSingleResult().intValue();
+		} catch (NoResultException nre) {
+			throw new BallartelyException(BallartelyException.NO_RESULT_ERROR, nre.getMessage());
+		} catch (Exception e) {
+			throw new BallartelyException(BallartelyException.GENERAL_ERROR, e.getMessage());
+		}
+	}
+	
+	public List<ShippingHead> getShippingsExistingDataBase(EntityManager em) throws BallartelyException{
+		try {
+			TypedQuery<ShippingHead> queryShippingId = em.createQuery(
+					"select s from ShippingHead s order by s.shippingCreationDate desc", ShippingHead.class);
+				
+			return queryShippingId.getResultList();
 		} catch (NoResultException nre) {
 			throw new BallartelyException(BallartelyException.NO_RESULT_ERROR, nre.getMessage());
 		} catch (Exception e) {

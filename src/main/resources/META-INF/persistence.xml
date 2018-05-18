@@ -12,7 +12,6 @@
 		<class>pe.com.foxsoft.ballartelyweb.jpa.data.ProductStock</class>
 		<class>pe.com.foxsoft.ballartelyweb.jpa.data.Provider</class>
 		<class>pe.com.foxsoft.ballartelyweb.jpa.data.ShippingDetail</class>
-		<class>pe.com.foxsoft.ballartelyweb.jpa.data.ShippingDetailPK</class>
 		<class>pe.com.foxsoft.ballartelyweb.jpa.data.ShippingHead</class>
 		<class>pe.com.foxsoft.ballartelyweb.jpa.data.User</class>
 		
