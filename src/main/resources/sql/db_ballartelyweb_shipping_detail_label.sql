@@ -18,28 +18,33 @@ USE `db_ballartelyweb`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `product_stock`
+-- Table structure for table `shipping_detail_label`
 --
 
-DROP TABLE IF EXISTS `product_stock`;
+DROP TABLE IF EXISTS `shipping_detail_label`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `product_stock` (
+CREATE TABLE `shipping_detail_label` (
+  `shipping_detail_label_id` int(11) NOT NULL AUTO_INCREMENT,
+  `shipping_detail_id` int(11) NOT NULL,
   `product_label_id` int(11) NOT NULL,
-  `product_stock_cant` int(11) DEFAULT '0',
-  `product_stock_modification_date` datetime DEFAULT NULL,
-  PRIMARY KEY (`product_label_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `shipping_detail_label_type` char(1) NOT NULL,
+  `shipping_detail_label_creation_date` datetime NOT NULL,
+  `shipping_detail_label_modification_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`shipping_detail_label_id`),
+  KEY `fk_sdl_product_label_id_idx` (`product_label_id`),
+  CONSTRAINT `fk_sdl_product_label_id` FOREIGN KEY (`product_label_id`) REFERENCES `product_label` (`product_label_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `product_stock`
+-- Dumping data for table `shipping_detail_label`
 --
 
-LOCK TABLES `product_stock` WRITE;
-/*!40000 ALTER TABLE `product_stock` DISABLE KEYS */;
-INSERT INTO `product_stock` (`product_label_id`, `product_stock_cant`, `product_stock_modification_date`) VALUES (1,12,'2018-05-18 10:05:04'),(2,33,'2018-05-18 10:05:04'),(3,NULL,NULL);
-/*!40000 ALTER TABLE `product_stock` ENABLE KEYS */;
+LOCK TABLES `shipping_detail_label` WRITE;
+/*!40000 ALTER TABLE `shipping_detail_label` DISABLE KEYS */;
+INSERT INTO `shipping_detail_label` (`shipping_detail_label_id`, `shipping_detail_id`, `product_label_id`, `shipping_detail_label_type`, `shipping_detail_label_creation_date`, `shipping_detail_label_modification_date`) VALUES (1,0,2,'O','2018-05-18 10:05:04',NULL),(2,0,1,'O','2018-05-18 10:05:04',NULL);
+/*!40000 ALTER TABLE `shipping_detail_label` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

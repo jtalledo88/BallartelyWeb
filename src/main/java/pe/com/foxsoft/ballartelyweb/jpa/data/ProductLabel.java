@@ -42,6 +42,10 @@ public class ProductLabel implements Serializable {
 	@OneToMany(mappedBy="productLabel", fetch=FetchType.EAGER)
 	private List<ShippingDetail> shippingDetails;
 
+	//bi-directional many-to-one association to ShippingDetailLabel
+	@OneToMany(mappedBy="productLabel", fetch=FetchType.EAGER)
+	private List<ShippingDetailLabel> shippingDetailLabels;
+
 	public ProductLabel() {
 	}
 
@@ -113,6 +117,28 @@ public class ProductLabel implements Serializable {
 		shippingDetail.setProductLabel(null);
 
 		return shippingDetail;
+	}
+
+	public List<ShippingDetailLabel> getShippingDetailLabels() {
+		return this.shippingDetailLabels;
+	}
+
+	public void setShippingDetailLabels(List<ShippingDetailLabel> shippingDetailLabels) {
+		this.shippingDetailLabels = shippingDetailLabels;
+	}
+
+	public ShippingDetailLabel addShippingDetailLabel(ShippingDetailLabel shippingDetailLabel) {
+		getShippingDetailLabels().add(shippingDetailLabel);
+		shippingDetailLabel.setProductLabel(this);
+
+		return shippingDetailLabel;
+	}
+
+	public ShippingDetailLabel removeShippingDetailLabel(ShippingDetailLabel shippingDetailLabel) {
+		getShippingDetailLabels().remove(shippingDetailLabel);
+		shippingDetailLabel.setProductLabel(null);
+
+		return shippingDetailLabel;
 	}
 	
 	@Override

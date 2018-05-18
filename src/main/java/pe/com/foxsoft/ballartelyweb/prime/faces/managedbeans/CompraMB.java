@@ -137,8 +137,7 @@ public class CompraMB {
 			sMensaje = compraService.insertarCompra(objShippingHeadMain, lstItemsCompraMain, movement);
 			GeneralParameter generalParameterUpload = this.parametroGeneralService.obtenerParametroGeneral(propiedades.getUniqueCodeUpload());
 			Utilitarios.guardarArchivo(generalParameterUpload.getParamValue(), objShippingHeadMain.getShippingPaymentFile(), isComprobantePago);
-			this.objShippingHeadMain = new ShippingHead();
-			this.lstItemsCompraMain = new ArrayList<>();
+			reiniciarFormulario();
 			Utilitarios.mensaje("", sMensaje);
 		} catch (BallartelyException e) {
 			sMensaje = "Error en agregarCliente";
@@ -235,6 +234,16 @@ public class CompraMB {
 			throw new FacesException(sMensaje, e);
 		}
     }
+	
+	private void reiniciarFormulario() {
+		this.objShippingHeadMain = new ShippingHead();
+		this.isComprobantePago = null;
+		this.lstItemsCompraMain = new ArrayList<>();
+		this.totalCompraBruto = BigDecimal.ZERO;
+		this.totalCompraNeto = BigDecimal.ZERO;
+		this.shippingTotalQuantityLive = 0;
+		this.flagMuertos = false;
+	}
 
 	private void obtenerEtiquetasProducto() {
 		try {

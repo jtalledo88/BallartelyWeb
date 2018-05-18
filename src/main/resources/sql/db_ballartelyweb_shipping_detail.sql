@@ -38,7 +38,7 @@ CREATE TABLE `shipping_detail` (
   KEY `fk_sd_product_label_id_idx` (`product_label_id`),
   CONSTRAINT `fk_sd_product_label_id` FOREIGN KEY (`product_label_id`) REFERENCES `product_label` (`product_label_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_shipping_head_id` FOREIGN KEY (`shipping_head_id`) REFERENCES `shipping_head` (`shipping_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -47,7 +47,7 @@ CREATE TABLE `shipping_detail` (
 
 LOCK TABLES `shipping_detail` WRITE;
 /*!40000 ALTER TABLE `shipping_detail` DISABLE KEYS */;
-INSERT INTO `shipping_detail` (`shipping_detail_id`, `shipping_head_id`, `product_label_id`, `shipping_quantity_benefit`, `shipping_unit_price`, `shipping_amout`, `shipping_creation_date`, `shipping_modification_date`) VALUES (3,4,1,30,10.00,300.00,'2018-05-17 18:25:26',NULL),(4,4,1,20,15.00,300.00,'2018-05-17 18:25:26',NULL),(5,5,2,20,15.00,300.00,'2018-05-17 19:25:09',NULL),(6,5,1,20,10.00,200.00,'2018-05-17 19:25:09',NULL),(7,6,1,15,10.00,150.00,'2018-05-17 19:33:34',NULL),(8,6,2,2,15.00,30.00,'2018-05-17 19:33:34',NULL);
+INSERT INTO `shipping_detail` (`shipping_detail_id`, `shipping_head_id`, `product_label_id`, `shipping_quantity_benefit`, `shipping_unit_price`, `shipping_amout`, `shipping_creation_date`, `shipping_modification_date`) VALUES (1,1,1,12,10.00,120.00,'2018-05-18 10:05:04',NULL),(2,1,2,33,15.00,495.00,'2018-05-18 10:05:04',NULL);
 /*!40000 ALTER TABLE `shipping_detail` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -60,4 +60,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-17 19:37:49
+-- Dump completed on 2018-05-18 17:04:08

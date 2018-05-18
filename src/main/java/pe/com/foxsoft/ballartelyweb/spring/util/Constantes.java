@@ -15,5 +15,7 @@ public class Constantes {
 	public static final String MOVEMENT_TYPE_SHIPPING = "COMPRA";
 	public static final String STATUS_PRODUCT_COLD = "FR";
 	public static final String STATUS_PRODUCT_FRESH = "FCO";
+	public static final String DETAIL_LABEL_TYPE_ORIGIN = "O";
+	public static final String DETAIL_LABEL_TYPE_ADDITIONAL = "A";
 
 }

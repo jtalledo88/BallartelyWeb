@@ -40,7 +40,7 @@ CREATE TABLE `movements` (
   KEY `fk_account_id_idx` (`account_id`),
   CONSTRAINT `fk_account_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`account_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_provider_id` FOREIGN KEY (`provider_id`) REFERENCES `provider` (`provider_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -49,7 +49,7 @@ CREATE TABLE `movements` (
 
 LOCK TABLES `movements` WRITE;
 /*!40000 ALTER TABLE `movements` DISABLE KEYS */;
-INSERT INTO `movements` (`movement_id`, `movement_date`, `movement_type`, `payment_documentnumber`, `account_id`, `provider_id`, `movement_quantity`, `movement_amount`, `movement_observation`) VALUES (00000000000000000000000000000000000000000000000004,'2018-05-17','COMPRA','10258987210',2,1,50,708.00,'Registro de compra.'),(00000000000000000000000000000000000000000000000005,'2018-05-17','COMPRA','102578967512',2,1,40,590.00,'Registro de compra.'),(00000000000000000000000000000000000000000000000006,'2018-05-17','COMPRA','102578967515',2,1,20,212.40,'Registro de compra.');
+INSERT INTO `movements` (`movement_id`, `movement_date`, `movement_type`, `payment_documentnumber`, `account_id`, `provider_id`, `movement_quantity`, `movement_amount`, `movement_observation`) VALUES (00000000000000000000000000000000000000000000000001,'2018-05-18','COMPRA','101568989457',2,1,45,725.70,'Registro de compra.');
 /*!40000 ALTER TABLE `movements` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -62,4 +62,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-17 19:37:50
+-- Dump completed on 2018-05-18 17:04:09
