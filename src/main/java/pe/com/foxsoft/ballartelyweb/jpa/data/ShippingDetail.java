@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -47,6 +48,10 @@ public class ShippingDetail implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="shipping_head_id")
 	private ShippingHead shippingHead;
+
+	//bi-directional many-to-one association to ShippingDetailLabel
+	@OneToMany(mappedBy="shippingDetail", fetch=FetchType.EAGER)
+	private List<ShippingDetailLabel> shippingDetailLabels;
 
 	public ShippingDetail() {
 	}
@@ -113,6 +118,28 @@ public class ShippingDetail implements Serializable {
 
 	public void setShippingHead(ShippingHead shippingHead) {
 		this.shippingHead = shippingHead;
+	}
+
+	public List<ShippingDetailLabel> getShippingDetailLabels() {
+		return this.shippingDetailLabels;
+	}
+
+	public void setShippingDetailLabels(List<ShippingDetailLabel> shippingDetailLabels) {
+		this.shippingDetailLabels = shippingDetailLabels;
+	}
+
+	public ShippingDetailLabel addShippingDetailLabel(ShippingDetailLabel shippingDetailLabel) {
+		getShippingDetailLabels().add(shippingDetailLabel);
+		shippingDetailLabel.setShippingDetail(this);
+
+		return shippingDetailLabel;
+	}
+
+	public ShippingDetailLabel removeShippingDetailLabel(ShippingDetailLabel shippingDetailLabel) {
+		getShippingDetailLabels().remove(shippingDetailLabel);
+		shippingDetailLabel.setShippingDetail(null);
+
+		return shippingDetailLabel;
 	}
 
 }

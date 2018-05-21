@@ -140,7 +140,7 @@ public class ProductLabel implements Serializable {
 
 		return shippingDetailLabel;
 	}
-	
+
 	@Override
     public int hashCode() {
         int hash = 0;
@@ -159,5 +159,4 @@ public class ProductLabel implements Serializable {
         }
         return true;
     }
-
 }

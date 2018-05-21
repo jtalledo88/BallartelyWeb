@@ -33,8 +33,10 @@ CREATE TABLE `shipping_detail_label` (
   `shipping_detail_label_modification_date` datetime DEFAULT NULL,
   PRIMARY KEY (`shipping_detail_label_id`),
   KEY `fk_sdl_product_label_id_idx` (`product_label_id`),
-  CONSTRAINT `fk_sdl_product_label_id` FOREIGN KEY (`product_label_id`) REFERENCES `product_label` (`product_label_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  KEY `fk_sdl_shipping_detail_id_idx` (`shipping_detail_id`),
+  CONSTRAINT `fk_sdl_product_label_id` FOREIGN KEY (`product_label_id`) REFERENCES `product_label` (`product_label_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_sdl_shipping_detail_id_idx` FOREIGN KEY (`shipping_detail_id`) REFERENCES `shipping_detail` (`shipping_detail_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +45,7 @@ CREATE TABLE `shipping_detail_label` (
 
 LOCK TABLES `shipping_detail_label` WRITE;
 /*!40000 ALTER TABLE `shipping_detail_label` DISABLE KEYS */;
-INSERT INTO `shipping_detail_label` (`shipping_detail_label_id`, `shipping_detail_id`, `product_label_id`, `shipping_detail_label_type`, `shipping_detail_label_creation_date`, `shipping_detail_label_modification_date`) VALUES (1,0,2,'O','2018-05-18 10:05:04',NULL),(2,0,1,'O','2018-05-18 10:05:04',NULL);
+INSERT INTO `shipping_detail_label` (`shipping_detail_label_id`, `shipping_detail_id`, `product_label_id`, `shipping_detail_label_type`, `shipping_detail_label_creation_date`, `shipping_detail_label_modification_date`) VALUES (1,3,1,'O','2018-05-21 13:27:50',NULL),(2,4,1,'O','2018-05-21 13:27:50',NULL),(3,3,2,'A','2018-05-21 13:46:32',NULL);
 /*!40000 ALTER TABLE `shipping_detail_label` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +58,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-18 17:04:07
+-- Dump completed on 2018-05-21 13:58:07

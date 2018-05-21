@@ -20,9 +20,6 @@ public class ShippingDetailLabel implements Serializable {
 	@Column(name="shipping_detail_label_id")
 	private int shippingDetailLabelId;
 
-	@Column(name="shipping_detail_id")
-	private int shippingDetailId;
-
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="shipping_detail_label_creation_date")
 	private Date shippingDetailLabelCreationDate;
@@ -39,6 +36,11 @@ public class ShippingDetailLabel implements Serializable {
 	@JoinColumn(name="product_label_id")
 	private ProductLabel productLabel;
 
+	//bi-directional many-to-one association to ShippingDetail
+	@ManyToOne
+	@JoinColumn(name="shipping_detail_id")
+	private ShippingDetail shippingDetail;
+
 	public ShippingDetailLabel() {
 	}
 
@@ -48,14 +50,6 @@ public class ShippingDetailLabel implements Serializable {
 
 	public void setShippingDetailLabelId(int shippingDetailLabelId) {
 		this.shippingDetailLabelId = shippingDetailLabelId;
-	}
-
-	public int getShippingDetailId() {
-		return this.shippingDetailId;
-	}
-
-	public void setShippingDetailId(int shippingDetailId) {
-		this.shippingDetailId = shippingDetailId;
 	}
 
 	public Date getShippingDetailLabelCreationDate() {
@@ -88,6 +82,14 @@ public class ShippingDetailLabel implements Serializable {
 
 	public void setProductLabel(ProductLabel productLabel) {
 		this.productLabel = productLabel;
+	}
+
+	public ShippingDetail getShippingDetail() {
+		return this.shippingDetail;
+	}
+
+	public void setShippingDetail(ShippingDetail shippingDetail) {
+		this.shippingDetail = shippingDetail;
 	}
 
 }

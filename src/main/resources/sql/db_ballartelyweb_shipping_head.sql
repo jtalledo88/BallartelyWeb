@@ -41,7 +41,7 @@ CREATE TABLE `shipping_head` (
   UNIQUE KEY `payment_document_number_unq_sh` (`payment_document_number`),
   KEY `fk_sh_provider_id_idx` (`provider_id`),
   CONSTRAINT `fk_sh_provider_id` FOREIGN KEY (`provider_id`) REFERENCES `provider` (`provider_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -50,7 +50,7 @@ CREATE TABLE `shipping_head` (
 
 LOCK TABLES `shipping_head` WRITE;
 /*!40000 ALTER TABLE `shipping_head` DISABLE KEYS */;
-INSERT INTO `shipping_head` (`shipping_id`, `provider_id`, `shipping_total_quantity_live`, `shipping_total_weight_live`, `shipping_total_quantity_dead`, `shipping_total_weight_dead`, `shipping_total_amount`, `payment_document_number`, `shipping_payment_file`, `shipping_creation_date`, `shipping_modification_date`, `shipping_status`) VALUES (1,1,45,86.00,1,2.00,725.70,'101568989457','FIL712.JPG','2018-05-18 10:05:04',NULL,'FCO');
+INSERT INTO `shipping_head` (`shipping_id`, `provider_id`, `shipping_total_quantity_live`, `shipping_total_weight_live`, `shipping_total_quantity_dead`, `shipping_total_weight_dead`, `shipping_total_amount`, `payment_document_number`, `shipping_payment_file`, `shipping_creation_date`, `shipping_modification_date`, `shipping_status`) VALUES (2,1,50,128.00,2,4.00,708.00,'101568989455','FIL712.JPG','2018-05-21 13:27:49',NULL,'FCO');
 /*!40000 ALTER TABLE `shipping_head` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -63,4 +63,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-18 17:04:07
+-- Dump completed on 2018-05-21 13:58:07

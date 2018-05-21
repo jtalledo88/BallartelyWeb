@@ -10,6 +10,7 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Component;
 
 import pe.com.foxsoft.ballartelyweb.jpa.data.Movement;
+import pe.com.foxsoft.ballartelyweb.jpa.data.ProductLabel;
 import pe.com.foxsoft.ballartelyweb.jpa.data.ProductStock;
 import pe.com.foxsoft.ballartelyweb.jpa.data.ShippingDetail;
 import pe.com.foxsoft.ballartelyweb.jpa.data.ShippingDetailLabel;
@@ -19,7 +20,7 @@ import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
 import pe.com.foxsoft.ballartelyweb.spring.util.Constantes;
 
 @Component
-public class ShippingJPA {
+public class CompraJPA {
 	
 	
 	/**Method to persist shipping in database
@@ -65,6 +66,7 @@ public class ShippingJPA {
 			/** Registramos la etiqueta de producto original en BD**/
 			for(ShippingDetail detail: lstShippingDetailLabel) {
 				ShippingDetailLabel detailLabel = new ShippingDetailLabel();
+				detailLabel.setShippingDetail(detail);
 				detailLabel.setProductLabel(detail.getProductLabel());
 				detailLabel.setShippingDetailLabelCreationDate(new Date());
 				detailLabel.setShippingDetailLabelType(Constantes.DETAIL_LABEL_TYPE_ORIGIN);
@@ -104,7 +106,7 @@ public class ShippingJPA {
 	 * @return
 	 * @throws BallartelyException
 	 */
-	private List<ShippingHead> getShippingsExistingDataBase(EntityManager em) throws BallartelyException{
+	public List<ShippingHead> getShippingsExistingDataBase(EntityManager em) throws BallartelyException{
 		try {
 			TypedQuery<ShippingHead> queryShippingId = em.createQuery(
 					"select s from ShippingHead s order by s.shippingCreationDate desc", ShippingHead.class);
@@ -123,7 +125,7 @@ public class ShippingJPA {
 	 * @return
 	 * @throws BallartelyException
 	 */
-	private List<ShippingDetail> getShippingsDetailsDataBase(EntityManager em, int shippingHeadId) throws BallartelyException{
+	public List<ShippingDetail> getShippingsDetailsDataBase(EntityManager em, int shippingHeadId) throws BallartelyException{
 		try {
 			TypedQuery<ShippingDetail> queryShippingDetail = em.createQuery(
 					"select s from ShippingDetail s join fetch s.shippingHead sh where sh.shippingId = :shippingId", ShippingDetail.class);
@@ -131,6 +133,47 @@ public class ShippingJPA {
 			return queryShippingDetail.getResultList();
 		} catch (NoResultException nre) {
 			throw new BallartelyException(BallartelyException.NO_RESULT_ERROR, nre.getMessage());
+		} catch (Exception e) {
+			throw new BallartelyException(BallartelyException.GENERAL_ERROR, e.getMessage());
+		}
+	}
+	
+	/**
+	 * @param em
+	 * @param shippingDetailId
+	 * @return
+	 * @throws BallartelyException
+	 */
+	public List<ShippingDetailLabel> getShippingsDetailsLabelDataBase(EntityManager em, int shippingDetailId) throws BallartelyException{
+		try {
+			TypedQuery<ShippingDetailLabel> queryShippingDetailLabel = em.createQuery(
+					"select s from ShippingDetailLabel s join fetch s.shippingDetail sd where sd.shippingDetailId = :shippingDetailId", ShippingDetailLabel.class);
+			queryShippingDetailLabel.setParameter("shippingDetailId", shippingDetailId);
+			return queryShippingDetailLabel.getResultList();
+		} catch (NoResultException nre) {
+			throw new BallartelyException(BallartelyException.NO_RESULT_ERROR, nre.getMessage());
+		} catch (Exception e) {
+			throw new BallartelyException(BallartelyException.GENERAL_ERROR, e.getMessage());
+		}
+	}
+	
+	public String grabarCompraDetalleLabel(EntityManager em, List<ShippingDetailLabel> lstEtiquetasMain, 
+			List<ProductLabel> target, ShippingDetail shippingDetail) throws BallartelyException{
+		try {
+			for(ShippingDetailLabel detailLabel: lstEtiquetasMain) {
+				if(!Constantes.DETAIL_LABEL_TYPE_ORIGIN.equals(detailLabel.getShippingDetailLabelType())) {
+					JPAUtil.removeEntity(em, detailLabel);
+				}
+			}
+			for(ProductLabel productLabel: target) {
+				ShippingDetailLabel shippingDetailLabel = new ShippingDetailLabel();
+				shippingDetailLabel.setProductLabel(productLabel);
+				shippingDetailLabel.setShippingDetail(shippingDetail);
+				shippingDetailLabel.setShippingDetailLabelCreationDate(new Date());
+				shippingDetailLabel.setShippingDetailLabelType(Constantes.DETAIL_LABEL_TYPE_ADDITIONAL);
+				JPAUtil.persistEntity(em, shippingDetailLabel);
+			}
+			return Constantes.MESSAGE_PERSIST_SUCCESS;
 		} catch (Exception e) {
 			throw new BallartelyException(BallartelyException.GENERAL_ERROR, e.getMessage());
 		}

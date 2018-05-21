@@ -38,7 +38,7 @@ CREATE TABLE `product_stock` (
 
 LOCK TABLES `product_stock` WRITE;
 /*!40000 ALTER TABLE `product_stock` DISABLE KEYS */;
-INSERT INTO `product_stock` (`product_label_id`, `product_stock_cant`, `product_stock_modification_date`) VALUES (1,12,'2018-05-18 10:05:04'),(2,33,'2018-05-18 10:05:04'),(3,NULL,NULL);
+INSERT INTO `product_stock` (`product_label_id`, `product_stock_cant`, `product_stock_modification_date`) VALUES (1,62,'2018-05-21 13:27:49'),(2,33,'2018-05-18 10:05:04'),(3,NULL,NULL);
 /*!40000 ALTER TABLE `product_stock` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -51,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-18 17:04:07
+-- Dump completed on 2018-05-21 13:58:07
