@@ -27,6 +27,9 @@ public class ShippingDetailLabel implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="shipping_detail_label_modification_date")
 	private Date shippingDetailLabelModificationDate;
+	
+	@Column(name="shipping_detail_label_quantity_benefit")
+	private int shippingDetailLabelQuantityBenefit;
 
 	@Column(name="shipping_detail_label_type")
 	private String shippingDetailLabelType;
@@ -66,6 +69,14 @@ public class ShippingDetailLabel implements Serializable {
 
 	public void setShippingDetailLabelModificationDate(Date shippingDetailLabelModificationDate) {
 		this.shippingDetailLabelModificationDate = shippingDetailLabelModificationDate;
+	}
+	
+	public int getShippingDetailLabelQuantityBenefit() {
+		return shippingDetailLabelQuantityBenefit;
+	}
+
+	public void setShippingDetailLabelQuantityBenefit(int shippingDetailLabelQuantityBenefit) {
+		this.shippingDetailLabelQuantityBenefit = shippingDetailLabelQuantityBenefit;
 	}
 
 	public String getShippingDetailLabelType() {

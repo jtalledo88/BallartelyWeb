@@ -157,22 +157,15 @@ public class CompraJPA {
 		}
 	}
 	
-	public String grabarCompraDetalleLabel(EntityManager em, List<ShippingDetailLabel> lstEtiquetasMain, 
-			List<ProductLabel> target, ShippingDetail shippingDetail) throws BallartelyException{
+	public String grabarCompraDetalleLabel(EntityManager em, List<ShippingDetailLabel> lstEtiquetasMain) throws BallartelyException{
 		try {
 			for(ShippingDetailLabel detailLabel: lstEtiquetasMain) {
-				if(!Constantes.DETAIL_LABEL_TYPE_ORIGIN.equals(detailLabel.getShippingDetailLabelType())) {
+				if(!Constantes.DETAIL_LABEL_TYPE_ORIGIN.equals(detailLabel.getShippingDetailLabelType()) &&
+						detailLabel.getShippingDetailLabelCreationDate() == null) {
 					JPAUtil.removeEntity(em, detailLabel);
 				}
 			}
-			for(ProductLabel productLabel: target) {
-				ShippingDetailLabel shippingDetailLabel = new ShippingDetailLabel();
-				shippingDetailLabel.setProductLabel(productLabel);
-				shippingDetailLabel.setShippingDetail(shippingDetail);
-				shippingDetailLabel.setShippingDetailLabelCreationDate(new Date());
-				shippingDetailLabel.setShippingDetailLabelType(Constantes.DETAIL_LABEL_TYPE_ADDITIONAL);
-				JPAUtil.persistEntity(em, shippingDetailLabel);
-			}
+			
 			return Constantes.MESSAGE_PERSIST_SUCCESS;
 		} catch (Exception e) {
 			throw new BallartelyException(BallartelyException.GENERAL_ERROR, e.getMessage());

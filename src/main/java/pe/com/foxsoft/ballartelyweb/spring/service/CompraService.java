@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import pe.com.foxsoft.ballartelyweb.jpa.dao.CompraJPA;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Movement;
-import pe.com.foxsoft.ballartelyweb.jpa.data.ProductLabel;
 import pe.com.foxsoft.ballartelyweb.jpa.data.ShippingDetail;
 import pe.com.foxsoft.ballartelyweb.jpa.data.ShippingDetailLabel;
 import pe.com.foxsoft.ballartelyweb.jpa.data.ShippingHead;
@@ -64,14 +63,18 @@ public class CompraService {
 		return compraJPA.getShippingsDetailsLabelDataBase(em, ShippingDetailId);
 	}
 	
+	@Transactional(readOnly=true, noRollbackFor=BallartelyException.class)
+	public ShippingDetailLabel getComprasDetalleLabel(int ShippingDetailLabelId) throws BallartelyException {
+		return JPAUtil.findEntity(em, ShippingDetailLabel.class, ShippingDetailLabelId);
+	}
+	
 	@Transactional(readOnly=false, rollbackFor=Throwable.class)
 	public String eliminarCompraDetalleLabel(ShippingDetailLabel shippingDetailLabel) throws BallartelyException {
 		return JPAUtil.removeEntity(em, shippingDetailLabel);
 	}
 
 	@Transactional(readOnly=false, rollbackFor=BallartelyException.class)
-	public String grabarCompraDetalleLabel(List<ShippingDetailLabel> lstEtiquetasMain, 
-			List<ProductLabel> target, ShippingDetail shippingDetail) throws BallartelyException{
-		return compraJPA.grabarCompraDetalleLabel(em, lstEtiquetasMain, target, shippingDetail);
+	public String grabarCompraDetalleLabel(List<ShippingDetailLabel> lstEtiquetasMain) throws BallartelyException{
+		return compraJPA.grabarCompraDetalleLabel(em, lstEtiquetasMain);
 	}
 }
